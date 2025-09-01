@@ -2,6 +2,7 @@ const express = require('express');
 const sql = require('mssql');
 const cors = require('cors');
 const multer = require('multer');
+const { authLimiter, apiLimiter } = require('./middleware/rateLimiter');
 const path = require('path');
 const fs = require('fs');
 const UploadHandler = require('./helpers/uploadHandler');
@@ -62,11 +63,11 @@ const authRoutes = require('./routes/auth')(dbConfig);
 const dashboardRoutes = require('./routes/dashboard')(dbConfig);
 const { authMiddleware, adminMiddleware } = require('./middleware/auth');
 
-// Add auth routes (no middleware needed for auth endpoints)
-app.use('/api/auth', authRoutes);
+// Add auth routes with rate limiting
+app.use('/api/auth', authLimiter, authRoutes);
 
-// Apply auth middleware to protected routes
-app.use('/api/dashboard', authMiddleware, dashboardRoutes);
+// Apply auth middleware and rate limiting to protected routes
+app.use('/api/dashboard', authMiddleware, apiLimiter, dashboardRoutes);
 
 // Progress tracking
 let uploadProgress = {};
