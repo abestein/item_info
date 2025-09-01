@@ -74,11 +74,15 @@ module.exports = (dbConfig) => {
 
             let whereClause = 'WHERE has_issue = 1';
 
+            const request = new sql.Request(pool);
+            
             if (searchTerm) {
-                whereClause += ` AND (ItemCode LIKE '%${searchTerm}%' OR UPC LIKE '%${searchTerm}%')`;
+                whereClause += ' AND (ItemCode LIKE @searchTerm OR UPC LIKE @searchTerm)';
+                request.input('searchTerm', sql.NVarChar, `%${searchTerm}%`);
             }
 
             if (issueType) {
+                request.input('issueType', sql.NVarChar, issueType);
                 switch (issueType) {
                     case 'duplicate_same':
                         whereClause += ' AND duplicate_type_1 IS NOT NULL';
