@@ -35,7 +35,7 @@ class PermissionsService {
       const response = await axios.get(`${API_URL}/permissions/pages`, {
         headers: this.getAuthHeaders()
       });
-      return response.data;
+      return response.data.pages || [];
     } catch (error: any) {
       this.handleError(error);
       throw error;

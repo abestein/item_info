@@ -44,7 +44,12 @@ class UserService {
         headers: this.getAuthHeaders(),
         params
       });
-      return response.data;
+      return {
+        users: response.data.users || [],
+        total: response.data.total || 0,
+        page: response.data.page || 1,
+        pageSize: response.data.pageSize || 10
+      };
     } catch (error: any) {
       this.handleError(error);
       throw error;
@@ -56,7 +61,7 @@ class UserService {
       const response = await axios.get(`${API_URL}/users/${id}`, {
         headers: this.getAuthHeaders()
       });
-      return response.data;
+      return response.data.user;
     } catch (error: any) {
       this.handleError(error);
       throw error;
@@ -68,7 +73,7 @@ class UserService {
       const response = await axios.post(`${API_URL}/users`, user, {
         headers: this.getAuthHeaders()
       });
-      return response.data;
+      return response.data.user;
     } catch (error: any) {
       this.handleError(error);
       throw error;
@@ -80,7 +85,7 @@ class UserService {
       const response = await axios.put(`${API_URL}/users/${id}`, user, {
         headers: this.getAuthHeaders()
       });
-      return response.data;
+      return response.data.user;
     } catch (error: any) {
       this.handleError(error);
       throw error;
