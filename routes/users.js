@@ -139,13 +139,16 @@ module.exports = (dbConfig) => {
 
     // Create new user
     router.post('/', async (req, res) => {
+        let pool = null;
+        let transaction = null;
+        
         try {
             console.log('POST /api/users - Request body:', req.body);
-            const { username, email, password, role } = req.body;
+            const { username, email, password, role, isActive } = req.body;
 
             // Validate input
             const errors = [];
-            if (!username || username.length < 3) {
+            if (!username || username.trim().length < 3) {
                 errors.push('Username must be at least 3 characters long');
             }
             if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
@@ -180,48 +183,83 @@ module.exports = (dbConfig) => {
             }
             
             if (errors.length > 0) {
+                console.log('Validation errors:', errors);
                 return res.status(400).json({
                     success: false,
                     error: errors.join(', ')
                 });
             }
 
-            console.log('Connecting to database...');
-            const pool = await sql.connect(dbConfig);
-            console.log('Database connected successfully');
-
-            // Check if user exists
-            console.log('Checking for existing user...');
-            const existingUser = await pool.request()
-                .input('username', sql.NVarChar(50), username)
-                .input('email', sql.NVarChar(255), email)
-                .query('SELECT Id, Username, Email FROM Users WHERE Username = @username OR Email = @email');
-
-            if (existingUser.recordset.length > 0) {
-                console.log('User already exists:', existingUser.recordset[0]);
-                return res.status(400).json({
-                    success: false,
-                    error: 'Username or email already exists'
-                });
-            }
-
-            // Hash password
-            console.log('Hashing password...');
-            const hashedPassword = await bcrypt.hash(password, 10);
-            console.log('Password hashed successfully');
-
             // Get admin user making the request
             if (!req.user || !req.user.id) {
                 console.error('User context missing:', req.user);
                 return res.status(401).json({
                     success: false,
-                    error: 'User context not found'
+                    error: 'Authentication required'
                 });
             }
 
-            console.log('Creating user with data:', { username, email, role: role || 'user' });
+            console.log('Connecting to database...');
+            try {
+                pool = await sql.connect(dbConfig);
+                console.log('Database connected successfully');
+            } catch (dbError) {
+                console.error('Database connection failed:', dbError);
+                return res.status(500).json({
+                    success: false,
+                    error: 'Database connection failed',
+                    details: process.env.NODE_ENV === 'development' ? dbError.message : undefined
+                });
+            }
 
-            let transaction;
+            // Check if user exists
+            console.log('Checking for existing user...');
+            try {
+                const existingUser = await pool.request()
+                    .input('username', sql.NVarChar(50), username.trim())
+                    .input('email', sql.NVarChar(255), email.trim())
+                    .query('SELECT Id, Username, Email FROM Users WHERE Username = @username OR Email = @email');
+
+                if (existingUser.recordset.length > 0) {
+                    const existing = existingUser.recordset[0];
+                    console.log('User already exists:', existing);
+                    const conflictField = existing.Username.toLowerCase() === username.toLowerCase() ? 'Username' : 'Email';
+                    return res.status(409).json({
+                        success: false,
+                        error: `${conflictField} already exists`
+                    });
+                }
+            } catch (checkError) {
+                console.error('Error checking existing user:', checkError);
+                return res.status(500).json({
+                    success: false,
+                    error: 'Failed to check existing users',
+                    details: process.env.NODE_ENV === 'development' ? checkError.message : undefined
+                });
+            }
+
+            // Hash password
+            console.log('Hashing password...');
+            let hashedPassword;
+            try {
+                hashedPassword = await bcrypt.hash(password, 10);
+                console.log('Password hashed successfully');
+            } catch (hashError) {
+                console.error('Password hashing failed:', hashError);
+                return res.status(500).json({
+                    success: false,
+                    error: 'Password processing failed',
+                    details: process.env.NODE_ENV === 'development' ? hashError.message : undefined
+                });
+            }
+
+            console.log('Creating user with data:', { 
+                username: username.trim(), 
+                email: email.trim(), 
+                role: role || 'user',
+                isActive: isActive !== false
+            });
+
             try {
                 // Start transaction
                 transaction = new sql.Transaction(pool);
@@ -230,33 +268,43 @@ module.exports = (dbConfig) => {
 
                 // Insert new user
                 const insertRequest = transaction.request()
-                    .input('username', sql.NVarChar(50), username)
-                    .input('email', sql.NVarChar(255), email)
+                    .input('username', sql.NVarChar(50), username.trim())
+                    .input('email', sql.NVarChar(255), email.trim())
                     .input('passwordHash', sql.NVarChar(255), hashedPassword)
-                    .input('role', sql.NVarChar(20), role || 'user');
+                    .input('role', sql.NVarChar(20), role || 'user')
+                    .input('isActive', sql.Bit, isActive !== false);
 
                 console.log('Executing user insert query');
                 const result = await insertRequest.query(`
                     INSERT INTO Users (Username, Email, PasswordHash, Role, IsActive)
-                    VALUES (@username, @email, @passwordHash, @role, 1);
+                    VALUES (@username, @email, @passwordHash, @role, @isActive);
                     SELECT SCOPE_IDENTITY() as Id;
                 `);
+
+                if (!result.recordset || result.recordset.length === 0 || !result.recordset[0].Id) {
+                    throw new Error('Failed to get new user ID from database');
+                }
 
                 const newUserId = result.recordset[0].Id;
                 console.log('User created with ID:', newUserId);
 
                 // Log role assignment
-                const historyRequest = transaction.request()
-                    .input('userId', sql.Int, newUserId)
-                    .input('oldRole', sql.NVarChar(20), null)
-                    .input('newRole', sql.NVarChar(20), role || 'user')
-                    .input('changedBy', sql.Int, req.user.id);
+                try {
+                    const historyRequest = transaction.request()
+                        .input('userId', sql.Int, newUserId)
+                        .input('oldRole', sql.NVarChar(20), null)
+                        .input('newRole', sql.NVarChar(20), role || 'user')
+                        .input('changedBy', sql.Int, req.user.id);
 
-                console.log('Logging role assignment');
-                await historyRequest.query(`
-                    INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
-                    VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
-                `);
+                    console.log('Logging role assignment');
+                    await historyRequest.query(`
+                        INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
+                        VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
+                    `);
+                } catch (historyError) {
+                    console.warn('Failed to log role history (non-critical):', historyError);
+                    // Don't fail the entire operation for history logging
+                }
 
                 // Get the created user data before committing
                 const createdUserResult = await transaction.request()
@@ -267,15 +315,23 @@ module.exports = (dbConfig) => {
                         WHERE Id = @userId
                     `);
 
+                if (!createdUserResult.recordset || createdUserResult.recordset.length === 0) {
+                    throw new Error('Failed to retrieve created user data');
+                }
+
                 await transaction.commit();
                 console.log('Transaction committed successfully');
 
+                const createdUser = createdUserResult.recordset[0];
+                console.log('User created successfully:', { id: createdUser.Id, username: createdUser.Username });
+
                 res.status(201).json({
                     success: true,
-                    user: createdUserResult.recordset[0]
+                    user: createdUser
                 });
-            } catch (error) {
-                console.error('Transaction error:', error);
+
+            } catch (transactionError) {
+                console.error('Transaction error:', transactionError);
                 if (transaction) {
                     try {
                         await transaction.rollback();
@@ -284,8 +340,22 @@ module.exports = (dbConfig) => {
                         console.error('Rollback error:', rollbackError);
                     }
                 }
-                throw error;
+
+                // Handle specific SQL errors
+                if (transactionError.number === 2627 || transactionError.number === 2601) {
+                    return res.status(409).json({
+                        success: false,
+                        error: 'Username or email already exists'
+                    });
+                }
+
+                return res.status(500).json({
+                    success: false,
+                    error: 'Failed to create user in database',
+                    details: process.env.NODE_ENV === 'development' ? transactionError.message : undefined
+                });
             }
+
         } catch (error) {
             console.error('Create user error:', error);
             console.error('Error details:', {
@@ -299,11 +369,37 @@ module.exports = (dbConfig) => {
                 procName: error.procName,
                 lineNumber: error.lineNumber
             });
-            res.status(500).json({
-                success: false,
-                error: 'Failed to create user',
-                details: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+
+            // Handle specific error types
+            if (error.code === 'ELOGIN') {
+                return res.status(500).json({
+                    success: false,
+                    error: 'Database authentication failed'
+                });
+            }
+
+            if (error.code === 'ETIMEOUT') {
+                return res.status(500).json({
+                    success: false,
+                    error: 'Database connection timeout'
+                });
+            }
+
+            if (error.code === 'ECONNRESET') {
+                return res.status(500).json({
+                    success: false,
+                    error: 'Database connection was reset'
+                });
+            }
+
+            // Generic error response
+            if (!res.headersSent) {
+                res.status(500).json({
+                    success: false,
+                    error: 'Internal server error',
+                    details: process.env.NODE_ENV === 'development' ? error.message : undefined
+                });
+            }
         }
     });
 
