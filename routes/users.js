@@ -210,11 +210,12 @@ module.exports = (dbConfig) => {
                 });
             }
 
-            // Start transaction
-            const transaction = new sql.Transaction(pool);
-            await transaction.begin();
-
+            let transaction;
             try {
+                // Start transaction
+                transaction = new sql.Transaction(pool);
+                await transaction.begin();
+
                 // Insert new user
                 const result = await transaction.request()
                     .input('username', sql.NVarChar, username)
@@ -240,26 +241,28 @@ module.exports = (dbConfig) => {
 
                 await transaction.commit();
 
-            res.status(201).json({
-                success: true,
-                userId: result.recordset[0].Id
-            });
+                res.status(201).json({
+                    success: true,
+                    userId: result.recordset[0].Id
+                });
+            } catch (error) {
+                if (transaction) {
+                    try {
+                        await transaction.rollback();
+                    } catch (rollbackError) {
+                        console.error('Rollback error:', rollbackError);
+                    }
+                }
+                throw error;
+            }
         } catch (error) {
             console.error('Create user error:', error);
             res.status(500).json({
                 success: false,
                 error: 'Failed to create user'
             });
-        } finally {
-            if (transaction) {
-                try {
-                    await transaction.rollback();
-                } catch (rollbackError) {
-                    console.error('Rollback error:', rollbackError);
-                }
-            }
         }
-    }});
+    });
 
     // Update user
     router.put('/:id', async (req, res) => {
