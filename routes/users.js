@@ -139,6 +139,14 @@ module.exports = (dbConfig) => {
             // Hash password
             const hashedPassword = await bcrypt.hash(password, 10);
 
+            // Get admin user making the request
+            if (!req.user || !req.user.id) {
+                return res.status(401).json({
+                    success: false,
+                    error: 'User context not found'
+                });
+            }
+
             // Start transaction
             const transaction = new sql.Transaction(pool);
             await transaction.begin();
@@ -195,6 +203,22 @@ module.exports = (dbConfig) => {
         try {
             const { username, email, password, role, isActive } = req.body;
             const userId = req.params.id;
+
+            // Check permissions
+            if (req.user.role !== 'admin' && req.user.id !== parseInt(userId)) {
+                return res.status(403).json({
+                    success: false,
+                    error: 'You can only update your own account unless you are an admin'
+                });
+            }
+
+            // Regular users can't change roles
+            if (req.user.role !== 'admin' && role) {
+                return res.status(403).json({
+                    success: false,
+                    error: 'Only administrators can change user roles'
+                });
+            }
 
             // Validate input
             const errors = [];
@@ -371,8 +395,8 @@ module.exports = (dbConfig) => {
         }
     });
 
-    // Get role history for a user
-    router.get('/:id/role-history', async (req, res) => {
+    // Get role history for a user (admin only)
+    router.get('/:id/role-history', adminMiddleware, async (req, res) => {
         try {
             const pool = await sql.connect(dbConfig);
             const result = await pool.request()
