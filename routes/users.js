@@ -259,10 +259,7 @@ module.exports = (dbConfig) => {
                     VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
                 `);
 
-                await transaction.commit();
-                console.log('Transaction committed successfully');
-
-                // Get the created user data
+                // Get the created user data before committing
                 const createdUserResult = await transaction.request()
                     .input('userId', sql.Int, newUserId)
                     .query(`
@@ -270,6 +267,9 @@ module.exports = (dbConfig) => {
                         FROM Users 
                         WHERE Id = @userId
                     `);
+
+                await transaction.commit();
+                console.log('Transaction committed successfully');
 
                 res.status(201).json({
                     success: true,
