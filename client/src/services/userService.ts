@@ -1,47 +1,14 @@
 import axios from 'axios';
 import { authService } from './authService';
+import { 
+  User, 
+  UserCreateDTO, 
+  UserUpdateDTO, 
+  UserListParams, 
+  UserListResponse 
+} from '../types/user.types';
 
 const API_URL = 'http://192.168.254.20:3000/api';
-
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  role: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface UserCreateDTO {
-  username: string;
-  email: string;
-  password: string;
-  role: string;
-}
-
-export interface UserUpdateDTO {
-  username?: string;
-  email?: string;
-  password?: string;
-  role?: string;
-  isActive?: boolean;
-}
-
-export interface UserListParams {
-  page?: number;
-  pageSize?: number;
-  searchTerm?: string;
-  role?: string;
-  isActive?: string;
-}
-
-export interface UserListResponse {
-  users: User[];
-  total: number;
-  page: number;
-  pageSize: number;
-}
 
 class UserService {
   private getAuthHeaders() {

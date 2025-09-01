@@ -13,7 +13,8 @@ import {
 } from 'antd';
 import { SearchOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { userService, User, UserListParams } from '../../services/userService';
+import { userService } from '../../services/userService';
+import { User, UserListParams } from '../../types/user.types';
 
 const { Search } = Input;
 const { Option } = Select;

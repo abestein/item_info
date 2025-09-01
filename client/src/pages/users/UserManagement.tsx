@@ -25,7 +25,8 @@ import {
   UserOutlined
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { userService, User, UserCreateDTO, UserUpdateDTO, UserListParams } from '../../services/userService';
+import { userService } from '../../services/userService';
+import { User, UserCreateDTO, UserUpdateDTO, UserListParams } from '../../types/user.types';
 
 const { Option } = Select;
 const { Search } = Input;
