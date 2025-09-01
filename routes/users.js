@@ -558,6 +558,86 @@ module.exports = (dbConfig) => {
         }
     });
 
+    // Update user permissions
+    router.put('/:id/permissions', adminMiddleware, async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const { permissions } = req.body;
+
+            if (!Array.isArray(permissions)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Permissions must be an array of page paths'
+                });
+            }
+
+            // Validate all permissions exist
+            const { pagePermissions } = require('../config/permissions');
+            const invalidPages = permissions.filter(page => !pagePermissions[page]);
+            if (invalidPages.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    error: `Invalid pages: ${invalidPages.join(', ')}`
+                });
+            }
+
+            const pool = await sql.connect(dbConfig);
+
+            // Start transaction
+            const transaction = new sql.Transaction(pool);
+            await transaction.begin();
+
+            try {
+                // Get user's current role
+                const userResult = await transaction.request()
+                    .input('id', sql.Int, userId)
+                    .query('SELECT Role FROM Users WHERE Id = @id');
+
+                if (userResult.recordset.length === 0) {
+                    await transaction.rollback();
+                    return res.status(404).json({
+                        success: false,
+                        error: 'User not found'
+                    });
+                }
+
+                // Calculate new role based on permissions
+                const newRole = calculateRoleFromPermissions(permissions);
+
+                // Update user's role if it changed
+                if (newRole !== userResult.recordset[0].Role) {
+                    await transaction.request()
+                        .input('id', sql.Int, userId)
+                        .input('role', sql.NVarChar, newRole)
+                        .input('changedBy', sql.Int, req.user.id)
+                        .query(`
+                            UPDATE Users SET Role = @role WHERE Id = @id;
+                            
+                            INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
+                            VALUES (@id, @oldRole, @role, @changedBy, GETDATE())
+                        `);
+                }
+
+                await transaction.commit();
+
+                res.json({
+                    success: true,
+                    message: 'User permissions updated successfully',
+                    newRole
+                });
+            } catch (error) {
+                await transaction.rollback();
+                throw error;
+            }
+        } catch (error) {
+            console.error('Update permissions error:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to update user permissions'
+            });
+        }
+    });
+
     // Get role history for a user (admin only)
     router.get('/:id/role-history', adminMiddleware, async (req, res) => {
         try {

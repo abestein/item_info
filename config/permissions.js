@@ -35,9 +35,43 @@ function getPageDescription(page) {
     return pageDescriptions[page] || 'No description available';
 }
 
+// Calculate role based on assigned permissions
+function calculateRoleFromPermissions(permissions) {
+    // If user has access to all admin pages, they're an admin
+    const adminPages = Object.entries(pagePermissions)
+        .filter(([_, roles]) => roles.includes('admin'))
+        .map(([page]) => page);
+    
+    if (adminPages.every(page => permissions.includes(page))) {
+        return 'admin';
+    }
+
+    // If user has access to manager pages, they're a manager
+    const managerPages = Object.entries(pagePermissions)
+        .filter(([_, roles]) => roles.includes('manager'))
+        .map(([page]) => page);
+    
+    if (managerPages.some(page => permissions.includes(page))) {
+        return 'manager';
+    }
+
+    // If user only has read access pages, they're readonly
+    const hasWriteAccess = permissions.some(page => 
+        !pagePermissions[page].includes('readonly')
+    );
+    
+    if (!hasWriteAccess) {
+        return 'readonly';
+    }
+
+    // Default to regular user
+    return 'user';
+}
+
 module.exports = {
     pagePermissions,
     hasPageAccess,
     getAccessiblePages,
-    getPageDescription
+    getPageDescription,
+    calculateRoleFromPermissions
 };
