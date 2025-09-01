@@ -188,7 +188,7 @@ module.exports = (dbConfig) => {
                 }
             }
         }
-    });
+    }});
 
     // Update user
     router.put('/:id', async (req, res) => {
