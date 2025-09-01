@@ -62,6 +62,7 @@ const dbConfig = {
 const authRoutes = require('./routes/auth')(dbConfig);
 const dashboardRoutes = require('./routes/dashboard')(dbConfig);
 const userRoutes = require('./routes/users')(dbConfig);
+const permissionsRoutes = require('./routes/permissions')(dbConfig);
 const { authMiddleware, adminMiddleware } = require('./middleware/auth');
 
 // Add auth routes with rate limiting
@@ -72,6 +73,9 @@ app.use('/api/dashboard', authMiddleware, apiLimiter, dashboardRoutes);
 
 // User management routes (admin only)
 app.use('/api/users', authMiddleware, adminMiddleware, apiLimiter, userRoutes);
+
+// Permissions routes (admin only)
+app.use('/api/permissions', authMiddleware, adminMiddleware, apiLimiter, permissionsRoutes);
 
 // Progress tracking
 let uploadProgress = {};
