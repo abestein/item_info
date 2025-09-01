@@ -1,0 +1,149 @@
+/* src/styles/global.css */
+
+/* Import modern font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Base styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1f1f1f;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4a4a4a;
+    border-radius: 4px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #606060;
+    }
+
+/* Table enhancements */
+.ant-table {
+    font-variant-numeric: tabular-nums;
+}
+
+.ant-table-thead > tr > th {
+    font-weight: 600;
+    background: #1f1f1f !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+    background: #262626 !important;
+}
+
+.ant-table-cell {
+    font-feature-settings: 'tnum' 1;
+}
+
+    /* Numeric columns alignment */
+    .ant-table-cell.numeric-column {
+        text-align: right !important;
+    }
+
+/* Card hover effects */
+.ant-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .ant-card:hover {
+        transform: translateY(-2px);
+    }
+
+/* Button improvements */
+.ant-btn {
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+    /* Better focus styles */
+    .ant-input:focus,
+    .ant-select-focused,
+    .ant-btn:focus {
+        box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.2);
+    }
+
+/* Page animations */
+.page-container {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Filter dropdown improvements */
+.ant-table-filter-dropdown {
+    padding: 8px !important;
+    border-radius: 8px !important;
+    background: #1f1f1f !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+}
+
+    .ant-table-filter-dropdown .ant-btn-primary {
+        font-weight: 500;
+    }
+
+    /* Date picker in filter */
+    .ant-table-filter-dropdown .ant-picker {
+        width: 100%;
+    }
+
+/* Loading states */
+.ant-spin-nested-loading > div > .ant-spin {
+    max-height: unset;
+}
+
+/* Empty states */
+.ant-empty-description {
+    color: #8c8c8c;
+}
+
+/* Selection column styling */
+.ant-table-selection-column {
+    width: 50px !important;
+}
+
+/* Sticky header shadow */
+.ant-table-sticky-holder {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .ant-table {
+        font-size: 12px;
+    }
+
+    .ant-table-cell {
+        padding: 8px !important;
+    }
+}

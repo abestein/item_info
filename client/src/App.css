@@ -1,0 +1,199 @@
+/* src/App.css */
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* App container */
+#root {
+    min-height: 100vh;
+}
+
+/* Ant Design Layout overrides */
+.ant-layout {
+    min-height: 100vh;
+}
+
+/* Sidebar styles */
+.ant-layout-sider {
+    box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+}
+
+/* Fixed sidebar positioning */
+.ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logo/Brand area in sidebar */
+.sidebar-logo {
+    height: 64px;
+    margin: 16px;
+    background: #1890ff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    transition: all 0.3s;
+}
+
+/* Collapsed logo */
+.ant-layout-sider-collapsed .sidebar-logo {
+    margin: 8px;
+}
+
+/* Menu styles */
+.ant-menu {
+    border-right: none !important;
+}
+
+/* Light theme menu */
+.ant-menu-light .ant-menu-item {
+    margin: 4px 8px !important;
+    border-radius: 6px;
+}
+
+/* Dark theme menu */
+.ant-menu-dark .ant-menu-item {
+    margin: 4px 8px !important;
+    border-radius: 6px;
+}
+
+/* Header styles */
+.ant-layout-header {
+    height: 64px;
+    line-height: 64px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+    z-index: 1;
+}
+
+/* Content area */
+.ant-layout-content {
+    margin: 24px;
+    min-height: 280px;
+}
+
+/* Page container animation */
+.page-container {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Card styles */
+.ant-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .ant-card:hover {
+        transform: translateY(-2px);
+    }
+
+/* Light theme card shadow */
+.ant-layout-content .ant-card {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+/* Dark theme card shadow */
+[data-theme="dark"] .ant-card {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.45) !important;
+}
+
+/* Table styles */
+.ant-table {
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+}
+
+.ant-table-thead > tr > th {
+    font-weight: 600 !important;
+}
+
+/* Numeric columns alignment */
+.ant-table-cell.numeric-column {
+    text-align: right !important;
+    font-feature-settings: 'tnum' 1;
+}
+
+/* Button styles */
+.ant-btn {
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* Form styles */
+.ant-form-item-label > label {
+    font-weight: 600;
+}
+
+/* Theme switch styles */
+.theme-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Empty state styles */
+.ant-empty-description {
+    color: #8c8c8c;
+}
+
+/* Filter dropdown improvements */
+.ant-table-filter-dropdown {
+    padding: 8px !important;
+    border-radius: 8px !important;
+}
+
+    .ant-table-filter-dropdown .ant-btn-primary {
+        font-weight: 500;
+    }
+
+    /* Date picker in filter */
+    .ant-table-filter-dropdown .ant-picker {
+        width: 100%;
+    }
+
+/* Loading states */
+.ant-spin-nested-loading > div > .ant-spin {
+    max-height: unset;
+}
+
+/* Selection column styling */
+.ant-table-selection-column {
+    width: 50px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ant-layout-content {
+        margin: 16px;
+    }
+
+    .ant-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .ant-table {
+        font-size: 12px;
+    }
+
+    .ant-table-cell {
+        padding: 8px !important;
+    }
+}
