@@ -478,25 +478,51 @@ module.exports = (dbConfig) => {
                 });
             }
 
-            const result = await pool.request()
-                .input('id', sql.Int, req.params.id)
-                .query(`
-                    DELETE FROM Users
-                    WHERE Id = @id;
-                    SELECT @@ROWCOUNT as count;
-                `);
+            // Start transaction
+            const transaction = new sql.Transaction(pool);
+            await transaction.begin();
 
-            if (result.recordset[0].count === 0) {
-                return res.status(404).json({
-                    success: false,
-                    error: 'User not found'
+            try {
+                // Get user details before deletion
+                const userResult = await transaction.request()
+                    .input('id', sql.Int, req.params.id)
+                    .query('SELECT Username, Role FROM Users WHERE Id = @id');
+
+                if (userResult.recordset.length === 0) {
+                    await transaction.rollback();
+                    return res.status(404).json({
+                        success: false,
+                        error: 'User not found'
+                    });
+                }
+
+                const user = userResult.recordset[0];
+
+                // Delete role history first
+                await transaction.request()
+                    .input('id', sql.Int, req.params.id)
+                    .query('DELETE FROM UserRoleHistory WHERE UserId = @id');
+
+                // Delete user
+                const result = await transaction.request()
+                    .input('id', sql.Int, req.params.id)
+                    .query('DELETE FROM Users WHERE Id = @id');
+
+                await transaction.commit();
+
+                res.json({
+                    success: true,
+                    message: 'User deleted successfully',
+                    deletedUser: {
+                        id: parseInt(req.params.id),
+                        username: user.Username,
+                        role: user.Role
+                    }
                 });
+            } catch (error) {
+                await transaction.rollback();
+                throw error;
             }
-
-            res.json({
-                success: true,
-                message: 'User deleted successfully'
-            });
         } catch (error) {
             console.error('Delete user error:', error);
             res.status(500).json({
