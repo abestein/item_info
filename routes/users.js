@@ -64,29 +64,68 @@ module.exports = (dbConfig) => {
         }
     });
 
-    // Get single user
+    // Get single user with details
     router.get('/:id', async (req, res) => {
         try {
+            // Check permissions
+            if (req.user.role !== 'admin' && req.user.id !== parseInt(req.params.id)) {
+                return res.status(403).json({
+                    success: false,
+                    error: 'You can only view your own profile unless you are an admin'
+                });
+            }
+
             const pool = await sql.connect(dbConfig);
-            const result = await pool.request()
+            
+            // Get user details
+            const userResult = await pool.request()
                 .input('id', sql.Int, req.params.id)
                 .query(`
-                    SELECT Id, Username, Email, Role, IsActive, 
-                           CreatedAt, LastLoginAt
-                    FROM Users
-                    WHERE Id = @id
+                    SELECT 
+                        u.Id,
+                        u.Username,
+                        u.Email,
+                        u.Role,
+                        u.IsActive,
+                        u.CreatedAt,
+                        u.LastLoginAt,
+                        (SELECT COUNT(*) FROM UserRoleHistory WHERE UserId = u.Id) as RoleChangesCount,
+                        (SELECT TOP 1 ChangedAt 
+                         FROM UserRoleHistory 
+                         WHERE UserId = u.Id 
+                         ORDER BY ChangedAt DESC) as LastRoleChangeAt
+                    FROM Users u
+                    WHERE u.Id = @id
                 `);
 
-            if (result.recordset.length === 0) {
+            if (userResult.recordset.length === 0) {
                 return res.status(404).json({
                     success: false,
                     error: 'User not found'
                 });
             }
 
+            // Get last 5 role changes
+            const roleHistoryResult = await pool.request()
+                .input('id', sql.Int, req.params.id)
+                .query(`
+                    SELECT TOP 5
+                        h.OldRole,
+                        h.NewRole,
+                        h.ChangedAt,
+                        u.Username as ChangedBy
+                    FROM UserRoleHistory h
+                    JOIN Users u ON h.ChangedBy = u.Id
+                    WHERE h.UserId = @id
+                    ORDER BY h.ChangedAt DESC
+                `);
+
             res.json({
                 success: true,
-                user: result.recordset[0]
+                user: {
+                    ...userResult.recordset[0],
+                    recentRoleChanges: roleHistoryResult.recordset
+                }
             });
         } catch (error) {
             console.error('Get user error:', error);
