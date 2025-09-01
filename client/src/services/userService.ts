@@ -26,6 +26,8 @@ class UserService {
   }
 
   private handleError(error: any) {
+    console.error('API Error:', error);
+    
     if (error.response?.status === 401) {
       authService.logout();
       throw new Error('Authentication failed');
@@ -35,6 +37,12 @@ class UserService {
     }
     if (error.response?.data?.error) {
       throw new Error(error.response.data.error);
+    }
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+    if (error.response?.status === 500) {
+      throw new Error('Server error. Please check the backend logs.');
     }
     throw new Error(error.message || 'An unexpected error occurred');
   }

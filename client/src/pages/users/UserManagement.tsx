@@ -110,6 +110,7 @@ const UserManagement: React.FC = () => {
   const handleModalOk = async () => {
     try {
       const values = await form.validateFields();
+      console.log('Form values:', values);
       
       // Remove empty password field for updates
       if (editingUser && !values.password) {
@@ -117,15 +118,18 @@ const UserManagement: React.FC = () => {
       }
 
       if (editingUser) {
+        console.log('Updating user:', editingUser.id, values);
         await userService.updateUser(editingUser.id, values as UserUpdateDTO);
         message.success('User updated successfully');
       } else {
+        console.log('Creating user:', values);
         await userService.createUser(values as UserCreateDTO);
         message.success('User created successfully');
       }
       setModalVisible(false);
       fetchUsers();
     } catch (error: any) {
+      console.error('Modal save error:', error);
       message.error(error.message || 'Failed to save user');
     }
   };
