@@ -5,7 +5,9 @@ import type {
   UserCreateDTO, 
   UserUpdateDTO, 
   UserListParams, 
-  UserListResponse 
+  UserListResponse,
+  UserPermissionsResponse,
+  PagePermission
 } from '../types/user.types';
 
 const API_URL = 'http://192.168.254.20:3000/api';
