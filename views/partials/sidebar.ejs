@@ -22,6 +22,14 @@
                 <span>Reports</span>
             </a>
         </li>
+        <% if (typeof user !== 'undefined' && user.role === 'admin') { %>
+        <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'users' ? 'active' : '' %>">
+            <a href="/users">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+        </li>
+        <% } %>
         <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'settings' ? 'active' : '' %>">
             <a href="/settings">
                 <i class="fas fa-cog"></i>
