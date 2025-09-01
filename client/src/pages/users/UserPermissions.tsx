@@ -334,7 +334,7 @@ const UserPermissions: React.FC<UserPermissionsProps> = ({ user, onClose, onSave
                 );
               })
             ) : (
-              <Text type="secondary">No permissions selected</Text>
+              <Text key="no-permissions" type="secondary">No permissions selected</Text>
             )}
           </Space>
         </Card>
