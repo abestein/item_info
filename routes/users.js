@@ -571,22 +571,93 @@ module.exports = (dbConfig) => {
         }
     });
 
+    // Get user permissions
+    router.get('/:id/permissions', adminMiddleware, async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const pool = await sql.connect(dbConfig);
+            
+            // Get user details
+            const userResult = await pool.request()
+                .input('userId', sql.Int, userId)
+                .query('SELECT Id, Username, Role FROM Users WHERE Id = @userId');
+                
+            if (userResult.recordset.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    error: 'User not found'
+                });
+            }
+            
+            const user = userResult.recordset[0];
+            
+            // Get user's custom permissions
+            const permissionsResult = await pool.request()
+                .input('userId', sql.Int, userId)
+                .query('SELECT Permissions, UseRolePermissions FROM UserPermissions WHERE UserId = @userId');
+            
+            let userPermissions = null;
+            let useRolePermissions = true;
+            
+            if (permissionsResult.recordset.length > 0) {
+                const record = permissionsResult.recordset[0];
+                useRolePermissions = record.UseRolePermissions;
+                if (!useRolePermissions && record.Permissions) {
+                    try {
+                        userPermissions = JSON.parse(record.Permissions);
+                    } catch (e) {
+                        console.error('Error parsing user permissions:', e);
+                        userPermissions = [];
+                    }
+                }
+            }
+            
+            // Get available pages and role-based permissions
+            const { pagePermissions, getAccessiblePages } = require('../config/permissions');
+            const roleBasedPermissions = getAccessiblePages(user.Role);
+            
+            const availablePages = Object.entries(pagePermissions).map(([page, roles]) => ({
+                page,
+                name: page.replace(/[/_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                description: getPageDescription(page),
+                category: page.split('/')[1] || 'General'
+            }));
+
+            res.json({
+                success: true,
+                user,
+                permissions: userPermissions,
+                useRolePermissions,
+                availablePages,
+                roleBasedPermissions
+            });
+        } catch (error) {
+            console.error('Get user permissions error:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to fetch user permissions'
+            });
+        }
+    });
+
     // Get all page permissions
-    router.get('/permissions', adminMiddleware, async (req, res) => {
+    router.get('/permissions/pages', adminMiddleware, async (req, res) => {
         try {
             const { pagePermissions } = require('../config/permissions');
             
             // Transform permissions into a more detailed format
             const formattedPermissions = Object.entries(pagePermissions).map(([page, roles]) => ({
                 page,
+                name: page.replace(/[/_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
                 roles,
                 description: getPageDescription(page),
+                category: page.split('/')[1] || 'General',
                 isAdminOnly: roles.length === 1 && roles[0] === 'admin'
             }));
 
             res.json({
                 success: true,
-                permissions: formattedPermissions
+                pages: formattedPermissions
             });
         } catch (error) {
             console.error('Get permissions error:', error);
@@ -601,23 +672,33 @@ module.exports = (dbConfig) => {
     router.put('/:id/permissions', adminMiddleware, async (req, res) => {
         try {
             const userId = req.params.id;
-            const { permissions } = req.body;
+            const { permissions, useRolePermissions } = req.body;
 
-            if (!Array.isArray(permissions)) {
+            // Validate input
+            if (useRolePermissions !== undefined && typeof useRolePermissions !== 'boolean') {
+                return res.status(400).json({
+                    success: false,
+                    error: 'useRolePermissions must be a boolean'
+                });
+            }
+
+            if (!useRolePermissions && permissions && !Array.isArray(permissions)) {
                 return res.status(400).json({
                     success: false,
                     error: 'Permissions must be an array of page paths'
                 });
             }
 
-            // Validate all permissions exist
-            const { pagePermissions } = require('../config/permissions');
-            const invalidPages = permissions.filter(page => !pagePermissions[page]);
-            if (invalidPages.length > 0) {
-                return res.status(400).json({
-                    success: false,
-                    error: `Invalid pages: ${invalidPages.join(', ')}`
-                });
+            // Validate all permissions exist if provided
+            if (permissions && Array.isArray(permissions)) {
+                const { pagePermissions } = require('../config/permissions');
+                const invalidPages = permissions.filter(page => !pagePermissions[page]);
+                if (invalidPages.length > 0) {
+                    return res.status(400).json({
+                        success: false,
+                        error: `Invalid pages: ${invalidPages.join(', ')}`
+                    });
+                }
             }
 
             const pool = await sql.connect(dbConfig);
@@ -627,10 +708,10 @@ module.exports = (dbConfig) => {
             await transaction.begin();
 
             try {
-                // Get user's current role
+                // Check if user exists
                 const userResult = await transaction.request()
-                    .input('id', sql.Int, userId)
-                    .query('SELECT Role FROM Users WHERE Id = @id');
+                    .input('userId', sql.Int, userId)
+                    .query('SELECT Id, Role FROM Users WHERE Id = @userId');
 
                 if (userResult.recordset.length === 0) {
                     await transaction.rollback();
@@ -640,20 +721,40 @@ module.exports = (dbConfig) => {
                     });
                 }
 
-                // Calculate new role based on permissions
-                const newRole = calculateRoleFromPermissions(permissions);
+                // Check if user permissions record exists
+                const existingPermissions = await transaction.request()
+                    .input('userId', sql.Int, userId)
+                    .query('SELECT Id FROM UserPermissions WHERE UserId = @userId');
 
-                // Update user's role if it changed
-                if (newRole !== userResult.recordset[0].Role) {
+                const permissionsJson = permissions ? JSON.stringify(permissions) : null;
+                const useRole = useRolePermissions !== undefined ? useRolePermissions : true;
+
+                if (existingPermissions.recordset.length > 0) {
+                    // Update existing record
                     await transaction.request()
-                        .input('id', sql.Int, userId)
-                        .input('role', sql.NVarChar, newRole)
-                        .input('changedBy', sql.Int, req.user.id)
+                        .input('userId', sql.Int, userId)
+                        .input('permissions', sql.NVarChar(sql.MAX), permissionsJson)
+                        .input('useRolePermissions', sql.Bit, useRole)
+                        .input('updatedBy', sql.Int, req.user.id)
                         .query(`
-                            UPDATE Users SET Role = @role WHERE Id = @id;
-                            
-                            INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
-                            VALUES (@id, @oldRole, @role, @changedBy, GETDATE())
+                            UPDATE UserPermissions 
+                            SET Permissions = @permissions,
+                                UseRolePermissions = @useRolePermissions,
+                                UpdatedBy = @updatedBy,
+                                UpdatedAt = GETDATE()
+                            WHERE UserId = @userId
+                        `);
+                } else {
+                    // Create new record
+                    await transaction.request()
+                        .input('userId', sql.Int, userId)
+                        .input('permissions', sql.NVarChar(sql.MAX), permissionsJson)
+                        .input('useRolePermissions', sql.Bit, useRole)
+                        .input('createdBy', sql.Int, req.user.id)
+                        .input('updatedBy', sql.Int, req.user.id)
+                        .query(`
+                            INSERT INTO UserPermissions (UserId, Permissions, UseRolePermissions, CreatedBy, UpdatedBy)
+                            VALUES (@userId, @permissions, @useRolePermissions, @createdBy, @updatedBy)
                         `);
                 }
 
@@ -661,8 +762,7 @@ module.exports = (dbConfig) => {
 
                 res.json({
                     success: true,
-                    message: 'User permissions updated successfully',
-                    newRole
+                    message: 'User permissions updated successfully'
                 });
             } catch (error) {
                 await transaction.rollback();
