@@ -41,7 +41,7 @@ module.exports = (dbConfig) => {
             // Get paginated data
             const result = await request.query(`
                 SELECT Id, Username, Email, Role, IsActive, 
-                       CreatedAt, LastLoginAt
+                       CreatedAt
                 FROM Users
                 WHERE ${whereClause}
                 ORDER BY Username
