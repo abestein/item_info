@@ -28,41 +28,88 @@ export interface UserUpdateDTO {
 class UserService {
   private getAuthHeader() {
     const token = localStorage.getItem('token');
-    return { Authorization: `Bearer ${token}` };
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    return { 
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
   }
 
   async getUsers(): Promise<User[]> {
-    const response = await axios.get(`${API_URL}/users`, {
-      headers: this.getAuthHeader()
-    });
-    return response.data;
+    try {
+      const response = await axios.get(`${API_URL}/users`, {
+        headers: this.getAuthHeader()
+      });
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        // Redirect to login if token is invalid
+        window.location.href = '/login';
+        throw new Error('Authentication failed');
+      }
+      throw error;
+    }
   }
 
   async getUser(id: number): Promise<User> {
-    const response = await axios.get(`${API_URL}/users/${id}`, {
-      headers: this.getAuthHeader()
-    });
-    return response.data;
+    try {
+      const response = await axios.get(`${API_URL}/users/${id}`, {
+        headers: this.getAuthHeader()
+      });
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        window.location.href = '/login';
+        throw new Error('Authentication failed');
+      }
+      throw error;
+    }
   }
 
   async createUser(user: UserCreateDTO): Promise<User> {
-    const response = await axios.post(`${API_URL}/users`, user, {
-      headers: this.getAuthHeader()
-    });
-    return response.data;
+    try {
+      const response = await axios.post(`${API_URL}/users`, user, {
+        headers: this.getAuthHeader()
+      });
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        window.location.href = '/login';
+        throw new Error('Authentication failed');
+      }
+      throw error;
+    }
   }
 
   async updateUser(id: number, user: UserUpdateDTO): Promise<User> {
-    const response = await axios.put(`${API_URL}/users/${id}`, user, {
-      headers: this.getAuthHeader()
-    });
-    return response.data;
+    try {
+      const response = await axios.put(`${API_URL}/users/${id}`, user, {
+        headers: this.getAuthHeader()
+      });
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        window.location.href = '/login';
+        throw new Error('Authentication failed');
+      }
+      throw error;
+    }
   }
 
   async deleteUser(id: number): Promise<void> {
-    await axios.delete(`${API_URL}/users/${id}`, {
-      headers: this.getAuthHeader()
-    });
+    try {
+      await axios.delete(`${API_URL}/users/${id}`, {
+        headers: this.getAuthHeader()
+      });
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        window.location.href = '/login';
+        throw new Error('Authentication failed');
+      }
+      throw error;
+    }
   }
 }
 
