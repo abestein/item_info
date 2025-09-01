@@ -328,7 +328,7 @@ const UserManagement: React.FC = () => {
         onOk={handleModalOk}
         onCancel={() => setModalVisible(false)}
         width={600}
-        destroyOnClose
+        destroyOnHidden
       >
         <Form
           form={form}
@@ -416,7 +416,7 @@ const UserManagement: React.FC = () => {
         onCancel={() => setPermissionsModalVisible(false)}
         footer={null}
         width={800}
-        destroyOnClose
+        destroyOnHidden
       >
         {selectedUserForPermissions && (
           <UserPermissions
