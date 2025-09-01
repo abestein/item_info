@@ -285,18 +285,55 @@ module.exports = (dbConfig) => {
 
             // Validate input
             const errors = [];
-            if (username && username.length < 3) {
-                errors.push('Username must be at least 3 characters long');
+            
+            // Username validation
+            if (username) {
+                if (username.length < 3) {
+                    errors.push('Username must be at least 3 characters long');
+                }
+                if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+                    errors.push('Username can only contain letters, numbers, underscores, and hyphens');
+                }
             }
-            if (email && !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                errors.push('Valid email address is required');
+
+            // Email validation
+            if (email) {
+                if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    errors.push('Valid email address is required');
+                }
+                if (email.length > 255) {
+                    errors.push('Email address is too long');
+                }
             }
-            if (password && password.length < 8) {
-                errors.push('Password must be at least 8 characters long');
+
+            // Password validation
+            if (password) {
+                if (password.length < 8) {
+                    errors.push('Password must be at least 8 characters long');
+                }
+                if (!/[A-Z]/.test(password)) {
+                    errors.push('Password must contain at least one uppercase letter');
+                }
+                if (!/[a-z]/.test(password)) {
+                    errors.push('Password must contain at least one lowercase letter');
+                }
+                if (!/[0-9]/.test(password)) {
+                    errors.push('Password must contain at least one number');
+                }
+                if (!/[!@#$%^&*]/.test(password)) {
+                    errors.push('Password must contain at least one special character (!@#$%^&*)');
+                }
             }
+
+            // Role validation
             const validRoles = ['admin', 'user', 'manager', 'readonly'];
             if (role && !validRoles.includes(role)) {
                 errors.push(`Invalid role specified. Valid roles are: ${validRoles.join(', ')}`);
+            }
+
+            // Active status validation
+            if (isActive !== undefined && typeof isActive !== 'boolean') {
+                errors.push('IsActive must be a boolean value');
             }
             
             if (errors.length > 0) {
@@ -391,9 +428,20 @@ module.exports = (dbConfig) => {
                 });
             }
 
+            // Get updated user data
+            const updatedUser = await pool.request()
+                .input('id', sql.Int, userId)
+                .query(`
+                    SELECT Id, Username, Email, Role, IsActive, 
+                           CreatedAt, LastLoginAt
+                    FROM Users
+                    WHERE Id = @id
+                `);
+
             res.json({
                 success: true,
-                message: 'User updated successfully'
+                message: 'User updated successfully',
+                user: updatedUser.recordset[0]
             });
         } catch (error) {
             console.error('Update user error:', error);
