@@ -149,8 +149,32 @@ module.exports = (dbConfig) => {
             if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
                 errors.push('Valid email address is required');
             }
-            if (!password || password.length < 8) {
-                errors.push('Password must be at least 8 characters long');
+            
+            // Enhanced password validation
+            if (!password) {
+                errors.push('Password is required');
+            } else {
+                if (password.length < 8) {
+                    errors.push('Password must be at least 8 characters long');
+                }
+                if (!/[A-Z]/.test(password)) {
+                    errors.push('Password must contain at least one uppercase letter');
+                }
+                if (!/[a-z]/.test(password)) {
+                    errors.push('Password must contain at least one lowercase letter');
+                }
+                if (!/[0-9]/.test(password)) {
+                    errors.push('Password must contain at least one number');
+                }
+                if (!/[!@#$%^&*]/.test(password)) {
+                    errors.push('Password must contain at least one special character (!@#$%^&*)');
+                }
+            }
+
+            // Validate role if provided
+            const validRoles = ['admin', 'user', 'manager', 'readonly'];
+            if (role && !validRoles.includes(role)) {
+                errors.push(`Invalid role specified. Valid roles are: ${validRoles.join(', ')}`);
             }
             
             if (errors.length > 0) {
