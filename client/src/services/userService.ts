@@ -150,7 +150,16 @@ class UserService {
       const response = await axios.get(`${API_URL}/users/${userId}/permissions`, {
         headers: this.getAuthHeaders()
       });
-      return response.data;
+      
+      // Handle different possible response structures
+      const data = response.data;
+      return {
+        user: data.user,
+        permissions: data.permissions,
+        useRolePermissions: data.useRolePermissions !== false, // default to true if not specified
+        availablePages: data.availablePages || [],
+        roleBasedPermissions: data.roleBasedPermissions || []
+      };
     } catch (error: any) {
       this.handleError(error);
       throw error;
@@ -169,17 +178,6 @@ class UserService {
     }
   }
 
-  async getAvailablePages(): Promise<PagePermission[]> {
-    try {
-      const response = await axios.get(`${API_URL}/permissions/pages`, {
-        headers: this.getAuthHeaders()
-      });
-      return response.data;
-    } catch (error: any) {
-      this.handleError(error);
-      throw error;
-    }
-  }
 }
 
 export const userService = new UserService();
