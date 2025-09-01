@@ -22,14 +22,29 @@
                 <span>Reports</span>
             </a>
         </li>
+        
+        <!-- User Management Section -->
         <% if (typeof user !== 'undefined' && user.role === 'admin') { %>
+        <li class="menu-section">
+            <h3>User Management</h3>
+        </li>
         <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'users' ? 'active' : '' %>">
             <a href="/users">
                 <i class="fas fa-users"></i>
-                <span>Users</span>
+                <span>User List</span>
+            </a>
+        </li>
+        <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'user-roles' ? 'active' : '' %>">
+            <a href="/users/roles">
+                <i class="fas fa-user-shield"></i>
+                <span>Roles & Permissions</span>
             </a>
         </li>
         <% } %>
+        
+        <li class="menu-section">
+            <h3>System</h3>
+        </li>
         <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'settings' ? 'active' : '' %>">
             <a href="/settings">
                 <i class="fas fa-cog"></i>
