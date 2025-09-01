@@ -181,7 +181,7 @@ const UserManagement: React.FC = () => {
       key: 'role',
       render: (role: string) => (
         <Tag color={role === 'admin' ? 'red' : role === 'manager' ? 'orange' : 'blue'}>
-          {role.toUpperCase()}
+          {role ? role.toUpperCase() : 'UNKNOWN'}
         </Tag>
       ),
     },
