@@ -11,7 +11,7 @@ import type {
   PagePermission
 } from '../types/user.types';
 
-const API_URL = `${API_CONFIG.BASE_URL}/api`;
+const API_URL = API_CONFIG.BASE_URL;
 
 class UserService {
   private getAuthHeaders() {

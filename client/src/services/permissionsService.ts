@@ -2,7 +2,7 @@ import axios from 'axios';
 import { authService } from './authService';
 import type { PagePermission } from '../types/user.types';
 
-const API_URL = 'http://192.168.254.20:3000/api';
+const API_URL = 'http://192.168.254.20:3000';
 
 class PermissionsService {
   private getAuthHeaders() {
