@@ -5,21 +5,55 @@ const bcrypt = require('bcryptjs');
 module.exports = (dbConfig) => {
     const router = express.Router();
 
-    // Get all users
+    // Get all users with pagination
     router.get('/', async (req, res) => {
         try {
+            const { page = 1, pageSize = 10, searchTerm = '', role = '', isActive } = req.query;
+            const offset = (page - 1) * pageSize;
+
             const pool = await sql.connect(dbConfig);
-            const result = await pool.request()
-                .query(`
-                    SELECT Id, Username, Email, Role, IsActive, 
-                           CreatedAt, LastLoginAt
-                    FROM Users
-                    ORDER BY Username
-                `);
+            const request = pool.request();
+
+            // Build where clause
+            let whereClause = '1=1';
+            if (searchTerm) {
+                whereClause += ' AND (Username LIKE @searchTerm OR Email LIKE @searchTerm)';
+                request.input('searchTerm', sql.NVarChar, `%${searchTerm}%`);
+            }
+            if (role) {
+                whereClause += ' AND Role = @role';
+                request.input('role', sql.NVarChar, role);
+            }
+            if (isActive !== undefined) {
+                whereClause += ' AND IsActive = @isActive';
+                request.input('isActive', sql.Bit, isActive === 'true');
+            }
+
+            // Get total count
+            const countResult = await request.query(`
+                SELECT COUNT(*) as total 
+                FROM Users 
+                WHERE ${whereClause}
+            `);
+
+            // Get paginated data
+            const result = await request.query(`
+                SELECT Id, Username, Email, Role, IsActive, 
+                       CreatedAt, LastLoginAt
+                FROM Users
+                WHERE ${whereClause}
+                ORDER BY Username
+                OFFSET ${offset} ROWS
+                FETCH NEXT ${pageSize} ROWS ONLY
+            `);
 
             res.json({
                 success: true,
-                users: result.recordset
+                users: result.recordset,
+                total: countResult.recordset[0].total,
+                page: parseInt(page),
+                pageSize: parseInt(pageSize),
+                totalPages: Math.ceil(countResult.recordset[0].total / pageSize)
             });
         } catch (error) {
             console.error('Get users error:', error);
