@@ -179,6 +179,14 @@ module.exports = (dbConfig) => {
                 success: false,
                 error: 'Failed to create user'
             });
+        } finally {
+            if (transaction) {
+                try {
+                    await transaction.rollback();
+                } catch (rollbackError) {
+                    console.error('Rollback error:', rollbackError);
+                }
+            }
         }
     });
 
