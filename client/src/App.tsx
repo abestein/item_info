@@ -19,6 +19,7 @@ import HomePage from './pages/HomePage';
 import ItemsPage from './pages/ItemsPage';
 import ItemsNewPage from './pages/ItemsNewPage';
 import UserManagement from './pages/users/UserManagement';
+import UserList from './pages/users/UserList';
 import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -85,11 +86,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
             icon: <UploadOutlined />,
             label: <Link to="/items-new">Items Management</Link>,
         },
-        {
-            key: '/users',
-            icon: <TeamOutlined />,
-            label: <Link to="/users">User Management</Link>,
-        },
+        // Only show user management for admin users
+        ...(user?.role === 'admin' ? [
+            {
+                key: '/users',
+                icon: <TeamOutlined />,
+                label: <Link to="/users">User Management</Link>,
+            },
+        ] : []),
     ];
 
     return (
@@ -242,7 +246,16 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
                                     <Route path="/dashboard" element={<DashboardPage />} />
                                     <Route path="/items" element={<ItemsPage />} />
                                     <Route path="/items-new" element={<ItemsNewPage />} />
-                                    <Route path="/users" element={<UserManagement />} />
+                                    <Route path="/users" element={
+                                        <ProtectedRoute requireAdmin={true}>
+                                            <UserManagement />
+                                        </ProtectedRoute>
+                                    } />
+                                    <Route path="/users/list" element={
+                                        <ProtectedRoute requireAdmin={true}>
+                                            <UserList />
+                                        </ProtectedRoute>
+                                    } />
                                 </Routes>
                             </Content>
                         </Layout>

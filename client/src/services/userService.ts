@@ -1,12 +1,14 @@
 import axios from 'axios';
+import { authService } from './authService';
 
-const API_URL = 'http://192.168.254.20:3000';
+const API_URL = 'http://192.168.254.20:3000/api';
 
 export interface User {
   id: number;
   username: string;
   email: string;
   role: string;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -23,32 +25,59 @@ export interface UserUpdateDTO {
   email?: string;
   password?: string;
   role?: string;
+  isActive?: boolean;
+}
+
+export interface UserListParams {
+  page?: number;
+  pageSize?: number;
+  searchTerm?: string;
+  role?: string;
+  isActive?: string;
+}
+
+export interface UserListResponse {
+  users: User[];
+  total: number;
+  page: number;
+  pageSize: number;
 }
 
 class UserService {
-  private getAuthHeader() {
-    const token = localStorage.getItem('token');
+  private getAuthHeaders() {
+    const token = authService.getToken();
     if (!token) {
       throw new Error('No authentication token found');
     }
-    return { 
+    return {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     };
   }
 
-  async getUsers(): Promise<User[]> {
+  private handleError(error: any) {
+    if (error.response?.status === 401) {
+      authService.logout();
+      throw new Error('Authentication failed');
+    }
+    if (error.response?.status === 403) {
+      throw new Error('Access denied. Admin privileges required.');
+    }
+    if (error.response?.data?.error) {
+      throw new Error(error.response.data.error);
+    }
+    throw new Error(error.message || 'An unexpected error occurred');
+  }
+
+  async getUsers(params: UserListParams = {}): Promise<UserListResponse> {
     try {
       const response = await axios.get(`${API_URL}/users`, {
-        headers: this.getAuthHeader()
+        headers: this.getAuthHeaders(),
+        params
       });
       return response.data;
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        // Redirect to login if token is invalid
-        window.location.href = '/login';
-        throw new Error('Authentication failed');
-      }
+      this.handleError(error);
       throw error;
     }
   }
@@ -56,14 +85,11 @@ class UserService {
   async getUser(id: number): Promise<User> {
     try {
       const response = await axios.get(`${API_URL}/users/${id}`, {
-        headers: this.getAuthHeader()
+        headers: this.getAuthHeaders()
       });
       return response.data;
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        window.location.href = '/login';
-        throw new Error('Authentication failed');
-      }
+      this.handleError(error);
       throw error;
     }
   }
@@ -71,14 +97,11 @@ class UserService {
   async createUser(user: UserCreateDTO): Promise<User> {
     try {
       const response = await axios.post(`${API_URL}/users`, user, {
-        headers: this.getAuthHeader()
+        headers: this.getAuthHeaders()
       });
       return response.data;
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        window.location.href = '/login';
-        throw new Error('Authentication failed');
-      }
+      this.handleError(error);
       throw error;
     }
   }
@@ -86,14 +109,11 @@ class UserService {
   async updateUser(id: number, user: UserUpdateDTO): Promise<User> {
     try {
       const response = await axios.put(`${API_URL}/users/${id}`, user, {
-        headers: this.getAuthHeader()
+        headers: this.getAuthHeaders()
       });
       return response.data;
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        window.location.href = '/login';
-        throw new Error('Authentication failed');
-      }
+      this.handleError(error);
       throw error;
     }
   }
@@ -101,15 +121,53 @@ class UserService {
   async deleteUser(id: number): Promise<void> {
     try {
       await axios.delete(`${API_URL}/users/${id}`, {
-        headers: this.getAuthHeader()
+        headers: this.getAuthHeaders()
       });
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        window.location.href = '/login';
-        throw new Error('Authentication failed');
-      }
+      this.handleError(error);
       throw error;
     }
+  }
+
+  // Validation helpers
+  validateUsername(username: string): string | null {
+    if (!username || username.length < 3) {
+      return 'Username must be at least 3 characters long';
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return 'Username can only contain letters, numbers, and underscores';
+    }
+    return null;
+  }
+
+  validatePassword(password: string): string | null {
+    if (!password || password.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+    if (!/(?=.*[a-z])/.test(password)) {
+      return 'Password must contain at least one lowercase letter';
+    }
+    if (!/(?=.*[A-Z])/.test(password)) {
+      return 'Password must contain at least one uppercase letter';
+    }
+    if (!/(?=.*\d)/.test(password)) {
+      return 'Password must contain at least one number';
+    }
+    if (!/(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/.test(password)) {
+      return 'Password must contain at least one special character';
+    }
+    return null;
+  }
+
+  validateEmail(email: string): string | null {
+    if (!email) {
+      return 'Email is required';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address';
+    }
+    return null;
   }
 }
 
