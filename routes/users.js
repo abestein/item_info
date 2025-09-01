@@ -405,16 +405,16 @@ module.exports = (dbConfig) => {
 
             if (username) {
                 updateFields.push('Username = @username');
-                queryInputs.push(['username', sql.NVarChar, username]);
+                queryInputs.push(['username', sql.NVarChar(50), username]);
             }
             if (email) {
                 updateFields.push('Email = @email');
-                queryInputs.push(['email', sql.NVarChar, email]);
+                queryInputs.push(['email', sql.NVarChar(255), email]);
             }
             if (password) {
                 const hashedPassword = await bcrypt.hash(password, 10);
                 updateFields.push('PasswordHash = @passwordHash');
-                queryInputs.push(['passwordHash', sql.NVarChar, hashedPassword]);
+                queryInputs.push(['passwordHash', sql.NVarChar(255), hashedPassword]);
             }
             if (role) {
                 // Get current role before update
@@ -422,7 +422,7 @@ module.exports = (dbConfig) => {
                 
                 if (role !== currentRole) {
                     updateFields.push('Role = @role');
-                    queryInputs.push(['role', sql.NVarChar, role]);
+                    queryInputs.push(['role', sql.NVarChar(20), role]);
 
                     // Log role change
                     await pool.request()
