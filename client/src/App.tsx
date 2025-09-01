@@ -55,6 +55,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
             icon: <SettingOutlined />,
         },
         {
+            key: 'divider',
             type: 'divider',
         },
         {
