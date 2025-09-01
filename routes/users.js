@@ -90,7 +90,6 @@ module.exports = (dbConfig) => {
                         u.Role,
                         u.IsActive,
                         u.CreatedAt,
-                        u.LastLoginAt,
                         (SELECT COUNT(*) FROM UserRoleHistory WHERE UserId = u.Id) as RoleChangesCount,
                         (SELECT TOP 1 ChangedAt 
                          FROM UserRoleHistory 
@@ -263,7 +262,7 @@ module.exports = (dbConfig) => {
                 const createdUserResult = await transaction.request()
                     .input('userId', sql.Int, newUserId)
                     .query(`
-                        SELECT Id, Username, Email, Role, IsActive, CreatedAt, LastLoginAt
+                        SELECT Id, Username, Email, Role, IsActive, CreatedAt
                         FROM Users 
                         WHERE Id = @userId
                     `);
@@ -480,7 +479,7 @@ module.exports = (dbConfig) => {
                 .input('id', sql.Int, userId)
                 .query(`
                     SELECT Id, Username, Email, Role, IsActive, 
-                           CreatedAt, LastLoginAt
+                           CreatedAt
                     FROM Users
                     WHERE Id = @id
                 `);
