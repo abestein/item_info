@@ -307,7 +307,7 @@ const UserManagement: React.FC = () => {
         <Table
           columns={columns}
           dataSource={users}
-          rowKey={(record) => record.id.toString()}
+          rowKey={(record) => record.id ? record.id.toString() : Math.random().toString()}
           loading={loading}
           pagination={{
             ...pagination,
