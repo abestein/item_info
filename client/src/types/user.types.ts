@@ -38,3 +38,24 @@ export interface UserListResponse {
   page: number;
   pageSize: number;
 }
+
+export interface PagePermission {
+  page: string;
+  name: string;
+  description: string;
+  category: string;
+}
+
+export interface UserPermissions {
+  userId: number;
+  permissions: string[] | null; // null means use role-based permissions
+  useRolePermissions: boolean;
+}
+
+export interface UserPermissionsResponse {
+  user: User;
+  permissions: string[] | null;
+  useRolePermissions: boolean;
+  availablePages: PagePermission[];
+  roleBasedPermissions: string[];
+}

@@ -22,11 +22,13 @@ import {
   DeleteOutlined,
   SearchOutlined,
   ReloadOutlined,
-  UserOutlined
+  UserOutlined,
+  KeyOutlined
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { userService } from '../../services/userService';
 import type { User, UserCreateDTO, UserUpdateDTO, UserListParams } from '../../types/user.types';
+import UserPermissions from './UserPermissions';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -35,7 +37,9 @@ const UserManagement: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [permissionsModalVisible, setPermissionsModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [selectedUserForPermissions, setSelectedUserForPermissions] = useState<User | null>(null);
   const [form] = Form.useForm();
   const [pagination, setPagination] = useState({
     current: 1,
@@ -86,6 +90,11 @@ const UserManagement: React.FC = () => {
       password: '', // Don't populate password field
     });
     setModalVisible(true);
+  };
+
+  const handleManagePermissions = (user: User) => {
+    setSelectedUserForPermissions(user);
+    setPermissionsModalVisible(true);
   };
 
   const handleDelete = async (id: number) => {
@@ -201,6 +210,13 @@ const UserManagement: React.FC = () => {
               size="small"
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
+            />
+          </Tooltip>
+          <Tooltip title="Manage Permissions">
+            <Button
+              size="small"
+              icon={<KeyOutlined />}
+              onClick={() => handleManagePermissions(record)}
             />
           </Tooltip>
           <Popconfirm
@@ -387,6 +403,27 @@ const UserManagement: React.FC = () => {
             </Col>
           </Row>
         </Form>
+      </Modal>
+
+      {/* User Permissions Modal */}
+      <Modal
+        title="Manage User Permissions"
+        open={permissionsModalVisible}
+        onCancel={() => setPermissionsModalVisible(false)}
+        footer={null}
+        width={800}
+        destroyOnClose
+      >
+        {selectedUserForPermissions && (
+          <UserPermissions
+            user={selectedUserForPermissions}
+            onClose={() => setPermissionsModalVisible(false)}
+            onSave={() => {
+              setPermissionsModalVisible(false);
+              message.success('Permissions updated successfully');
+            }}
+          />
+        )}
       </Modal>
     </div>
   );
