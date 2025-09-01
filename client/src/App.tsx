@@ -11,12 +11,14 @@ import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     SunOutlined,
-    MoonOutlined
+    MoonOutlined,
+    TeamOutlined
 } from '@ant-design/icons';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ItemsPage from './pages/ItemsPage';
 import ItemsNewPage from './pages/ItemsNewPage';
+import UserManagement from './pages/users/UserManagement';
 import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -82,6 +84,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
             key: '/items-new',
             icon: <UploadOutlined />,
             label: <Link to="/items-new">Items Management</Link>,
+        },
+        {
+            key: '/users',
+            icon: <TeamOutlined />,
+            label: <Link to="/users">User Management</Link>,
         },
     ];
 
@@ -235,6 +242,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
                                     <Route path="/dashboard" element={<DashboardPage />} />
                                     <Route path="/items" element={<ItemsPage />} />
                                     <Route path="/items-new" element={<ItemsNewPage />} />
+                                    <Route path="/users" element={<UserManagement />} />
                                 </Routes>
                             </Content>
                         </Layout>
