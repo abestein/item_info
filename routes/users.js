@@ -90,11 +90,8 @@ module.exports = (dbConfig) => {
                         u.Role,
                         u.IsActive,
                         u.CreatedAt,
-                        (SELECT COUNT(*) FROM UserRoleHistory WHERE UserId = u.Id) as RoleChangesCount,
-                        (SELECT TOP 1 ChangedAt 
-                         FROM UserRoleHistory 
-                         WHERE UserId = u.Id 
-                         ORDER BY ChangedAt DESC) as LastRoleChangeAt
+                        0 as RoleChangesCount,
+                        NULL as LastRoleChangeAt
                     FROM Users u
                     WHERE u.Id = @id
                 `);
@@ -106,20 +103,25 @@ module.exports = (dbConfig) => {
                 });
             }
 
-            // Get last 5 role changes
-            const roleHistoryResult = await pool.request()
-                .input('id', sql.Int, req.params.id)
-                .query(`
-                    SELECT TOP 5
-                        h.OldRole,
-                        h.NewRole,
-                        h.ChangedAt,
-                        u.Username as ChangedBy
-                    FROM UserRoleHistory h
-                    JOIN Users u ON h.ChangedBy = u.Id
-                    WHERE h.UserId = @id
-                    ORDER BY h.ChangedAt DESC
-                `);
+            // Get last 5 role changes (optional - skip if table doesn't exist)
+            let roleHistoryResult = { recordset: [] };
+            try {
+                roleHistoryResult = await pool.request()
+                    .input('id', sql.Int, req.params.id)
+                    .query(`
+                        SELECT TOP 5
+                            h.OldRole,
+                            h.NewRole,
+                            h.ChangedAt,
+                            u.Username as ChangedBy
+                        FROM UserRoleHistory h
+                        JOIN Users u ON h.ChangedBy = u.Id
+                        WHERE h.UserId = @id
+                        ORDER BY h.ChangedAt DESC
+                    `);
+            } catch (historyError) {
+                console.warn('Failed to get role history (non-critical - table may not exist):', historyError.message);
+            }
 
             res.json({
                 success: true,
@@ -288,7 +290,7 @@ module.exports = (dbConfig) => {
                 const newUserId = result.recordset[0].Id;
                 console.log('User created with ID:', newUserId);
 
-                // Log role assignment
+                // Log role assignment (optional - skip if table doesn't exist)
                 try {
                     const historyRequest = transaction.request()
                         .input('userId', sql.Int, newUserId)
@@ -302,7 +304,7 @@ module.exports = (dbConfig) => {
                         VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
                     `);
                 } catch (historyError) {
-                    console.warn('Failed to log role history (non-critical):', historyError);
+                    console.warn('Failed to log role history (non-critical - table may not exist):', historyError.message);
                     // Don't fail the entire operation for history logging
                 }
 
@@ -527,16 +529,20 @@ module.exports = (dbConfig) => {
                     updateFields.push('Role = @role');
                     queryInputs.push(['role', sql.NVarChar(20), role]);
 
-                    // Log role change
-                    await pool.request()
-                        .input('userId', sql.Int, userId)
-                        .input('oldRole', sql.NVarChar, currentRole)
-                        .input('newRole', sql.NVarChar, role)
-                        .input('changedBy', sql.Int, req.user.id)
-                        .query(`
-                            INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
-                            VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
-                        `);
+                    // Log role change (optional - skip if table doesn't exist)
+                    try {
+                        await pool.request()
+                            .input('userId', sql.Int, userId)
+                            .input('oldRole', sql.NVarChar, currentRole)
+                            .input('newRole', sql.NVarChar, role)
+                            .input('changedBy', sql.Int, req.user.id)
+                            .query(`
+                                INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
+                                VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
+                            `);
+                    } catch (historyError) {
+                        console.warn('Failed to log role history (non-critical - table may not exist):', historyError.message);
+                    }
                 }
             }
             if (isActive !== undefined) {
@@ -639,10 +645,14 @@ module.exports = (dbConfig) => {
 
                 const user = userResult.recordset[0];
 
-                // Delete role history first
-                await transaction.request()
-                    .input('id', sql.Int, req.params.id)
-                    .query('DELETE FROM UserRoleHistory WHERE UserId = @id');
+                // Delete role history first (optional - skip if table doesn't exist)
+                try {
+                    await transaction.request()
+                        .input('id', sql.Int, req.params.id)
+                        .query('DELETE FROM UserRoleHistory WHERE UserId = @id');
+                } catch (historyError) {
+                    console.warn('Failed to delete role history (non-critical - table may not exist):', historyError.message);
+                }
 
                 // Delete user
                 const result = await transaction.request()
