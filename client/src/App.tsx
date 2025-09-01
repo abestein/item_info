@@ -86,14 +86,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
             icon: <UploadOutlined />,
             label: <Link to="/items-new">Items Management</Link>,
         },
-        // Only show user management for admin users
-        ...(user?.role === 'admin' ? [
-            {
-                key: '/users',
-                icon: <TeamOutlined />,
-                label: <Link to="/users">User Management</Link>,
-            },
-        ] : []),
+        {
+            key: '/users',
+            icon: <TeamOutlined />,
+            label: <Link to="/users">User Management</Link>,
+        },
     ];
 
     return (
