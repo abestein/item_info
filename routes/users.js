@@ -262,10 +262,18 @@ module.exports = (dbConfig) => {
                 await transaction.commit();
                 console.log('Transaction committed successfully');
 
+                // Get the created user data
+                const createdUserResult = await transaction.request()
+                    .input('userId', sql.Int, newUserId)
+                    .query(`
+                        SELECT Id, Username, Email, Role, IsActive, CreatedAt, LastLoginAt
+                        FROM Users 
+                        WHERE Id = @userId
+                    `);
+
                 res.status(201).json({
                     success: true,
-                    userId: newUserId,
-                    message: 'User created successfully'
+                    user: createdUserResult.recordset[0]
                 });
             } catch (error) {
                 console.error('Transaction error:', error);
@@ -640,52 +648,21 @@ module.exports = (dbConfig) => {
         }
     });
 
-    // Get all page permissions
-    router.get('/permissions/pages', adminMiddleware, async (req, res) => {
-        try {
-            const { pagePermissions } = require('../config/permissions');
-            
-            // Transform permissions into a more detailed format
-            const formattedPermissions = Object.entries(pagePermissions).map(([page, roles]) => ({
-                page,
-                name: page.replace(/[/_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-                roles,
-                description: getPageDescription(page),
-                category: page.split('/')[1] || 'General',
-                isAdminOnly: roles.length === 1 && roles[0] === 'admin'
-            }));
-
-            res.json({
-                success: true,
-                pages: formattedPermissions
-            });
-        } catch (error) {
-            console.error('Get permissions error:', error);
-            res.status(500).json({
-                success: false,
-                error: 'Failed to fetch permissions'
-            });
-        }
-    });
 
     // Update user permissions
     router.put('/:id/permissions', adminMiddleware, async (req, res) => {
         try {
             const userId = req.params.id;
-            const { permissions, useRolePermissions } = req.body;
+            const { permissions } = req.body;
+
+            // Determine if using role permissions based on whether permissions is null
+            const useRolePermissions = permissions === null;
 
             // Validate input
-            if (useRolePermissions !== undefined && typeof useRolePermissions !== 'boolean') {
+            if (!useRolePermissions && !Array.isArray(permissions)) {
                 return res.status(400).json({
                     success: false,
-                    error: 'useRolePermissions must be a boolean'
-                });
-            }
-
-            if (!useRolePermissions && permissions && !Array.isArray(permissions)) {
-                return res.status(400).json({
-                    success: false,
-                    error: 'Permissions must be an array of page paths'
+                    error: 'Permissions must be an array of page paths or null'
                 });
             }
 
@@ -727,14 +704,13 @@ module.exports = (dbConfig) => {
                     .query('SELECT Id FROM UserPermissions WHERE UserId = @userId');
 
                 const permissionsJson = permissions ? JSON.stringify(permissions) : null;
-                const useRole = useRolePermissions !== undefined ? useRolePermissions : true;
 
                 if (existingPermissions.recordset.length > 0) {
                     // Update existing record
                     await transaction.request()
                         .input('userId', sql.Int, userId)
                         .input('permissions', sql.NVarChar(sql.MAX), permissionsJson)
-                        .input('useRolePermissions', sql.Bit, useRole)
+                        .input('useRolePermissions', sql.Bit, useRolePermissions)
                         .input('updatedBy', sql.Int, req.user.id)
                         .query(`
                             UPDATE UserPermissions 
@@ -749,7 +725,7 @@ module.exports = (dbConfig) => {
                     await transaction.request()
                         .input('userId', sql.Int, userId)
                         .input('permissions', sql.NVarChar(sql.MAX), permissionsJson)
-                        .input('useRolePermissions', sql.Bit, useRole)
+                        .input('useRolePermissions', sql.Bit, useRolePermissions)
                         .input('createdBy', sql.Int, req.user.id)
                         .input('updatedBy', sql.Int, req.user.id)
                         .query(`
@@ -762,7 +738,7 @@ module.exports = (dbConfig) => {
 
                 res.json({
                     success: true,
-                    message: 'User permissions updated successfully'
+                    message: 'Permissions updated successfully'
                 });
             } catch (error) {
                 await transaction.rollback();

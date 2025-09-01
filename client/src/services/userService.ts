@@ -178,6 +178,18 @@ class UserService {
     }
   }
 
+  async getAvailablePages(): Promise<PagePermission[]> {
+    try {
+      const response = await axios.get(`${API_URL}/permissions/pages`, {
+        headers: this.getAuthHeaders()
+      });
+      return response.data.pages || [];
+    } catch (error: any) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
 }
 
 export const userService = new UserService();
