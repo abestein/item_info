@@ -48,33 +48,51 @@ const ESSENTIAL_FIELDS = [
     { excelIndex: 3, dbColumn: 'Item#' }
 ];
 
+const { ValidationError, ProcessingError } = require('../utils/errors');
+
 class UploadHandler {
+    #dbConfig;
+    #progressCallback;
+
     constructor(dbConfig) {
-        this.dbConfig = dbConfig;
-        this.progressCallback = null;
+        this.#dbConfig = dbConfig;
+        this.#progressCallback = null;
     }
 
     setProgressCallback(callback) {
-        this.progressCallback = callback;
+        if (typeof callback !== 'function') {
+            throw new ValidationError('Progress callback must be a function');
+        }
+        this.#progressCallback = callback;
     }
 
-    updateProgress(current, total, message) {
-        if (this.progressCallback) {
-            this.progressCallback({ current, total, message });
+    #updateProgress(current, total, message) {
+        if (this.#progressCallback) {
+            this.#progressCallback({ current, total, message });
         }
     }
 
-    // New method to check if a row is empty
-    isRowEmpty(row) {
-        // Check if all essential fields are empty
-        for (const field of ESSENTIAL_FIELDS) {
+    #isRowEmpty(row) {
+        return ESSENTIAL_FIELDS.every(field => {
             const value = row[field.excelIndex];
-            // If any essential field has a value, the row is not empty
-            if (value !== null && value !== undefined && String(value).trim() !== '') {
-                return false;
+            return !value || String(value).trim() === '';
+        });
+    }
+
+    #validateRow(row) {
+        const errors = [];
+        
+        // Validate required fields
+        ESSENTIAL_FIELDS.forEach(field => {
+            const value = row[field.excelIndex];
+            if (!value || String(value).trim() === '') {
+                errors.push(`Missing required field: ${field.dbColumn}`);
             }
+        });
+
+        if (errors.length > 0) {
+            throw new ValidationError(errors.join(', '));
         }
-        return true;
     }
 
     // Helper method to get cell value from ExcelJS cell
