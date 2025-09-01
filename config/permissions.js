@@ -13,11 +13,47 @@ function hasPageAccess(role, page) {
     return pagePermissions[page]?.includes(role) || false;
 }
 
+// Helper function to check if a user has access to a page (user-specific permissions)
+function hasUserPageAccess(userPermissions, page) {
+    // If user has specific permissions array, use that
+    if (Array.isArray(userPermissions)) {
+        return userPermissions.includes(page);
+    }
+    return false;
+}
+
+// Combined function to check access (user-specific first, then role-based fallback)
+function checkPageAccess(user, page) {
+    // If user has specific page permissions, use those
+    if (user.permissions && Array.isArray(user.permissions)) {
+        return hasUserPageAccess(user.permissions, page);
+    }
+    
+    // Fallback to role-based permissions
+    return hasPageAccess(user.role, page);
+}
+
 // Get all accessible pages for a role
 function getAccessiblePages(role) {
     return Object.entries(pagePermissions)
         .filter(([_, roles]) => roles.includes(role))
         .map(([page]) => page);
+}
+
+// Get all accessible pages for a user (user-specific or role-based)
+function getUserAccessiblePages(user) {
+    // If user has specific permissions, return those
+    if (user.permissions && Array.isArray(user.permissions)) {
+        return user.permissions;
+    }
+    
+    // Fallback to role-based permissions
+    return getAccessiblePages(user.role);
+}
+
+// Get all available pages in the system
+function getAllPages() {
+    return Object.keys(pagePermissions);
 }
 
 // Page descriptions
@@ -71,7 +107,11 @@ function calculateRoleFromPermissions(permissions) {
 module.exports = {
     pagePermissions,
     hasPageAccess,
+    hasUserPageAccess,
+    checkPageAccess,
     getAccessiblePages,
+    getUserAccessiblePages,
+    getAllPages,
     getPageDescription,
     calculateRoleFromPermissions
 };
