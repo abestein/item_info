@@ -103,10 +103,21 @@ module.exports = (dbConfig) => {
             const { username, email, password, role } = req.body;
 
             // Validate input
-            if (!username || !email || !password) {
+            const errors = [];
+            if (!username || username.length < 3) {
+                errors.push('Username must be at least 3 characters long');
+            }
+            if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                errors.push('Valid email address is required');
+            }
+            if (!password || password.length < 8) {
+                errors.push('Password must be at least 8 characters long');
+            }
+            
+            if (errors.length > 0) {
                 return res.status(400).json({
                     success: false,
-                    error: 'Username, email and password are required'
+                    error: errors.join(', ')
                 });
             }
 
@@ -159,7 +170,42 @@ module.exports = (dbConfig) => {
             const { username, email, password, role, isActive } = req.body;
             const userId = req.params.id;
 
+            // Validate input
+            const errors = [];
+            if (username && username.length < 3) {
+                errors.push('Username must be at least 3 characters long');
+            }
+            if (email && !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                errors.push('Valid email address is required');
+            }
+            if (password && password.length < 8) {
+                errors.push('Password must be at least 8 characters long');
+            }
+            if (role && !['admin', 'user'].includes(role)) {
+                errors.push('Invalid role specified');
+            }
+            
+            if (errors.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    error: errors.join(', ')
+                });
+            }
+
             const pool = await sql.connect(dbConfig);
+            
+            // Check if user exists
+            const existingUser = await pool.request()
+                .input('id', sql.Int, userId)
+                .query('SELECT * FROM Users WHERE Id = @id');
+
+            if (existingUser.recordset.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    error: 'User not found'
+                });
+            }
+
             const request = pool.request()
                 .input('id', sql.Int, userId);
 
@@ -232,6 +278,28 @@ module.exports = (dbConfig) => {
     router.delete('/:id', async (req, res) => {
         try {
             const pool = await sql.connect(dbConfig);
+            
+            // Check if trying to delete the last admin
+            if (req.user.role === 'admin') {
+                const adminCount = await pool.request()
+                    .query('SELECT COUNT(*) as count FROM Users WHERE Role = \'admin\'');
+                
+                if (adminCount.recordset[0].count <= 1) {
+                    return res.status(400).json({
+                        success: false,
+                        error: 'Cannot delete the last admin user'
+                    });
+                }
+            }
+
+            // Prevent self-deletion
+            if (parseInt(req.params.id) === req.user.id) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Cannot delete your own account'
+                });
+            }
+
             const result = await pool.request()
                 .input('id', sql.Int, req.params.id)
                 .query(`
