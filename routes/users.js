@@ -1,6 +1,7 @@
 const express = require('express');
 const sql = require('mssql');
 const bcrypt = require('bcryptjs');
+const { adminMiddleware } = require('../middleware/auth');
 
 module.exports = (dbConfig) => {
     const router = express.Router();
