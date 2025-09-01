@@ -532,6 +532,32 @@ module.exports = (dbConfig) => {
         }
     });
 
+    // Get all page permissions
+    router.get('/permissions', adminMiddleware, async (req, res) => {
+        try {
+            const { pagePermissions } = require('../config/permissions');
+            
+            // Transform permissions into a more detailed format
+            const formattedPermissions = Object.entries(pagePermissions).map(([page, roles]) => ({
+                page,
+                roles,
+                description: getPageDescription(page),
+                isAdminOnly: roles.length === 1 && roles[0] === 'admin'
+            }));
+
+            res.json({
+                success: true,
+                permissions: formattedPermissions
+            });
+        } catch (error) {
+            console.error('Get permissions error:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to fetch permissions'
+            });
+        }
+    });
+
     // Get role history for a user (admin only)
     router.get('/:id/role-history', adminMiddleware, async (req, res) => {
         try {
