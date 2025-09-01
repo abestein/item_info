@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { authService } from './authService';
-import { 
+import type { 
   User, 
   UserCreateDTO, 
   UserUpdateDTO, 
