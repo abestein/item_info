@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="card-header">
+        Data Overview
+    </div>
+    
+    <% if (data && data.length > 0) { %>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <% Object.keys(data[0]).forEach(function(column) { %>
+                        <th><%= column %></th>
+                    <% }); %>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(function(row) { %>
+                    <tr>
+                        <% Object.values(row).forEach(function(value) { %>
+                            <td><%= value %></td>
+                        <% }); %>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No data available</p>
+    <% } %>
+</div>

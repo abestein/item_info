@@ -1,0 +1,48 @@
+<div class="card">
+    <div class="card-header">
+        Item Details - Recent Entries
+        <a href="/upload" class="btn btn-primary" style="float: right;">
+            <i class="fas fa-upload"></i> Upload New Data
+        </a>
+    </div>
+    
+    <% if (data && data.length > 0) { %>
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Item #</th>
+                        <th>Vendor</th>
+                        <th>Brand</th>
+                        <th>Description</th>
+                        <th>FOB Cost</th>
+                        <th>Duty</th>
+                        <th>Tariff</th>
+                        <th>Last PO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% data.forEach(function(row) { %>
+                        <tr>
+                            <td><%= row.ID %></td>
+                            <td><%= row['Item #'] || '' %></td>
+                            <td><%= row['Vendor Name'] || '' %></td>
+                            <td><%= row['Brand Name'] || '' %></td>
+                            <td><%= row['Description1'] || '' %></td>
+                            <td><%= row['FOB Cost'] ? '$' + row['FOB Cost'].toFixed(2) : '' %></td>
+                            <td><%= row['Current Duty'] ? (row['Current Duty'] * 100).toFixed(2) + '%' : '' %></td>
+                            <td><%= row['Current Tariff'] ? (row['Current Tariff'] * 100).toFixed(2) + '%' : '' %></td>
+                            <td><%= row['Last PO Date'] ? new Date(row['Last PO Date']).toLocaleDateString() : '' %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    <% } else { %>
+        <div style="padding: 20px; text-align: center;">
+            <p>No items found in the database.</p>
+            <a href="/upload" class="btn btn-primary">Upload Excel File</a>
+        </div>
+    <% } %>
+</div>

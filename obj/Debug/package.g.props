@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <PackageJsonName Condition="$(PackageJsonName) == ''">item_information</PackageJsonName>
+    <PackageJsonVersion Condition="$(PackageJsonVersion) == ''">1.0.0</PackageJsonVersion>
+    <PackageJsonMain Condition="$(PackageJsonMain) == ''">app.js</PackageJsonMain>
+    <PackageJsonScriptsTest Condition="$(PackageJsonScriptsTest) == ''">echo "Error: no test specified" &amp;&amp; exit 1</PackageJsonScriptsTest>
+    <PackageJsonKeywords Condition="$(PackageJsonKeywords) == ''">[]</PackageJsonKeywords>
+    <PackageJsonAuthor Condition="$(PackageJsonAuthor) == ''"></PackageJsonAuthor>
+    <PackageJsonLicense Condition="$(PackageJsonLicense) == ''">ISC</PackageJsonLicense>
+    <PackageJsonDescription Condition="$(PackageJsonDescription) == ''"></PackageJsonDescription>
+    <PackageJsonDevdependenciesEslint Condition="$(PackageJsonDevdependenciesEslint) == ''">^9.31.0</PackageJsonDevdependenciesEslint>
+    <PackageJsonDependenciesAntDesignPlots Condition="$(PackageJsonDependenciesAntDesignPlots) == ''">^2.6.1</PackageJsonDependenciesAntDesignPlots>
+    <PackageJsonDependenciesMuiMaterial Condition="$(PackageJsonDependenciesMuiMaterial) == ''">^7.2.0</PackageJsonDependenciesMuiMaterial>
+    <PackageJsonDependenciesMuiXDataGrid Condition="$(PackageJsonDependenciesMuiXDataGrid) == ''">^8.8.0</PackageJsonDependenciesMuiXDataGrid>
+    <PackageJsonDependenciesTanstackReactTable Condition="$(PackageJsonDependenciesTanstackReactTable) == ''">^8.21.3</PackageJsonDependenciesTanstackReactTable>
+    <PackageJsonDependenciesAgGridCommunity Condition="$(PackageJsonDependenciesAgGridCommunity) == ''">^34.0.2</PackageJsonDependenciesAgGridCommunity>
+    <PackageJsonDependenciesAgGridReact Condition="$(PackageJsonDependenciesAgGridReact) == ''">^34.0.2</PackageJsonDependenciesAgGridReact>
+    <PackageJsonDependenciesAxios Condition="$(PackageJsonDependenciesAxios) == ''">^1.10.0</PackageJsonDependenciesAxios>
+    <PackageJsonDependenciesBcryptjs Condition="$(PackageJsonDependenciesBcryptjs) == ''">^3.0.2</PackageJsonDependenciesBcryptjs>
+    <PackageJsonDependenciesCors Condition="$(PackageJsonDependenciesCors) == ''">^2.8.5</PackageJsonDependenciesCors>
+    <PackageJsonDependenciesExceljs Condition="$(PackageJsonDependenciesExceljs) == ''">^4.4.0</PackageJsonDependenciesExceljs>
+    <PackageJsonDependenciesExpressEjsLayouts Condition="$(PackageJsonDependenciesExpressEjsLayouts) == ''">^2.5.1</PackageJsonDependenciesExpressEjsLayouts>
+    <PackageJsonDependenciesJsonwebtoken Condition="$(PackageJsonDependenciesJsonwebtoken) == ''">^9.0.2</PackageJsonDependenciesJsonwebtoken>
+    <PackageJsonDependenciesMulter Condition="$(PackageJsonDependenciesMulter) == ''">^2.0.1</PackageJsonDependenciesMulter>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,324 @@
+<div class="card">
+    <div class="card-header">
+		Upload Excel File to ItemVendorDetails
+	</div>
+    
+    <form id="uploadForm" action="/upload-items" method="POST" enctype="multipart/form-data">
+        <div class="upload-section">
+            <div class="form-group">
+                <label for="excelFile">Select Excel File (.xlsx, .xls)</label>
+                <input type="file" id="excelFile" name="excelFile" accept=".xlsx,.xls" required>
+                <small class="form-text">The Excel file should have data starting from row 2 (row 1 is headers)</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="sheetName">Sheet Name (leave empty for first sheet)</label>
+                <input type="text" id="sheetName" name="sheetName" placeholder="Optional: Specific sheet name">
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="clearTable" name="clearTable">
+                    Clear existing data before upload
+                </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" id="uploadBtn">
+                <i class="fas fa-upload"></i> Upload and Import
+            </button>
+        </div>
+    </form>
+    
+    <div id="progressSection" style="display: none;">
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressPercent">0%</span>
+                <span id="progressRows"></span>
+            </div>
+        </div>
+        <p id="statusMessage">Initializing...</p>
+    </div>
+    
+    <div id="resultSection" style="display: none;">
+        <h3>Upload Results</h3>
+        <div id="resultMessage"></div>
+    </div>
+</div>
+
+<div class="info-card">
+    <h4>Data Cleaning Rules:</h4>
+    <ul>
+        <li>Fields with "X" or empty values in dimension columns will be converted to NULL</li>
+        <li>Percentage values in Current Duty and Current Tariff will be converted to decimals (15% → 0.15)</li>
+        <li>Data is mapped by column position (A → Item #, B → Vendor Name, etc.)</li>
+    </ul>
+</div>
+
+<style>
+.upload-section {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-group input[type="file"],
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #3498db;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    font-size: 14px;
+}
+
+.form-group input[type="file"]:hover {
+    background-color: #e3f2fd;
+}
+
+.form-group input[type="text"] {
+    border: 1px solid #ddd;
+}
+
+.form-text {
+    display: block;
+    margin-top: 5px;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.progress-container {
+    margin: 20px 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(45deg, #3498db 25%, #2980b9 25%, #2980b9 50%, #3498db 50%, #3498db 75%, #2980b9 75%, #2980b9);
+    background-size: 30px 30px;
+    width: 0%;
+    transition: width 0.3s ease;
+    animation: progress-animation 1s linear infinite;
+}
+
+@keyframes progress-animation {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 30px 30px;
+    }
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#statusMessage {
+    text-align: center;
+    margin-top: 10px;
+    font-style: italic;
+    color: #666;
+}
+
+#resultSection {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.success {
+    color: #27ae60;
+    padding: 15px;
+    background-color: #d4edda;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.error {
+    color: #e74c3c;
+    padding: 15px;
+    background-color: #f8d7da;
+    border-radius: 4px;
+}
+
+.info-card {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e3f2fd;
+    border-left: 4px solid #3498db;
+    border-radius: 4px;
+}
+
+.info-card h4 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.info-card ul {
+    margin-bottom: 0;
+    padding-left: 20px;
+}
+
+.info-card li {
+    margin: 5px 0;
+    color: #555;
+}
+
+.preview-table {
+    margin-top: 20px;
+    max-height: 300px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.preview-table table {
+    width: 100%;
+    font-size: 12px;
+    margin: 0;
+}
+
+.error-list {
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+.error-list li {
+    color: #e74c3c;
+    margin: 5px 0;
+}
+</style>
+
+<script>
+document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const uploadBtn = document.getElementById('uploadBtn');
+    const progressSection = document.getElementById('progressSection');
+    const resultSection = document.getElementById('resultSection');
+    const progressFill = document.getElementById('progressFill');
+    const progressPercent = document.getElementById('progressPercent');
+    const progressRows = document.getElementById('progressRows');
+    const statusMessage = document.getElementById('statusMessage');
+    const resultMessage = document.getElementById('resultMessage');
+    
+    // Show progress, hide result
+    progressSection.style.display = 'block';
+    resultSection.style.display = 'none';
+    uploadBtn.disabled = true;
+    
+    // Create EventSource for progress updates
+    const eventSource = new EventSource('/upload-progress');
+    
+    eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        
+        if (data.current && data.total) {
+            const percent = Math.round((data.current / data.total) * 100);
+            progressFill.style.width = percent + '%';
+            progressPercent.textContent = percent + '%';
+            progressRows.textContent = `${data.current} / ${data.total} rows`;
+        }
+        
+        if (data.message) {
+            statusMessage.textContent = data.message;
+        }
+    };
+    
+    try {
+        const response = await fetch('/upload-items', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+            resultMessage.innerHTML = `
+                <div class="success">
+                    <i class="fas fa-check-circle"></i> 
+                    Success! Processed ${result.totalRows} rows
+                    <br>
+                    ✓ ${result.successfulRows} rows imported successfully
+                    ${result.failedRows > 0 ? `<br>✗ ${result.failedRows} rows failed` : ''}
+                </div>
+                ${result.errors && result.errors.length > 0 ? `
+                    <div class="error">
+                        <strong>Errors encountered:</strong>
+                        <ul class="error-list">
+                            ${result.errors.map(err => `<li>${err.batch}: ${err.error}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+                ${result.preview ? `
+                    <div class="preview-table">
+                        <h4>Last 5 imported rows:</h4>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Item #</th>
+                                    <th>Vendor</th>
+                                    <th>Brand</th>
+                                    <th>Description</th>
+                                    <th>FOB Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${result.preview.map(row => `
+                                    <tr>
+                                        <td>${row.ID}</td>
+                                        <td>${row['Item #'] || ''}</td>
+                                        <td>${row['Vendor Name'] || ''}</td>
+                                        <td>${row['Brand Name'] || ''}</td>
+                                        <td>${row['Description1'] || ''}</td>
+                                        <td>${row['FOB Cost'] || ''}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                ` : ''}
+            `;
+        } else {
+            throw new Error(result.error || 'Upload failed');
+        }
+        
+    } catch (error) {
+        statusMessage.textContent = 'Upload failed!';
+        resultMessage.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> Error: ${error.message}</div>`;
+    } finally {
+        eventSource.close();
+        uploadBtn.disabled = false;
+        resultSection.style.display = 'block';
+    }
+});
+</script>

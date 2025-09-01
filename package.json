@@ -1,0 +1,30 @@
+{
+  "name": "item_information",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "eslint": "^9.31.0"
+  },
+  "dependencies": {
+    "@ant-design/plots": "^2.6.1",
+    "@mui/material": "^7.2.0",
+    "@mui/x-data-grid": "^8.8.0",
+    "@tanstack/react-table": "^8.21.3",
+    "ag-grid-community": "^34.0.2",
+    "ag-grid-react": "^34.0.2",
+    "axios": "^1.10.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "exceljs": "^4.4.0",
+    "express-ejs-layouts": "^2.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1"
+  }
+}

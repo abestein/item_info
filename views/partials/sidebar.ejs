@@ -1,0 +1,39 @@
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <h2>Dashboard</h2>
+    </div>
+    
+    <ul class="sidebar-menu">
+        <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'home' ? 'active' : '' %>">
+            <a href="/">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </li>
+        <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'items' ? 'active' : '' %>">
+            <a href="/items">
+                <i class="fas fa-box"></i>
+                <span>Items</span>
+            </a>
+        </li>
+        <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'reports' ? 'active' : '' %>">
+            <a href="/reports">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+        </li>
+        <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'settings' ? 'active' : '' %>">
+            <a href="/settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sidebar-footer">
+        <div class="user-info">
+            <i class="fas fa-user-circle"></i>
+            <span><%= typeof currentUser !== 'undefined' ? currentUser : 'Guest User' %></span>
+        </div>
+    </div>
+</nav>
