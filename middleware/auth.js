@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const { hasPageAccess } = require('../config/permissions');
 
 const authMiddleware = (req, res, next) => {
     try {
@@ -33,4 +34,15 @@ const adminMiddleware = (req, res, next) => {
     next();
 };
 
-module.exports = { authMiddleware, adminMiddleware };
+const pageAccessMiddleware = (req, res, next) => {
+    const page = req.path;
+    if (!hasPageAccess(req.user?.role, page)) {
+        return res.status(403).json({
+            success: false,
+            error: 'You do not have permission to access this page'
+        });
+    }
+    next();
+};
+
+module.exports = { authMiddleware, adminMiddleware, pageAccessMiddleware };
