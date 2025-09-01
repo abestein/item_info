@@ -139,17 +139,35 @@ module.exports = (dbConfig) => {
             // Hash password
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // Insert new user
-            const result = await pool.request()
-                .input('username', sql.NVarChar, username)
-                .input('email', sql.NVarChar, email)
-                .input('passwordHash', sql.NVarChar, hashedPassword)
-                .input('role', sql.NVarChar, role || 'user')
-                .query(`
-                    INSERT INTO Users (Username, Email, PasswordHash, Role, IsActive)
-                    VALUES (@username, @email, @passwordHash, @role, 1);
-                    SELECT SCOPE_IDENTITY() as Id;
-                `);
+            // Start transaction
+            const transaction = new sql.Transaction(pool);
+            await transaction.begin();
+
+            try {
+                // Insert new user
+                const result = await transaction.request()
+                    .input('username', sql.NVarChar, username)
+                    .input('email', sql.NVarChar, email)
+                    .input('passwordHash', sql.NVarChar, hashedPassword)
+                    .input('role', sql.NVarChar, role || 'user')
+                    .query(`
+                        INSERT INTO Users (Username, Email, PasswordHash, Role, IsActive)
+                        VALUES (@username, @email, @passwordHash, @role, 1);
+                        SELECT SCOPE_IDENTITY() as Id;
+                    `);
+
+                // Log role assignment
+                await transaction.request()
+                    .input('userId', sql.Int, result.recordset[0].Id)
+                    .input('oldRole', sql.NVarChar, null)
+                    .input('newRole', sql.NVarChar, role || 'user')
+                    .input('changedBy', sql.Int, req.user.id)
+                    .query(`
+                        INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
+                        VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
+                    `);
+
+                await transaction.commit();
 
             res.status(201).json({
                 success: true,
@@ -181,8 +199,9 @@ module.exports = (dbConfig) => {
             if (password && password.length < 8) {
                 errors.push('Password must be at least 8 characters long');
             }
-            if (role && !['admin', 'user'].includes(role)) {
-                errors.push('Invalid role specified');
+            const validRoles = ['admin', 'user', 'manager', 'readonly'];
+            if (role && !validRoles.includes(role)) {
+                errors.push(`Invalid role specified. Valid roles are: ${validRoles.join(', ')}`);
             }
             
             if (errors.length > 0) {
@@ -227,8 +246,24 @@ module.exports = (dbConfig) => {
                 queryInputs.push(['passwordHash', sql.NVarChar, hashedPassword]);
             }
             if (role) {
-                updateFields.push('Role = @role');
-                queryInputs.push(['role', sql.NVarChar, role]);
+                // Get current role before update
+                const currentRole = existingUser.recordset[0].Role;
+                
+                if (role !== currentRole) {
+                    updateFields.push('Role = @role');
+                    queryInputs.push(['role', sql.NVarChar, role]);
+
+                    // Log role change
+                    await pool.request()
+                        .input('userId', sql.Int, userId)
+                        .input('oldRole', sql.NVarChar, currentRole)
+                        .input('newRole', sql.NVarChar, role)
+                        .input('changedBy', sql.Int, req.user.id)
+                        .query(`
+                            INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
+                            VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
+                        `);
+                }
             }
             if (isActive !== undefined) {
                 updateFields.push('IsActive = @isActive');
@@ -324,6 +359,38 @@ module.exports = (dbConfig) => {
             res.status(500).json({
                 success: false,
                 error: 'Failed to delete user'
+            });
+        }
+    });
+
+    // Get role history for a user
+    router.get('/:id/role-history', async (req, res) => {
+        try {
+            const pool = await sql.connect(dbConfig);
+            const result = await pool.request()
+                .input('userId', sql.Int, req.params.id)
+                .query(`
+                    SELECT 
+                        h.Id,
+                        h.OldRole,
+                        h.NewRole,
+                        h.ChangedAt,
+                        u.Username as ChangedBy
+                    FROM UserRoleHistory h
+                    JOIN Users u ON h.ChangedBy = u.Id
+                    WHERE h.UserId = @userId
+                    ORDER BY h.ChangedAt DESC
+                `);
+
+            res.json({
+                success: true,
+                history: result.recordset
+            });
+        } catch (error) {
+            console.error('Get role history error:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Failed to fetch role history'
             });
         }
     });
