@@ -77,9 +77,6 @@ app.use('/api/users', authMiddleware, adminMiddleware, apiLimiter, userRoutes);
 // Permissions routes (admin only)
 app.use('/api/permissions', authMiddleware, adminMiddleware, apiLimiter, permissionsRoutes);
 
-// Permissions routes (admin only)
-app.use('/api/permissions', authMiddleware, adminMiddleware, apiLimiter, permissionsRoutes);
-
 // Progress tracking
 let uploadProgress = {};
 

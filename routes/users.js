@@ -487,7 +487,6 @@ module.exports = (dbConfig) => {
 
             res.json({
                 success: true,
-                message: 'User updated successfully',
                 user: updatedUser.recordset[0]
             });
         } catch (error) {

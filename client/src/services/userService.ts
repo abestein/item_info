@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { authService } from './authService';
+import { API_CONFIG } from '../config/api.config';
 import type { 
   User, 
   UserCreateDTO, 
@@ -10,7 +11,7 @@ import type {
   PagePermission
 } from '../types/user.types';
 
-const API_URL = 'http://192.168.254.20:3000/api';
+const API_URL = `${API_CONFIG.BASE_URL}/api`;
 
 class UserService {
   private getAuthHeaders() {
