@@ -2,6 +2,7 @@ const express = require('express');
 const sql = require('mssql');
 const bcrypt = require('bcryptjs');
 const { adminMiddleware } = require('../middleware/auth');
+const { calculateRoleFromPermissions, getPageDescription } = require('../config/permissions');
 
 module.exports = (dbConfig) => {
     const router = express.Router();
@@ -140,6 +141,7 @@ module.exports = (dbConfig) => {
     // Create new user
     router.post('/', async (req, res) => {
         try {
+            console.log('POST /api/users - Request body:', req.body);
             const { username, email, password, role } = req.body;
 
             // Validate input
@@ -185,15 +187,19 @@ module.exports = (dbConfig) => {
                 });
             }
 
+            console.log('Connecting to database...');
             const pool = await sql.connect(dbConfig);
+            console.log('Database connected successfully');
 
             // Check if user exists
+            console.log('Checking for existing user...');
             const existingUser = await pool.request()
-                .input('username', sql.NVarChar, username)
-                .input('email', sql.NVarChar, email)
-                .query('SELECT * FROM Users WHERE Username = @username OR Email = @email');
+                .input('username', sql.NVarChar(50), username)
+                .input('email', sql.NVarChar(255), email)
+                .query('SELECT Id, Username, Email FROM Users WHERE Username = @username OR Email = @email');
 
             if (existingUser.recordset.length > 0) {
+                console.log('User already exists:', existingUser.recordset[0]);
                 return res.status(400).json({
                     success: false,
                     error: 'Username or email already exists'
@@ -201,55 +207,72 @@ module.exports = (dbConfig) => {
             }
 
             // Hash password
+            console.log('Hashing password...');
             const hashedPassword = await bcrypt.hash(password, 10);
+            console.log('Password hashed successfully');
 
             // Get admin user making the request
             if (!req.user || !req.user.id) {
+                console.error('User context missing:', req.user);
                 return res.status(401).json({
                     success: false,
                     error: 'User context not found'
                 });
             }
 
+            console.log('Creating user with data:', { username, email, role: role || 'user' });
+
             let transaction;
             try {
                 // Start transaction
                 transaction = new sql.Transaction(pool);
                 await transaction.begin();
+                console.log('Transaction started');
 
                 // Insert new user
-                const result = await transaction.request()
-                    .input('username', sql.NVarChar, username)
-                    .input('email', sql.NVarChar, email)
-                    .input('passwordHash', sql.NVarChar, hashedPassword)
-                    .input('role', sql.NVarChar, role || 'user')
-                    .query(`
-                        INSERT INTO Users (Username, Email, PasswordHash, Role, IsActive)
-                        VALUES (@username, @email, @passwordHash, @role, 1);
-                        SELECT SCOPE_IDENTITY() as Id;
-                    `);
+                const insertRequest = transaction.request()
+                    .input('username', sql.NVarChar(50), username)
+                    .input('email', sql.NVarChar(255), email)
+                    .input('passwordHash', sql.NVarChar(255), hashedPassword)
+                    .input('role', sql.NVarChar(20), role || 'user');
+
+                console.log('Executing user insert query');
+                const result = await insertRequest.query(`
+                    INSERT INTO Users (Username, Email, PasswordHash, Role, IsActive)
+                    VALUES (@username, @email, @passwordHash, @role, 1);
+                    SELECT SCOPE_IDENTITY() as Id;
+                `);
+
+                const newUserId = result.recordset[0].Id;
+                console.log('User created with ID:', newUserId);
 
                 // Log role assignment
-                await transaction.request()
-                    .input('userId', sql.Int, result.recordset[0].Id)
-                    .input('oldRole', sql.NVarChar, null)
-                    .input('newRole', sql.NVarChar, role || 'user')
-                    .input('changedBy', sql.Int, req.user.id)
-                    .query(`
-                        INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
-                        VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
-                    `);
+                const historyRequest = transaction.request()
+                    .input('userId', sql.Int, newUserId)
+                    .input('oldRole', sql.NVarChar(20), null)
+                    .input('newRole', sql.NVarChar(20), role || 'user')
+                    .input('changedBy', sql.Int, req.user.id);
+
+                console.log('Logging role assignment');
+                await historyRequest.query(`
+                    INSERT INTO UserRoleHistory (UserId, OldRole, NewRole, ChangedBy, ChangedAt)
+                    VALUES (@userId, @oldRole, @newRole, @changedBy, GETDATE())
+                `);
 
                 await transaction.commit();
+                console.log('Transaction committed successfully');
 
                 res.status(201).json({
                     success: true,
-                    userId: result.recordset[0].Id
+                    userId: newUserId,
+                    message: 'User created successfully'
                 });
             } catch (error) {
+                console.error('Transaction error:', error);
                 if (transaction) {
                     try {
                         await transaction.rollback();
+                        console.log('Transaction rolled back');
                     } catch (rollbackError) {
                         console.error('Rollback error:', rollbackError);
                     }
@@ -258,9 +281,21 @@ module.exports = (dbConfig) => {
             }
         } catch (error) {
             console.error('Create user error:', error);
+            console.error('Error details:', {
+                message: error.message,
+                stack: error.stack,
+                code: error.code,
+                number: error.number,
+                state: error.state,
+                class: error.class,
+                serverName: error.serverName,
+                procName: error.procName,
+                lineNumber: error.lineNumber
+            });
             res.status(500).json({
                 success: false,
-                error: 'Failed to create user'
+                error: 'Failed to create user',
+                details: process.env.NODE_ENV === 'development' ? error.message : undefined
             });
         }
     });
