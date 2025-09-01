@@ -286,7 +286,7 @@ const HomePage: React.FC = () => {
                     </Button>
                 ]}
                 width={800}
-                bodyStyle={{ maxHeight: '70vh', overflowY: 'auto' }}
+                styles={{ body: { maxHeight: '70vh', overflowY: 'auto' } }}
             >
                 {selectedRecord && (
                     <Descriptions

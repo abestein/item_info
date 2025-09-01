@@ -7,14 +7,14 @@ import {
   Form,
   Input,
   Select,
-  message,
   Popconfirm,
   Space,
   Tag,
   Switch,
   Row,
   Col,
-  Tooltip
+  Tooltip,
+  App
 } from 'antd';
 import {
   PlusOutlined,
@@ -41,6 +41,7 @@ const UserManagement: React.FC = () => {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [selectedUserForPermissions, setSelectedUserForPermissions] = useState<User | null>(null);
   const [form] = Form.useForm();
+  const { message } = App.useApp();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -179,11 +180,15 @@ const UserManagement: React.FC = () => {
       title: 'Role',
       dataIndex: 'role',
       key: 'role',
-      render: (role: string) => (
-        <Tag color={role === 'admin' ? 'red' : role === 'manager' ? 'orange' : 'blue'}>
-          {role ? role.toUpperCase() : 'UNKNOWN'}
-        </Tag>
-      ),
+      render: (role: string) => {
+        const roleText = role && typeof role === 'string' ? role.toUpperCase() : 'UNKNOWN';
+        const roleColor = role === 'admin' ? 'red' : role === 'manager' ? 'orange' : 'blue';
+        return (
+          <Tag color={roleColor}>
+            {roleText}
+          </Tag>
+        );
+      },
     },
     {
       title: 'Status',
@@ -307,7 +312,7 @@ const UserManagement: React.FC = () => {
         <Table
           columns={columns}
           dataSource={users}
-          rowKey={(record) => record.id ? record.id.toString() : Math.random().toString()}
+          rowKey={(record) => record.id ? record.id.toString() : `temp-${Math.random()}`}
           loading={loading}
           pagination={{
             ...pagination,
