@@ -1,0 +1,55 @@
+{
+  "name": "Visualizations Agent",
+  "type": "ui-agent", 
+  "expertise": [
+    "charts-graphs",
+    "dashboards",
+    "data-visualization",
+    "recharts",
+    "antd-charts",
+    "kpi-displays",
+    "real-time-updates"
+  ],
+  "responsibilities": [
+    "Create charts and graphs",
+    "Build dashboard layouts", 
+    "Implement KPI displays",
+    "Handle real-time data visualization",
+    "Optimize chart performance",
+    "Design interactive visualizations"
+  ],
+  "filePatterns": {
+    "include": [
+      "client/src/components/**/Chart*.tsx",
+      "client/src/components/**/Graph*.tsx",
+      "client/src/components/**/Dashboard*.tsx", 
+      "client/src/components/**/Visualization*.tsx",
+      "client/src/pages/**/Dashboard*.tsx",
+      "client/src/components/**/KPI*.tsx"
+    ],
+    "exclude": [
+      "client/src/components/**/Table*.tsx",
+      "client/src/components/**/Nav*.tsx",
+      "client/src/components/**/Menu*.tsx"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "api-bridge",
+      "sql-mcp", 
+      "table-views",
+      "frontend-pages"
+    ],
+    "canBeConsultedBy": [
+      "gap-analyzer",
+      "frontend-pages",
+      "backend-control"
+    ]
+  },
+  "dependencies": {
+    "chartLibraries": ["Recharts", "@ant-design/plots"],
+    "dataProcessing": "Data transformation utilities",
+    "realTimeUpdates": "WebSocket/SSE integration",
+    "export": "Chart export functionality"
+  }
+}

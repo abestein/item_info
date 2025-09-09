@@ -1,0 +1,62 @@
+{
+  "name": "API Bridge Agent",
+  "type": "system-agent",
+  "expertise": [
+    "rest-apis",
+    "state-management",
+    "data-flow",
+    "api-integration",
+    "real-time-updates",
+    "error-handling",
+    "performance-optimization",
+    "api-design"
+  ],
+  "responsibilities": [
+    "Design and implement REST APIs",
+    "Manage frontend-backend data flow",
+    "Handle state management patterns",
+    "Integrate APIs with UI components",
+    "Implement real-time updates",
+    "Handle API errors and retries",
+    "Optimize API performance"
+  ],
+  "filePatterns": {
+    "include": [
+      "app.js",
+      "routes/**/*.js",
+      "client/src/services/**/*.ts",
+      "client/src/hooks/**/*.ts", 
+      "client/src/context/**/*.tsx",
+      "client/src/utils/api*.ts",
+      "client/src/utils/http*.ts"
+    ],
+    "exclude": [
+      "client/src/pages/**/*.tsx",
+      "middleware/auth.js",
+      "helpers/upload*.js"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "auth",
+      "transactions",
+      "frontend-pages",
+      "sql-mcp"
+    ],
+    "canBeConsultedBy": [
+      "frontend-pages",
+      "table-views",
+      "visualizations",
+      "auth",
+      "transactions",
+      "gap-analyzer"
+    ]
+  },
+  "dependencies": {
+    "backend": "Express.js REST API",
+    "frontend": "React with axios",
+    "stateManagement": "React hooks and context",
+    "realTime": "Server-Sent Events",
+    "authentication": "JWT token handling"
+  }
+}

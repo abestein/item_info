@@ -14,10 +14,12 @@ import {
     MoonOutlined,
     TeamOutlined
 } from '@ant-design/icons';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ItemsPage from './pages/ItemsPage';
 import ItemsNewPage from './pages/ItemsNewPage';
+import VendorItemsUploadPage from './pages/VendorItemsUploadPage';
+import VendorItemsTestUploadPage from './pages/VendorItemsTestUploadPage';
 import UserManagement from './pages/users/UserManagement';
 import UserList from './pages/users/UserList';
 import DashboardPage from './pages/DashboardPage';
@@ -35,9 +37,9 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
     const [collapsed, setCollapsed] = useState(false);
-    const navigate = useNavigate();
     const location = useLocation();
     const user = authService.getUser();
+    console.log('App.tsx - User data:', user);
 
     const handleLogout = () => {
         authService.logout();
@@ -86,6 +88,16 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
             key: '/items-new',
             icon: <UploadOutlined />,
             label: <Link to="/items-new">Items Management</Link>,
+        },
+        {
+            key: '/vendor-items-upload',
+            icon: <UploadOutlined />,
+            label: <Link to="/vendor-items-upload">Vendor Items Upload</Link>,
+        },
+        {
+            key: '/vendor-items-test-upload',
+            icon: <UploadOutlined />,
+            label: <Link to="/vendor-items-test-upload">Vendor Items Test Upload</Link>,
         },
         {
             key: '/users',
@@ -244,6 +256,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
                                     <Route path="/dashboard" element={<DashboardPage />} />
                                     <Route path="/items" element={<ItemsPage />} />
                                     <Route path="/items-new" element={<ItemsNewPage />} />
+                                    <Route path="/vendor-items-upload" element={<VendorItemsUploadPage />} />
+                                    <Route path="/vendor-items-test-upload" element={<VendorItemsTestUploadPage />} />
                                     <Route path="/users" element={
                                         <ProtectedRoute requireAdmin={true}>
                                             <UserManagement />

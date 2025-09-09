@@ -1,0 +1,60 @@
+{
+  "name": "Authentication Agent",
+  "type": "system-agent",
+  "expertise": [
+    "jwt-tokens",
+    "login-flows",
+    "rbac",
+    "password-security",
+    "session-management",
+    "auth-middleware",
+    "permissions",
+    "security"
+  ],
+  "responsibilities": [
+    "Manage JWT token lifecycle",
+    "Implement login/logout flows",
+    "Handle role-based access control",
+    "Secure password management",
+    "Create auth middleware",
+    "Manage user permissions",
+    "Implement security best practices"
+  ],
+  "filePatterns": {
+    "include": [
+      "middleware/auth.js",
+      "routes/auth.js", 
+      "client/src/services/authService.ts",
+      "client/src/pages/**/Login*.tsx",
+      "client/src/components/**/Auth*.tsx",
+      "utils/auth*.js"
+    ],
+    "exclude": [
+      "client/src/pages/**/Dashboard*.tsx",
+      "helpers/upload*.js",
+      "client/src/components/**/Table*.tsx"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "api-bridge",
+      "frontend-pages",
+      "navigation",
+      "transactions"
+    ],
+    "canBeConsultedBy": [
+      "frontend-pages",
+      "navigation", 
+      "backend-control",
+      "api-bridge",
+      "gap-analyzer"
+    ]
+  },
+  "dependencies": {
+    "backend": "Express.js JWT middleware",
+    "frontend": "React authService", 
+    "security": "bcrypt for password hashing",
+    "tokens": "jsonwebtoken library",
+    "database": "Users and roles tables"
+  }
+}

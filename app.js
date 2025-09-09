@@ -2,10 +2,13 @@ const express = require('express');
 const sql = require('mssql');
 const cors = require('cors');
 const multer = require('multer');
+const jwt = require('jsonwebtoken');
 const { authLimiter, apiLimiter } = require('./middleware/rateLimiter');
 const path = require('path');
 const fs = require('fs');
 const UploadHandler = require('./helpers/uploadHandler');
+const VendorItemsTempUploadHandler = require('./helpers/vendorItemsTempUploadHandler');
+const VendorItemsTestUploadHandler = require('./helpers/vendorItemsTestUploadHandler');
 require('dotenv').config();
 
 const app = express();
@@ -79,6 +82,8 @@ app.use('/api/permissions', authMiddleware, adminMiddleware, apiLimiter, permiss
 
 // Progress tracking
 let uploadProgress = {};
+let vendorUploadProgress = {};
+let vendorTestUploadProgress = {};
 
 // API ROUTES
 
@@ -196,6 +201,201 @@ app.post('/api/upload-items', authMiddleware, upload.single('excelFile'), async 
         // Clear progress after a delay
         setTimeout(() => {
             uploadProgress = {};
+        }, 5000);
+    }
+});
+
+// SSE endpoint for vendor upload progress (protected with query token)
+app.get('/api/vendor-upload-progress', (req, res) => {
+    // Check for token in query params since EventSource can't send headers
+    const token = req.query.token;
+    if (!token) {
+        return res.status(401).json({ success: false, error: 'Authentication required' });
+    }
+
+    // Verify the token manually
+    try {
+        jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+        return res.status(401).json({ success: false, error: 'Invalid token' });
+    }
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Access-Control-Allow-Origin': '*'
+    });
+
+    const progressInterval = setInterval(() => {
+        if (vendorUploadProgress.current) {
+            res.write(`data: ${JSON.stringify(vendorUploadProgress)}\n\n`);
+        }
+    }, 100);
+
+    req.on('close', () => {
+        clearInterval(progressInterval);
+    });
+});
+
+// Handle vendor items temp file upload (protected)
+app.post('/api/upload-vendor-items-temp', authMiddleware, upload.single('excelFile'), async (req, res) => {
+    console.log('=== Vendor Upload Started ===');
+    console.log('File:', req.file?.originalname);
+    console.log('Size:', req.file?.size);
+    
+    try {
+        if (!req.file) {
+            console.log('ERROR: No file uploaded');
+            return res.status(400).json({
+                success: false,
+                error: 'No file uploaded'
+            });
+        }
+
+        console.log('File received, starting process...');
+        // Reset progress
+        vendorUploadProgress = { current: 0, total: 0, message: 'Starting upload...' };
+
+        // Create vendor upload handler
+        const vendorUploadHandler = new VendorItemsTempUploadHandler(dbConfig);
+
+        // Set progress callback
+        vendorUploadHandler.setProgressCallback((progress) => {
+            vendorUploadProgress = progress;
+        });
+
+        // Clear table if requested
+        if (req.body.clearTable === 'true') {
+            vendorUploadProgress.message = 'Clearing existing data...';
+            await vendorUploadHandler.clearTable();
+        }
+
+        // Process the file
+        const result = await vendorUploadHandler.processExcelFile(
+            req.file.path,
+            req.body.sheetName || null
+        );
+
+        // Clean up uploaded file
+        fs.unlinkSync(req.file.path);
+
+        // Send success response
+        res.json({
+            success: true,
+            ...result
+        });
+
+    } catch (error) {
+        console.error('Vendor upload error:', error);
+
+        // Clean up file if it exists
+        if (req.file && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
+
+        res.status(500).json({
+            success: false,
+            error: error.message || 'Failed to process Excel file'
+        });
+    } finally {
+        // Clear progress after a delay
+        setTimeout(() => {
+            vendorUploadProgress = {};
+        }, 5000);
+    }
+});
+
+// SSE endpoint for vendor test upload progress (protected with query token)
+app.get('/api/vendor-test-upload-progress', (req, res) => {
+    // Check for token in query params since EventSource can't send headers
+    const token = req.query.token;
+    if (!token) {
+        return res.status(401).json({ success: false, error: 'Authentication required' });
+    }
+
+    // Verify the token manually
+    try {
+        jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+        return res.status(401).json({ success: false, error: 'Invalid token' });
+    }
+    
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Access-Control-Allow-Origin': '*'
+    });
+
+    const progressInterval = setInterval(() => {
+        if (vendorTestUploadProgress.current) {
+            res.write(`data: ${JSON.stringify(vendorTestUploadProgress)}\n\n`);
+        }
+    }, 100);
+
+    req.on('close', () => {
+        clearInterval(progressInterval);
+    });
+});
+
+// Handle vendor items test upload (protected)
+app.post('/api/upload-vendor-items-test', authMiddleware, upload.single('excelFile'), async (req, res) => {
+    console.log('=== Vendor Test Upload Started ===');
+    console.log('File:', req.file?.originalname);
+    console.log('Size:', req.file?.size);
+    
+    try {
+        if (!req.file) {
+            console.log('ERROR: No file uploaded');
+            return res.status(400).json({
+                success: false,
+                error: 'No file uploaded'
+            });
+        }
+
+        console.log('File received, starting test process...');
+        // Reset progress
+        vendorTestUploadProgress = { current: 0, total: 0, message: 'Starting test upload...' };
+
+        // Create vendor test upload handler
+        const vendorTestUploadHandler = new VendorItemsTestUploadHandler(dbConfig);
+
+        // Set progress callback
+        vendorTestUploadHandler.setProgressCallback((progress) => {
+            vendorTestUploadProgress = progress;
+        });
+
+        // Process the file for validation
+        const result = await vendorTestUploadHandler.testExcelFile(
+            req.file.path,
+            req.body.sheetName || null
+        );
+
+        // Clean up uploaded file
+        fs.unlinkSync(req.file.path);
+
+        // Send response
+        res.json({
+            success: true,
+            ...result
+        });
+
+    } catch (error) {
+        console.error('Vendor test upload error:', error);
+
+        // Clean up file if it exists
+        if (req.file && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
+
+        res.status(500).json({
+            success: false,
+            error: error.message || 'Failed to process test Excel file'
+        });
+    } finally {
+        // Clear progress after a delay
+        setTimeout(() => {
+            vendorTestUploadProgress = {};
         }, 5000);
     }
 });

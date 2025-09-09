@@ -30,6 +30,7 @@ class AuthService {
         try {
             const response = await axios.post(`${API_CONFIG.BASE_URL}/auth/login`, data);
             if (response.data.success) {
+                console.log('Login response user data:', response.data.user);
                 this.setToken(response.data.token);
                 this.setUser(response.data.user);
                 this.setupAxiosInterceptor();
@@ -92,7 +93,9 @@ class AuthService {
 
     getUser(): any {
         const user = localStorage.getItem(this.USER_KEY);
-        return user ? JSON.parse(user) : null;
+        const userData = user ? JSON.parse(user) : null;
+        console.log('AuthService.getUser() returning:', userData);
+        return userData;
     }
 
     setUser(user: any): void {

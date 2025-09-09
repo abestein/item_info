@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node app.js",
+    "client": "cd client && npm run dev",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "eslint": "^9.31.0"
   },
   "dependencies": {
@@ -20,6 +25,7 @@
     "ag-grid-community": "^34.0.2",
     "ag-grid-react": "^34.0.2",
     "axios": "^1.10.0",
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "exceljs": "^4.4.0",

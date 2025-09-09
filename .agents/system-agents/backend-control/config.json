@@ -1,0 +1,59 @@
+{
+  "name": "Backend Control Agent",
+  "type": "system-agent",
+  "expertise": [
+    "admin-panels",
+    "system-settings",
+    "user-management",
+    "configuration",
+    "admin-workflows",
+    "system-monitoring",
+    "backend-services",
+    "administrative-ui"
+  ],
+  "responsibilities": [
+    "Create admin panel interfaces",
+    "Manage system settings and configuration",
+    "Build user management features",
+    "Implement admin workflows",
+    "Create system monitoring dashboards", 
+    "Handle administrative operations",
+    "Manage backend service controls"
+  ],
+  "filePatterns": {
+    "include": [
+      "routes/admin*.js",
+      "routes/users.js",
+      "routes/permissions.js",
+      "client/src/pages/**/Admin*.tsx",
+      "client/src/pages/**/Settings*.tsx", 
+      "client/src/pages/**/Manage*.tsx",
+      "client/src/components/**/Admin*.tsx",
+      "config/**/*.js"
+    ],
+    "exclude": [
+      "client/src/pages/**/Login*.tsx",
+      "helpers/upload*.js",
+      "middleware/auth.js"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "auth",
+      "table-views",
+      "api-bridge", 
+      "transactions"
+    ],
+    "canBeConsultedBy": [
+      "gap-analyzer",
+      "auth",
+      "frontend-pages"
+    ]
+  },
+  "dependencies": {
+    "backend": "Express.js admin routes",
+    "frontend": "React admin components",
+    "authentication": "Admin role validation",
+    "database": "Admin and configuration tables"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "Frontend Pages Agent",
+  "type": "ui-agent",
+  "expertise": [
+    "react-pages",
+    "user-interfaces", 
+    "forms",
+    "layouts",
+    "routing",
+    "responsive-design"
+  ],
+  "responsibilities": [
+    "Create new application pages",
+    "Manage page layouts and structure", 
+    "Implement form interfaces",
+    "Handle page-level state management",
+    "Integrate with routing system",
+    "Ensure responsive design"
+  ],
+  "filePatterns": {
+    "include": [
+      "client/src/pages/**/*.tsx",
+      "client/src/pages/**/*.ts",
+      "client/src/components/**/Page*.tsx",
+      "client/src/components/**/Screen*.tsx"
+    ],
+    "exclude": [
+      "client/src/pages/**/Table*.tsx",
+      "client/src/pages/**/Chart*.tsx", 
+      "client/src/pages/**/Dashboard*.tsx",
+      "client/src/components/**/Nav*.tsx",
+      "client/src/components/**/Menu*.tsx"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "navigation",
+      "auth", 
+      "api-bridge",
+      "table-views"
+    ],
+    "canBeConsultedBy": [
+      "gap-analyzer",
+      "backend-control",
+      "auth"
+    ]
+  },
+  "dependencies": {
+    "framework": "React 19 + TypeScript",
+    "uiLibrary": "Ant Design",
+    "routing": "React Router DOM",
+    "stateManagement": "React Hooks"
+  }
+}

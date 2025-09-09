@@ -1,0 +1,58 @@
+{
+  "name": "Data Transactions Agent",
+  "type": "data-agent",
+  "expertise": [
+    "crud-operations",
+    "batch-processing",
+    "data-validation",
+    "excel-import",
+    "upc-validation", 
+    "business-rules",
+    "data-integrity",
+    "transaction-management"
+  ],
+  "responsibilities": [
+    "Manage CRUD operations efficiently",
+    "Process batch data updates",
+    "Validate business rules and data integrity",
+    "Handle Excel file imports",
+    "Implement UPC validation logic",
+    "Manage database transactions",
+    "Handle error recovery and rollbacks"
+  ],
+  "filePatterns": {
+    "include": [
+      "helpers/**/*Handler.js",
+      "helpers/**/*Upload*.js",
+      "helpers/uploadHandler.js",
+      "helpers/vendorItems*.js", 
+      "routes/**/*.js",
+      "middleware/**/*.js"
+    ],
+    "exclude": [
+      "client/**/*",
+      "public/**/*",
+      "middleware/auth.js"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "sql-mcp",
+      "auth",
+      "api-bridge", 
+      "gap-analyzer"
+    ],
+    "canBeConsultedBy": [
+      "api-bridge",
+      "backend-control",
+      "gap-analyzer",
+      "auth"
+    ]
+  },
+  "dependencies": {
+    "database": "SQL Server with mssql package",
+    "fileProcessing": "ExcelJS for Excel imports",
+    "validation": "Custom business rule validation",
+    "transactions": "Database transaction management"
+  }
+}

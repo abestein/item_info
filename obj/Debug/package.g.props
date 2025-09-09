@@ -5,10 +5,15 @@
     <PackageJsonVersion Condition="$(PackageJsonVersion) == ''">1.0.0</PackageJsonVersion>
     <PackageJsonMain Condition="$(PackageJsonMain) == ''">app.js</PackageJsonMain>
     <PackageJsonScriptsTest Condition="$(PackageJsonScriptsTest) == ''">echo "Error: no test specified" &amp;&amp; exit 1</PackageJsonScriptsTest>
+    <PackageJsonScriptsDev Condition="$(PackageJsonScriptsDev) == ''">concurrently "npm run server" "npm run client"</PackageJsonScriptsDev>
+    <PackageJsonScriptsServer Condition="$(PackageJsonScriptsServer) == ''">node app.js</PackageJsonScriptsServer>
+    <PackageJsonScriptsClient Condition="$(PackageJsonScriptsClient) == ''">cd client &amp;&amp; npm run dev</PackageJsonScriptsClient>
+    <PackageJsonScriptsStart Condition="$(PackageJsonScriptsStart) == ''">node app.js</PackageJsonScriptsStart>
     <PackageJsonKeywords Condition="$(PackageJsonKeywords) == ''">[]</PackageJsonKeywords>
     <PackageJsonAuthor Condition="$(PackageJsonAuthor) == ''"></PackageJsonAuthor>
     <PackageJsonLicense Condition="$(PackageJsonLicense) == ''">ISC</PackageJsonLicense>
     <PackageJsonDescription Condition="$(PackageJsonDescription) == ''"></PackageJsonDescription>
+    <PackageJsonDevdependenciesConcurrently Condition="$(PackageJsonDevdependenciesConcurrently) == ''">^8.2.2</PackageJsonDevdependenciesConcurrently>
     <PackageJsonDevdependenciesEslint Condition="$(PackageJsonDevdependenciesEslint) == ''">^9.31.0</PackageJsonDevdependenciesEslint>
     <PackageJsonDependenciesAntDesignPlots Condition="$(PackageJsonDependenciesAntDesignPlots) == ''">^2.6.1</PackageJsonDependenciesAntDesignPlots>
     <PackageJsonDependenciesMuiMaterial Condition="$(PackageJsonDependenciesMuiMaterial) == ''">^7.2.0</PackageJsonDependenciesMuiMaterial>
@@ -17,10 +22,12 @@
     <PackageJsonDependenciesAgGridCommunity Condition="$(PackageJsonDependenciesAgGridCommunity) == ''">^34.0.2</PackageJsonDependenciesAgGridCommunity>
     <PackageJsonDependenciesAgGridReact Condition="$(PackageJsonDependenciesAgGridReact) == ''">^34.0.2</PackageJsonDependenciesAgGridReact>
     <PackageJsonDependenciesAxios Condition="$(PackageJsonDependenciesAxios) == ''">^1.10.0</PackageJsonDependenciesAxios>
+    <PackageJsonDependenciesBcrypt Condition="$(PackageJsonDependenciesBcrypt) == ''">^6.0.0</PackageJsonDependenciesBcrypt>
     <PackageJsonDependenciesBcryptjs Condition="$(PackageJsonDependenciesBcryptjs) == ''">^3.0.2</PackageJsonDependenciesBcryptjs>
     <PackageJsonDependenciesCors Condition="$(PackageJsonDependenciesCors) == ''">^2.8.5</PackageJsonDependenciesCors>
     <PackageJsonDependenciesExceljs Condition="$(PackageJsonDependenciesExceljs) == ''">^4.4.0</PackageJsonDependenciesExceljs>
     <PackageJsonDependenciesExpressEjsLayouts Condition="$(PackageJsonDependenciesExpressEjsLayouts) == ''">^2.5.1</PackageJsonDependenciesExpressEjsLayouts>
+    <PackageJsonDependenciesExpressRateLimit Condition="$(PackageJsonDependenciesExpressRateLimit) == ''">^8.0.1</PackageJsonDependenciesExpressRateLimit>
     <PackageJsonDependenciesJsonwebtoken Condition="$(PackageJsonDependenciesJsonwebtoken) == ''">^9.0.2</PackageJsonDependenciesJsonwebtoken>
     <PackageJsonDependenciesMulter Condition="$(PackageJsonDependenciesMulter) == ''">^2.0.1</PackageJsonDependenciesMulter>
   </PropertyGroup>

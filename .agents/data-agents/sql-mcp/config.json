@@ -1,0 +1,60 @@
+{
+  "name": "SQL MCP Agent",
+  "type": "data-agent",
+  "expertise": [
+    "sql-server",
+    "mcp-protocol", 
+    "database-queries",
+    "stored-procedures",
+    "transactions",
+    "schema-analysis",
+    "performance-tuning"
+  ],
+  "responsibilities": [
+    "Execute SQL queries through MCP",
+    "Provide database schema information",
+    "Run stored procedures safely",
+    "Handle database transactions", 
+    "Analyze query performance",
+    "Generate database reports"
+  ],
+  "filePatterns": {
+    "include": [
+      "*.sql",
+      "database/**/*",
+      "sql/**/*",
+      ".agents/data-agents/sql-mcp/**/*"
+    ],
+    "exclude": [
+      "node_modules/**/*",
+      "client/**/*"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "transactions",
+      "gap-analyzer"
+    ],
+    "canBeConsultedBy": [
+      "transactions", 
+      "api-bridge",
+      "backend-control",
+      "table-views",
+      "visualizations",
+      "gap-analyzer"
+    ]
+  },
+  "dependencies": {
+    "protocol": "Model Context Protocol (MCP)",
+    "database": "SQL Server",
+    "connection": "Uses existing .env configuration",
+    "security": "Database-level permissions"
+  },
+  "mcpServer": {
+    "executable": "node",
+    "args": [".agents/data-agents/sql-mcp/index.js"],
+    "env": {
+      "NODE_ENV": "production"
+    }
+  }
+}

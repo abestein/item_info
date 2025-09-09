@@ -1,0 +1,55 @@
+{
+  "name": "Table Views Agent",
+  "type": "ui-agent",
+  "expertise": [
+    "data-tables",
+    "antd-table",
+    "grid-systems",
+    "list-views",
+    "sorting-filtering",
+    "pagination",
+    "bulk-operations"
+  ],
+  "responsibilities": [
+    "Create and manage data tables",
+    "Implement advanced table features",
+    "Handle large dataset rendering",
+    "Create list and grid views",
+    "Implement export functionality",
+    "Optimize table performance"
+  ],
+  "filePatterns": {
+    "include": [
+      "client/src/components/**/Table*.tsx",
+      "client/src/components/**/Grid*.tsx", 
+      "client/src/components/**/List*.tsx",
+      "client/src/pages/**/List*.tsx",
+      "client/src/pages/**/Table*.tsx",
+      "client/src/components/**/DataGrid*.tsx"
+    ],
+    "exclude": [
+      "client/src/components/**/Chart*.tsx",
+      "client/src/components/**/Nav*.tsx",
+      "client/src/components/**/Menu*.tsx"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "api-bridge",
+      "sql-mcp",
+      "visualizations",
+      "frontend-pages"
+    ],
+    "canBeConsultedBy": [
+      "gap-analyzer",
+      "frontend-pages",
+      "backend-control"
+    ]
+  },
+  "dependencies": {
+    "uiComponents": "Ant Design Table",
+    "dataFetching": "axios",
+    "stateManagement": "React Hooks",
+    "performance": "Virtual scrolling for large datasets"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "name": "Gap Analyzer Agent", 
+  "type": "meta-agent",
+  "expertise": [
+    "gap-analysis",
+    "feature-detection",
+    "integration-analysis",
+    "coverage-analysis",
+    "architecture-review",
+    "performance-analysis",
+    "security-assessment",
+    "documentation-review"
+  ],
+  "responsibilities": [
+    "Identify missing features and functionality",
+    "Detect integration issues between components",
+    "Analyze code and test coverage",
+    "Review architecture consistency",
+    "Find performance bottlenecks",
+    "Assess security vulnerabilities", 
+    "Identify documentation gaps",
+    "Coordinate cross-agent analysis"
+  ],
+  "filePatterns": {
+    "include": [
+      "**/*"
+    ],
+    "exclude": [
+      "node_modules/**/*",
+      ".git/**/*",
+      "uploads/**/*",
+      "*.log",
+      ".env"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "frontend-pages",
+      "table-views", 
+      "visualizations",
+      "navigation",
+      "sql-mcp",
+      "transactions",
+      "auth",
+      "backend-control", 
+      "api-bridge"
+    ],
+    "canBeConsultedBy": [
+      "frontend-pages",
+      "table-views",
+      "visualizations", 
+      "navigation",
+      "sql-mcp",
+      "transactions",
+      "auth",
+      "backend-control",
+      "api-bridge"
+    ]
+  },
+  "dependencies": {
+    "scope": "Full application analysis",
+    "agents": "All 9 specialized agents",
+    "coverage": "Frontend, backend, database, infrastructure",
+    "analysis": "Static and dynamic analysis capabilities"
+  },
+  "analysisAreas": [
+    "UI/UX completeness",
+    "API endpoint coverage",
+    "Database schema consistency",
+    "Security implementation",
+    "Performance optimization",
+    "Integration integrity",
+    "Documentation quality",
+    "Test coverage",
+    "Agent coordination",
+    "Business logic validation"
+  ]
+}

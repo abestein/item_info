@@ -1,0 +1,56 @@
+{
+  "name": "Navigation Agent",
+  "type": "ui-agent",
+  "expertise": [
+    "sidebar-navigation",
+    "top-ribbon",
+    "breadcrumbs", 
+    "react-router",
+    "antd-menu",
+    "responsive-nav",
+    "role-based-navigation"
+  ],
+  "responsibilities": [
+    "Create and manage sidebar navigation",
+    "Implement top ribbon/toolbar",
+    "Build breadcrumb systems",
+    "Handle route integration", 
+    "Implement role-based navigation",
+    "Ensure responsive navigation"
+  ],
+  "filePatterns": {
+    "include": [
+      "client/src/components/**/Nav*.tsx",
+      "client/src/components/**/Menu*.tsx",
+      "client/src/components/**/Sidebar*.tsx",
+      "client/src/components/**/Breadcrumb*.tsx",
+      "client/src/components/**/Layout*.tsx",
+      "client/src/App.tsx"
+    ],
+    "exclude": [
+      "client/src/pages/**/*.tsx",
+      "client/src/components/**/Table*.tsx",
+      "client/src/components/**/Chart*.tsx"
+    ]
+  },
+  "consultationPermissions": {
+    "canConsult": [
+      "auth",
+      "frontend-pages",
+      "api-bridge", 
+      "backend-control"
+    ],
+    "canBeConsultedBy": [
+      "gap-analyzer",
+      "frontend-pages",
+      "auth",
+      "backend-control"
+    ]
+  },
+  "dependencies": {
+    "routing": "React Router DOM",
+    "uiComponents": "Ant Design Menu & Layout",
+    "authentication": "Role-based access control",
+    "responsiveness": "Mobile-first design"
+  }
+}

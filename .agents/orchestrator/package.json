@@ -1,0 +1,20 @@
+{
+  "name": "agent-orchestrator",
+  "version": "1.0.0",
+  "description": "Node.js Agent Orchestration System",
+  "main": "agent-system.js",
+  "type": "module",
+  "scripts": {
+    "start": "node agent-system.js",
+    "test": "node test-agents.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0",
+    "dotenv": "^16.4.5",
+    "commander": "^11.1.0",
+    "chalk": "^5.3.0"
+  },
+  "keywords": ["agents", "orchestrator", "claude"],
+  "author": "",
+  "license": "MIT"
+}

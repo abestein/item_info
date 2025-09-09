@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "sql-server-mcp": {
+      "command": "node",
+      "args": [".agents/data-agents/sql-mcp/index.js"],
+      "cwd": "C:/Users/AS/source/repos/item_information/item_information",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  },
+  "globalShortcuts": {
+    "claude.showChatHistory": "ctrl+shift+h",
+    "claude.newChat": "ctrl+shift+n"
+  },
+  "appearance": {
+    "theme": "auto"
+  },
+  "models": {
+    "default": "claude-sonnet-4-20241022"
+  }
+}
