@@ -1,0 +1,481 @@
+<div class="card">
+    <div class="card-header">
+        Upload Excel File to Data Team Active Items (Temp Table)
+    </div>
+
+    <form id="uploadForm" action="/upload-data-team" method="POST" enctype="multipart/form-data">
+        <div class="upload-section">
+            <div class="form-group">
+                <label for="excelFile">Select Excel File (.xlsx, .xls)</label>
+                <input type="file" id="excelFile" name="excelFile" accept=".xlsx,.xls" required>
+                <small class="form-text">The Excel file should contain data team active items with headers in row 3</small>
+            </div>
+
+            <div class="form-group">
+                <label for="sheetName">Sheet Name (leave empty for first sheet)</label>
+                <input type="text" id="sheetName" name="sheetName" placeholder="Optional: Specific sheet name">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="clearTable" name="clearTable" checked>
+                    Clear temp table before upload
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="uploadBtn">
+                <i class="fas fa-upload"></i> Validate and Upload
+            </button>
+        </div>
+    </form>
+
+    <div id="validationSection" style="display: none;">
+        <h3>Validation Results</h3>
+        <div id="validationResults"></div>
+        <div id="validationActions" style="display: none;">
+            <button type="button" class="btn btn-success" id="proceedBtn">
+                <i class="fas fa-check"></i> Proceed with Import
+            </button>
+            <button type="button" class="btn btn-secondary" id="cancelBtn">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        </div>
+    </div>
+
+    <div id="progressSection" style="display: none;">
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressPercent">0%</span>
+                <span id="progressRows"></span>
+            </div>
+        </div>
+        <p id="statusMessage">Initializing...</p>
+    </div>
+
+    <div id="resultSection" style="display: none;">
+        <h3>Upload Results</h3>
+        <div id="resultMessage"></div>
+    </div>
+</div>
+
+<div class="info-card">
+    <h4>Validation Rules:</h4>
+    <ul>
+        <li><strong>No Duplicate Item Codes:</strong> Each item code must be unique across the entire sheet</li>
+        <li><strong>No Duplicate UPCs:</strong> All UPC codes must be unique (UPC Inner-2, Inner-1, Sellable, Ship+1, Ship+2)</li>
+        <li><strong>UPC Length Validation:</strong> UPCs must be exactly 12 digits, or 'X'/'x', or empty/null</li>
+        <li><strong>Required Fields:</strong> Brand Name and Item# are required</li>
+    </ul>
+
+    <h4>Data Import Process:</h4>
+    <ol>
+        <li>File is validated against all rules</li>
+        <li>If validation passes, data is imported to temp table: <code>data_team_active_items_temp</code></li>
+        <li>You can then compare changes and confirm import to main table</li>
+    </ol>
+</div>
+
+<style>
+.upload-section {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-group input[type="file"],
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #3498db;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    font-size: 14px;
+}
+
+.form-group input[type="file"]:hover {
+    background-color: #e3f2fd;
+}
+
+.form-group input[type="text"] {
+    border: 1px solid #ddd;
+}
+
+.form-text {
+    display: block;
+    margin-top: 5px;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.progress-container {
+    margin: 20px 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(45deg, #3498db 25%, #2980b9 25%, #2980b9 50%, #3498db 50%, #3498db 75%, #2980b9 75%, #2980b9);
+    background-size: 30px 30px;
+    width: 0%;
+    transition: width 0.3s ease;
+    animation: progress-animation 1s linear infinite;
+}
+
+@keyframes progress-animation {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 30px 30px;
+    }
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#statusMessage {
+    text-align: center;
+    margin-top: 10px;
+    font-style: italic;
+    color: #666;
+}
+
+#validationSection, #resultSection {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+#validationActions {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#validationActions .btn {
+    margin: 0 10px;
+}
+
+.validation-success {
+    color: #27ae60;
+    padding: 15px;
+    background-color: #d4edda;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.validation-error {
+    color: #e74c3c;
+    padding: 15px;
+    background-color: #f8d7da;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.validation-warning {
+    color: #f39c12;
+    padding: 15px;
+    background-color: #fff3cd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.success {
+    color: #27ae60;
+    padding: 15px;
+    background-color: #d4edda;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.error {
+    color: #e74c3c;
+    padding: 15px;
+    background-color: #f8d7da;
+    border-radius: 4px;
+}
+
+.info-card {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e3f2fd;
+    border-left: 4px solid #3498db;
+    border-radius: 4px;
+}
+
+.info-card h4 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.info-card ul, .info-card ol {
+    margin-bottom: 0;
+    padding-left: 20px;
+}
+
+.info-card li {
+    margin: 5px 0;
+    color: #555;
+}
+
+.error-list {
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+.error-list li {
+    color: #e74c3c;
+    margin: 5px 0;
+}
+
+.validation-details {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.validation-details .error-item {
+    background-color: #ffe6e6;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 4px;
+    border-left: 4px solid #e74c3c;
+}
+
+.validation-details .warning-item {
+    background-color: #fff8dc;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 4px;
+    border-left: 4px solid #f39c12;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-success {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+</style>
+
+<script>
+let validatedData = null;
+
+document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const uploadBtn = document.getElementById('uploadBtn');
+    const validationSection = document.getElementById('validationSection');
+    const progressSection = document.getElementById('progressSection');
+    const resultSection = document.getElementById('resultSection');
+    const validationResults = document.getElementById('validationResults');
+    const validationActions = document.getElementById('validationActions');
+
+    // Hide all sections initially
+    validationSection.style.display = 'none';
+    progressSection.style.display = 'none';
+    resultSection.style.display = 'none';
+    uploadBtn.disabled = true;
+
+    try {
+        // First, validate the file
+        validationResults.innerHTML = '<div class="validation-warning"><i class="fas fa-spinner fa-spin"></i> Validating Excel file...</div>';
+        validationSection.style.display = 'block';
+
+        const validateResponse = await fetch('/validate-data-team-excel', {
+            method: 'POST',
+            body: formData
+        });
+
+        const validation = await validateResponse.json();
+
+        if (validation.success) {
+            validationResults.innerHTML = `
+                <div class="validation-success">
+                    <i class="fas fa-check-circle"></i>
+                    Validation Passed!
+                    <div class="validation-details">
+                        <strong>File Summary:</strong><br>
+                        • Total rows: ${validation.summary.totalRows}<br>
+                        • Valid item codes: ${validation.summary.validItemCodes}<br>
+                        • Valid UPCs: ${validation.summary.validUPCs}<br>
+                        • Ready for import to temp table
+                    </div>
+                </div>
+            `;
+
+            validatedData = validation.data;
+            validationActions.style.display = 'block';
+
+        } else {
+            let errorHtml = `<div class="validation-error">
+                <i class="fas fa-exclamation-circle"></i>
+                Validation Failed!
+                <div class="validation-details">`;
+
+            if (validation.errors.duplicateItems && validation.errors.duplicateItems.length > 0) {
+                errorHtml += `<div class="error-item">
+                    <strong>Duplicate Item Codes Found:</strong><br>
+                    ${validation.errors.duplicateItems.map(item => `Row ${item.row}: "${item.itemCode}"`).join('<br>')}
+                </div>`;
+            }
+
+            if (validation.errors.duplicateUPCs && validation.errors.duplicateUPCs.length > 0) {
+                errorHtml += `<div class="error-item">
+                    <strong>Duplicate UPC Codes Found:</strong><br>
+                    ${validation.errors.duplicateUPCs.map(upc => `Row ${upc.row}: "${upc.upcCode}" (${upc.column})`).join('<br>')}
+                </div>`;
+            }
+
+            if (validation.errors.invalidUPCs && validation.errors.invalidUPCs.length > 0) {
+                errorHtml += `<div class="error-item">
+                    <strong>Invalid UPC Lengths Found:</strong><br>
+                    ${validation.errors.invalidUPCs.map(upc => `Row ${upc.row}: "${upc.upcCode}" (${upc.column}) - Length: ${upc.length}`).join('<br>')}
+                </div>`;
+            }
+
+            if (validation.errors.missingRequired && validation.errors.missingRequired.length > 0) {
+                errorHtml += `<div class="error-item">
+                    <strong>Missing Required Fields:</strong><br>
+                    ${validation.errors.missingRequired.map(field => `Row ${field.row}: Missing ${field.field}`).join('<br>')}
+                </div>`;
+            }
+
+            errorHtml += `</div></div>`;
+            validationResults.innerHTML = errorHtml;
+            validationActions.style.display = 'none';
+        }
+
+    } catch (error) {
+        validationResults.innerHTML = `<div class="validation-error"><i class="fas fa-exclamation-circle"></i> Validation Error: ${error.message}</div>`;
+        validationActions.style.display = 'none';
+    } finally {
+        uploadBtn.disabled = false;
+    }
+});
+
+document.getElementById('proceedBtn').addEventListener('click', async function() {
+    if (!validatedData) return;
+
+    const progressSection = document.getElementById('progressSection');
+    const resultSection = document.getElementById('resultSection');
+    const validationSection = document.getElementById('validationSection');
+    const progressFill = document.getElementById('progressFill');
+    const progressPercent = document.getElementById('progressPercent');
+    const progressRows = document.getElementById('progressRows');
+    const statusMessage = document.getElementById('statusMessage');
+    const resultMessage = document.getElementById('resultMessage');
+
+    // Show progress, hide validation
+    validationSection.style.display = 'none';
+    progressSection.style.display = 'block';
+    resultSection.style.display = 'none';
+
+    try {
+        statusMessage.textContent = 'Importing data to temp table...';
+
+        const importResponse = await fetch('/import-data-team-temp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data: validatedData,
+                clearTable: document.getElementById('clearTable').checked
+            })
+        });
+
+        const result = await importResponse.json();
+
+        if (result.success) {
+            progressFill.style.width = '100%';
+            progressPercent.textContent = '100%';
+            progressRows.textContent = `${result.totalRows} rows processed`;
+            statusMessage.textContent = 'Import completed successfully!';
+
+            resultMessage.innerHTML = `
+                <div class="success">
+                    <i class="fas fa-check-circle"></i>
+                    Success! Data imported to temp table
+                    <br>
+                    ✓ ${result.totalRows} rows imported to data_team_active_items_temp
+                    <br>
+                    <strong>Next Steps:</strong>
+                    <ul>
+                        <li>Review the imported data</li>
+                        <li>Run comparison with original table</li>
+                        <li>Confirm changes to apply to main table</li>
+                    </ul>
+                </div>
+            `;
+        } else {
+            throw new Error(result.error || 'Import failed');
+        }
+
+    } catch (error) {
+        statusMessage.textContent = 'Import failed!';
+        resultMessage.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> Error: ${error.message}</div>`;
+    } finally {
+        resultSection.style.display = 'block';
+    }
+});
+
+document.getElementById('cancelBtn').addEventListener('click', function() {
+    const validationSection = document.getElementById('validationSection');
+    const uploadBtn = document.getElementById('uploadBtn');
+
+    validationSection.style.display = 'none';
+    uploadBtn.disabled = false;
+    validatedData = null;
+});
+</script>

@@ -1,0 +1,782 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2025-09-16T16:31:49.731Z",
+  "agentRegistry": {
+    "excel-mcp": {
+      "name": "Excel MCP Agent",
+      "type": "data-agent",
+      "category": "data-processing",
+      "expertise": [
+        "Excel file reading and parsing",
+        "XLSX format handling",
+        "Data extraction from spreadsheets",
+        "Formula processing",
+        "Multi-sheet operations",
+        "Data validation and cleaning"
+      ],
+      "capabilities": [
+        "Read Excel files (.xlsx, .xls)",
+        "Extract specific data ranges",
+        "Handle complex formulas",
+        "Convert Excel data to JSON/CSV",
+        "Validate data structure",
+        "Process multiple worksheets"
+      ],
+      "optimalPrompts": [
+        "Extract data from Excel file: {filename}",
+        "Analyze Excel structure and validate data quality",
+        "Convert Excel data to structured format for import",
+        "Process multiple Excel sheets and merge data"
+      ],
+      "commonTasks": [
+        "data extraction",
+        "excel processing",
+        "spreadsheet analysis",
+        "data validation",
+        "format conversion"
+      ],
+      "dependencies": [
+        "transactions",
+        "gap-analyzer"
+      ],
+      "outputs": [
+        "structured data",
+        "validation reports",
+        "error logs"
+      ]
+    },
+    "sql-mcp": {
+      "name": "SQL MCP Agent",
+      "type": "data-agent",
+      "category": "database-operations",
+      "expertise": [
+        "SQL Server operations",
+        "Database schema management",
+        "Query optimization",
+        "Transaction management",
+        "Bulk data operations",
+        "Database security"
+      ],
+      "capabilities": [
+        "Execute SQL queries",
+        "Manage database schemas",
+        "Perform bulk imports/exports",
+        "Handle transactions",
+        "Monitor database performance",
+        "Implement security policies"
+      ],
+      "optimalPrompts": [
+        "Execute database operation: {description}",
+        "Import data into table: {table_name}",
+        "Analyze database schema and optimize structure",
+        "Validate data integrity and relationships"
+      ],
+      "commonTasks": [
+        "data import",
+        "database queries",
+        "schema management",
+        "data validation",
+        "performance optimization"
+      ],
+      "dependencies": [
+        "transactions",
+        "gap-analyzer"
+      ],
+      "outputs": [
+        "query results",
+        "import status",
+        "performance metrics"
+      ]
+    },
+    "transactions": {
+      "name": "Transactions Agent",
+      "type": "data-agent",
+      "category": "data-processing",
+      "expertise": [
+        "Data validation and cleaning",
+        "Business rule enforcement",
+        "CRUD operations",
+        "Error handling and recovery",
+        "Data transformation",
+        "Workflow management"
+      ],
+      "capabilities": [
+        "Validate data against business rules",
+        "Clean and transform data",
+        "Handle CRUD operations",
+        "Implement error recovery",
+        "Manage data workflows",
+        "Process batch operations"
+      ],
+      "optimalPrompts": [
+        "Validate and clean data: {data_description}",
+        "Process business transaction: {transaction_type}",
+        "Implement data validation rules for: {entity}",
+        "Handle error recovery for failed operations"
+      ],
+      "commonTasks": [
+        "data validation",
+        "data cleaning",
+        "business logic",
+        "error handling",
+        "workflow processing"
+      ],
+      "dependencies": [
+        "gap-analyzer"
+      ],
+      "outputs": [
+        "validated data",
+        "processing reports",
+        "error logs"
+      ]
+    },
+    "gap-analyzer": {
+      "name": "Gap Analyzer Agent",
+      "type": "meta-agent",
+      "category": "analysis",
+      "expertise": [
+        "System capability analysis",
+        "Feature gap detection",
+        "Requirements assessment",
+        "Missing functionality identification",
+        "System optimization recommendations",
+        "Architecture analysis"
+      ],
+      "capabilities": [
+        "Analyze system capabilities",
+        "Identify missing features",
+        "Assess requirements coverage",
+        "Provide optimization recommendations",
+        "Generate gap analysis reports",
+        "Evaluate system architecture"
+      ],
+      "optimalPrompts": [
+        "Analyze system gaps for: {functionality}",
+        "Assess missing capabilities in: {domain}",
+        "Evaluate system architecture and recommend improvements",
+        "Identify requirements not covered by current agents"
+      ],
+      "commonTasks": [
+        "gap analysis",
+        "requirement assessment",
+        "system evaluation",
+        "optimization recommendations",
+        "capability mapping"
+      ],
+      "dependencies": [],
+      "outputs": [
+        "gap analysis reports",
+        "recommendations",
+        "capability maps"
+      ]
+    },
+    "router": {
+      "name": "Router Agent",
+      "type": "meta-agent",
+      "category": "orchestration",
+      "expertise": [
+        "Request routing and distribution",
+        "Agent selection optimization",
+        "Load balancing",
+        "Request parsing and analysis",
+        "Agent capability matching",
+        "Performance optimization"
+      ],
+      "capabilities": [
+        "Route requests to optimal agents",
+        "Balance load across agents",
+        "Parse complex requests",
+        "Match capabilities to requirements",
+        "Optimize agent selection",
+        "Monitor agent performance"
+      ],
+      "optimalPrompts": [
+        "Route request to optimal agent: {request}",
+        "Analyze request and recommend agent distribution",
+        "Balance workload across available agents",
+        "Optimize agent selection for: {task_type}"
+      ],
+      "commonTasks": [
+        "request routing",
+        "agent selection",
+        "load balancing",
+        "capability matching",
+        "performance optimization"
+      ],
+      "dependencies": [
+        "gap-analyzer"
+      ],
+      "outputs": [
+        "routing decisions",
+        "performance metrics",
+        "optimization reports"
+      ]
+    },
+    "frontend-pages": {
+      "name": "Frontend Pages Agent",
+      "type": "ui-agent",
+      "category": "user-interface",
+      "expertise": [
+        "Web page creation and management",
+        "User interface design",
+        "Component development",
+        "User experience optimization",
+        "Responsive design",
+        "Accessibility implementation"
+      ],
+      "capabilities": [
+        "Create web pages",
+        "Design user interfaces",
+        "Develop reusable components",
+        "Implement responsive layouts",
+        "Ensure accessibility compliance",
+        "Optimize user experience"
+      ],
+      "optimalPrompts": [
+        "Create web page for: {page_purpose}",
+        "Design user interface for: {functionality}",
+        "Develop responsive component: {component_type}",
+        "Optimize user experience for: {user_scenario}"
+      ],
+      "commonTasks": [
+        "page creation",
+        "ui design",
+        "component development",
+        "responsive design",
+        "user experience"
+      ],
+      "dependencies": [
+        "navigation",
+        "auth"
+      ],
+      "outputs": [
+        "web pages",
+        "ui components",
+        "design specifications"
+      ]
+    },
+    "table-views": {
+      "name": "Table Views Agent",
+      "type": "ui-agent",
+      "category": "data-display",
+      "expertise": [
+        "Data table creation and management",
+        "Grid layouts and styling",
+        "Sorting and filtering logic",
+        "Data pagination",
+        "Interactive table features",
+        "Export functionality"
+      ],
+      "capabilities": [
+        "Create data tables",
+        "Implement sorting/filtering",
+        "Handle large datasets",
+        "Provide export features",
+        "Create interactive grids",
+        "Optimize table performance"
+      ],
+      "optimalPrompts": [
+        "Create data table for: {data_type}",
+        "Implement table with sorting/filtering for: {entity}",
+        "Design interactive grid display for: {dataset}",
+        "Optimize table performance for: {data_volume}"
+      ],
+      "commonTasks": [
+        "table creation",
+        "data display",
+        "sorting/filtering",
+        "data pagination",
+        "export functionality"
+      ],
+      "dependencies": [
+        "sql-mcp",
+        "transactions"
+      ],
+      "outputs": [
+        "data tables",
+        "grid components",
+        "display specifications"
+      ]
+    },
+    "visualizations": {
+      "name": "Visualizations Agent",
+      "type": "ui-agent",
+      "category": "data-visualization",
+      "expertise": [
+        "Chart and graph creation",
+        "Dashboard design",
+        "Interactive visualizations",
+        "Data storytelling",
+        "Visual analytics",
+        "Real-time data displays"
+      ],
+      "capabilities": [
+        "Create various chart types",
+        "Design dashboards",
+        "Build interactive visuals",
+        "Implement real-time updates",
+        "Create data stories",
+        "Optimize visual performance"
+      ],
+      "optimalPrompts": [
+        "Create visualization for: {data_type}",
+        "Design dashboard showing: {metrics}",
+        "Build interactive chart for: {analysis}",
+        "Create real-time display of: {live_data}"
+      ],
+      "commonTasks": [
+        "chart creation",
+        "dashboard design",
+        "data visualization",
+        "interactive displays",
+        "real-time updates"
+      ],
+      "dependencies": [
+        "sql-mcp",
+        "transactions"
+      ],
+      "outputs": [
+        "charts",
+        "dashboards",
+        "visual components"
+      ]
+    },
+    "navigation": {
+      "name": "Navigation Agent",
+      "type": "ui-agent",
+      "category": "user-interface",
+      "expertise": [
+        "Site navigation design",
+        "Menu system creation",
+        "User flow optimization",
+        "Breadcrumb implementation",
+        "Search functionality",
+        "Mobile navigation"
+      ],
+      "capabilities": [
+        "Design navigation systems",
+        "Create menu structures",
+        "Implement search features",
+        "Optimize user flows",
+        "Handle mobile navigation",
+        "Create breadcrumbs"
+      ],
+      "optimalPrompts": [
+        "Design navigation for: {site_structure}",
+        "Create menu system with: {navigation_requirements}",
+        "Implement search functionality for: {content_type}",
+        "Optimize user flow for: {user_journey}"
+      ],
+      "commonTasks": [
+        "navigation design",
+        "menu creation",
+        "search implementation",
+        "user flow optimization",
+        "mobile navigation"
+      ],
+      "dependencies": [
+        "auth",
+        "frontend-pages"
+      ],
+      "outputs": [
+        "navigation components",
+        "menu systems",
+        "search features"
+      ]
+    },
+    "auth": {
+      "name": "Auth Agent",
+      "type": "system-agent",
+      "category": "security",
+      "expertise": [
+        "Authentication system design",
+        "Authorization and permissions",
+        "Security protocol implementation",
+        "User session management",
+        "Password security",
+        "Multi-factor authentication"
+      ],
+      "capabilities": [
+        "Implement login systems",
+        "Manage user permissions",
+        "Handle secure sessions",
+        "Enforce security policies",
+        "Implement MFA",
+        "Audit security events"
+      ],
+      "optimalPrompts": [
+        "Implement authentication for: {application}",
+        "Design permission system for: {user_roles}",
+        "Enhance security with: {security_requirements}",
+        "Audit and improve security for: {system_component}"
+      ],
+      "commonTasks": [
+        "authentication",
+        "authorization",
+        "security implementation",
+        "session management",
+        "user permissions"
+      ],
+      "dependencies": [],
+      "outputs": [
+        "auth systems",
+        "security policies",
+        "audit reports"
+      ]
+    },
+    "backend-control": {
+      "name": "Backend Control Agent",
+      "type": "system-agent",
+      "category": "administration",
+      "expertise": [
+        "Admin panel creation",
+        "System configuration management",
+        "Control panel design",
+        "System monitoring",
+        "Configuration interfaces",
+        "Administrative workflows"
+      ],
+      "capabilities": [
+        "Create admin interfaces",
+        "Manage system settings",
+        "Design control panels",
+        "Monitor system health",
+        "Handle configurations",
+        "Implement admin workflows"
+      ],
+      "optimalPrompts": [
+        "Create admin panel for: {management_area}",
+        "Design control interface for: {system_component}",
+        "Implement system monitoring for: {metrics}",
+        "Build configuration management for: {settings}"
+      ],
+      "commonTasks": [
+        "admin panel creation",
+        "system configuration",
+        "control interfaces",
+        "system monitoring",
+        "administrative tools"
+      ],
+      "dependencies": [
+        "auth",
+        "api-bridge"
+      ],
+      "outputs": [
+        "admin panels",
+        "control interfaces",
+        "monitoring tools"
+      ]
+    },
+    "api-bridge": {
+      "name": "API Bridge Agent",
+      "type": "system-agent",
+      "category": "integration",
+      "expertise": [
+        "REST API development",
+        "Data integration patterns",
+        "Service orchestration",
+        "API gateway implementation",
+        "External service integration",
+        "Data synchronization"
+      ],
+      "capabilities": [
+        "Create REST APIs",
+        "Integrate external services",
+        "Handle data synchronization",
+        "Implement API gateways",
+        "Manage service connections",
+        "Handle API security"
+      ],
+      "optimalPrompts": [
+        "Create API for: {functionality}",
+        "Integrate with external service: {service_name}",
+        "Implement data bridge between: {systems}",
+        "Design API gateway for: {service_architecture}"
+      ],
+      "commonTasks": [
+        "api development",
+        "service integration",
+        "data bridging",
+        "api gateway",
+        "external connections"
+      ],
+      "dependencies": [
+        "auth",
+        "backend-control"
+      ],
+      "outputs": [
+        "apis",
+        "integration services",
+        "data bridges"
+      ]
+    }
+  },
+  "trainingPatterns": {
+    "dataProcessingPatterns": [
+      {
+        "keywords": [
+          "excel",
+          "xlsx",
+          "spreadsheet",
+          "csv"
+        ],
+        "agents": [
+          "excel-mcp",
+          "transactions"
+        ]
+      },
+      {
+        "keywords": [
+          "import",
+          "export",
+          "data",
+          "database"
+        ],
+        "agents": [
+          "sql-mcp",
+          "transactions"
+        ]
+      },
+      {
+        "keywords": [
+          "validate",
+          "clean",
+          "process"
+        ],
+        "agents": [
+          "transactions",
+          "gap-analyzer"
+        ]
+      },
+      {
+        "keywords": [
+          "analyze",
+          "assessment",
+          "evaluation"
+        ],
+        "agents": [
+          "gap-analyzer",
+          "router"
+        ]
+      }
+    ],
+    "uiPatterns": [
+      {
+        "keywords": [
+          "display",
+          "show",
+          "view",
+          "interface"
+        ],
+        "agents": [
+          "frontend-pages",
+          "table-views"
+        ]
+      },
+      {
+        "keywords": [
+          "table",
+          "grid",
+          "list"
+        ],
+        "agents": [
+          "table-views"
+        ]
+      },
+      {
+        "keywords": [
+          "chart",
+          "graph",
+          "dashboard",
+          "visual"
+        ],
+        "agents": [
+          "visualizations"
+        ]
+      },
+      {
+        "keywords": [
+          "navigation",
+          "menu",
+          "breadcrumb"
+        ],
+        "agents": [
+          "navigation"
+        ]
+      }
+    ],
+    "systemPatterns": [
+      {
+        "keywords": [
+          "auth",
+          "login",
+          "security",
+          "permission"
+        ],
+        "agents": [
+          "auth"
+        ]
+      },
+      {
+        "keywords": [
+          "admin",
+          "control",
+          "configuration",
+          "settings"
+        ],
+        "agents": [
+          "backend-control"
+        ]
+      },
+      {
+        "keywords": [
+          "api",
+          "service",
+          "integration",
+          "external"
+        ],
+        "agents": [
+          "api-bridge"
+        ]
+      }
+    ],
+    "workflowPatterns": [
+      {
+        "scenario": "excel_to_database",
+        "sequence": [
+          "excel-mcp",
+          "transactions",
+          "sql-mcp",
+          "gap-analyzer"
+        ],
+        "description": "Excel data import workflow"
+      },
+      {
+        "scenario": "data_dashboard",
+        "sequence": [
+          "sql-mcp",
+          "transactions",
+          "visualizations",
+          "frontend-pages"
+        ],
+        "description": "Data dashboard creation workflow"
+      },
+      {
+        "scenario": "user_management",
+        "sequence": [
+          "auth",
+          "backend-control",
+          "frontend-pages",
+          "api-bridge"
+        ],
+        "description": "User management system workflow"
+      }
+    ]
+  },
+  "orchestrationTemplates": {
+    "dataImportTemplate": {
+      "name": "Data Import Workflow",
+      "description": "Template for importing data from external sources",
+      "steps": [
+        {
+          "agent": "gap-analyzer",
+          "action": "analyze_requirements",
+          "prompt": "Analyze data import requirements and identify potential issues"
+        },
+        {
+          "agent": "excel-mcp",
+          "action": "extract_data",
+          "prompt": "Extract and validate data from source file"
+        },
+        {
+          "agent": "transactions",
+          "action": "validate_clean",
+          "prompt": "Validate and clean extracted data according to business rules"
+        },
+        {
+          "agent": "sql-mcp",
+          "action": "import_data",
+          "prompt": "Import validated data into target database"
+        },
+        {
+          "agent": "gap-analyzer",
+          "action": "verify_completion",
+          "prompt": "Verify import completion and assess any remaining gaps"
+        }
+      ]
+    },
+    "dashboardTemplate": {
+      "name": "Dashboard Creation Workflow",
+      "description": "Template for creating data dashboards",
+      "steps": [
+        {
+          "agent": "gap-analyzer",
+          "action": "analyze_requirements",
+          "prompt": "Analyze dashboard requirements and data visualization needs"
+        },
+        {
+          "agent": "sql-mcp",
+          "action": "prepare_data",
+          "prompt": "Query and prepare data for visualization"
+        },
+        {
+          "agent": "visualizations",
+          "action": "create_charts",
+          "prompt": "Create appropriate charts and visual components"
+        },
+        {
+          "agent": "frontend-pages",
+          "action": "build_dashboard",
+          "prompt": "Build dashboard page integrating all visual components"
+        },
+        {
+          "agent": "navigation",
+          "action": "integrate_navigation",
+          "prompt": "Integrate dashboard into site navigation"
+        }
+      ]
+    },
+    "securityTemplate": {
+      "name": "Security Implementation Workflow",
+      "description": "Template for implementing security features",
+      "steps": [
+        {
+          "agent": "gap-analyzer",
+          "action": "security_assessment",
+          "prompt": "Assess current security posture and identify vulnerabilities"
+        },
+        {
+          "agent": "auth",
+          "action": "implement_auth",
+          "prompt": "Implement authentication and authorization systems"
+        },
+        {
+          "agent": "api-bridge",
+          "action": "secure_apis",
+          "prompt": "Implement API security measures and access controls"
+        },
+        {
+          "agent": "backend-control",
+          "action": "admin_security",
+          "prompt": "Create secure administrative interfaces and controls"
+        },
+        {
+          "agent": "gap-analyzer",
+          "action": "verify_security",
+          "prompt": "Verify security implementation and identify remaining gaps"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "totalAgents": 12,
+    "trainingComplete": true,
+    "capabilities": [
+      "Request analysis and agent selection",
+      "Optimal prompt generation",
+      "Missing capability detection",
+      "Workflow orchestration",
+      "Agent dependency management"
+    ]
+  }
+}

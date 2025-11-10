@@ -1,0 +1,211 @@
+{
+  "summary": {
+    "totalRecords": 2723,
+    "successfulRecords": 1485,
+    "failedRecords": 15,
+    "patternCounts": {
+      "Contains \\n (newline characters)": 15,
+      "Contains \\\" (escaped quotes)": 2,
+      "Contains backslash escapes": 15
+    }
+  },
+  "failedRecords": [
+    {
+      "recordNumber": 100,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "DynaCare",
+      "item": "1308",
+      "description1": "Facial Tissues",
+      "description2": "8\" x 7\\\" (20.3 cm x 17.8 cm)",
+      "rawData": "('DynaCare', '1308', 'Facial Tissues', '8\" x 7\\\" (20.3 cm x 17.8 cm)', NULL, NULL, '100/BX', '100 x 30/CS', NULL, NULL, NULL, 616784130828, 616784130835, NULL, NULL, NULL, 'R250411-1', 'R250411-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains \\\" (escaped quotes)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 200,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "WeCare",
+      "item": "1465",
+      "description1": "AquaGard Hydrating Ointment",
+      "description2": "Heals and Protects Dry, Sensitive Skin",
+      "rawData": "('WeCare', '1465', 'AquaGard Hydrating Ointment', 'Heals and Protects Dry, Sensitive Skin', '0.9 g', '1/EA', '144/BX', '144 x 12/CS', NULL, NULL, NULL, 616784146522, 616784146539, NULL, NULL, 'R250307-1', 'R250307-1', 'R250502-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NUL...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 300,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "Dynarex",
+      "item": "2184",
+      "description1": "Slipper Socks, Non-Skid Tread, Terry Cloth",
+      "description2": "Gray",
+      "rawData": "('Dynarex', '2184', 'Slipper Socks, Non-Skid Tread, Terry Cloth', 'Gray', '2X-Large', NULL, '1/PR', '1 x 48/CS', NULL, NULL, NULL, 616784218410, 616784218434, NULL, NULL, NULL, 'R240502-2', 'R240502-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 400,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "3008",
+      "item": "Retractable Tape Measures",
+      "description1": "Plastic Case , Reusable",
+      "description2": "72\" (182.8cm)",
+      "rawData": "(NULL, '3008', 'Retractable Tape Measures', 'Plastic Case , Reusable', '72\" (182.8cm)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NU...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 500,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "3194UB-1",
+      "item": "Gauze Roll Bandages",
+      "description1": "4\", Offset",
+      "description2": "X",
+      "rawData": "(NULL, '3194UB-1', 'Gauze Roll Bandages', '4\", Offset', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 600,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "3338",
+      "item": "Sensi-Wrap Self-Adherent Bandage",
+      "description1": "Latex-Free",
+      "description2": "Yellow, 3\" x 5 yd. (Stretched)",
+      "rawData": "(NULL, '3338', 'Sensi-Wrap Self-Adherent Bandage', 'Latex-Free', 'Yellow, 3\" x 5 yd. (Stretched)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NUL...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 700,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "3574",
+      "item": "Clear Surgical Tape",
+      "description1": "3\" X 10 yd. (7.6cm x 9.14m)",
+      "description2": "X",
+      "rawData": "(NULL, '3574', 'Clear Surgical Tape', '3\" X 10 yd. (7.6cm x 9.14m)', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 800,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "3762UB-8",
+      "item": "Blue Metal Detectable Woven Fingertip Bandages",
+      "description1": "X",
+      "description2": "X",
+      "rawData": "(NULL, '3762UB-8', 'Blue Metal Detectable Woven Fingertip Bandages', 'X', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 900,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "4235",
+      "item": "3 OZ. Plastic Cups",
+      "description1": "For All Purpose Use",
+      "description2": "X",
+      "rawData": "(NULL, '4235', '3 OZ. Plastic Cups', 'For All Purpose Use', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 1000,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "4460",
+      "item": "Self-Sealing Sterilization Pouches",
+      "description1": "w/ Internal & External Indicators",
+      "description2": "2 1/4\" x 2 3/4\\\"",
+      "rawData": "(NULL, '4460', 'Self-Sealing Sterilization Pouches', 'w/ Internal & External Indicators', '2 1/4\" x 2 3/4\\\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains \\\" (escaped quotes)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 1100,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "4901",
+      "item": "Obstetrical Kit",
+      "description1": "Disposable",
+      "description2": "X",
+      "rawData": "(NULL, '4901', 'Obstetrical Kit', 'Disposable', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 1200,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "6524",
+      "item": "Sterile Nitrile Examination Gloves",
+      "description1": "Large",
+      "description2": "Powder-Free, Cuffed, Ambidextrous",
+      "rawData": "(NULL, '6524', 'Sterile Nitrile Examination Gloves', 'Large', 'Powder-Free, Cuffed, Ambidextrous', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NUL...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 1300,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "7026",
+      "item": "Pen Needles , Non-Toxic",
+      "description1": "30G x 8 mm",
+      "description2": "X",
+      "rawData": "(NULL, '7026', 'Pen Needles , Non-Toxic', '30G x 8 mm', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 1400,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "9101",
+      "item": "Nylon Sutures, Black Monofilament",
+      "description1": "Non-Absorbable, Synthetic, 6-0 EP 0.7",
+      "description2": "C 3 Needle, Length 18\"",
+      "rawData": "(NULL, '9101', 'Nylon Sutures, Black Monofilament', 'Non-Absorbable, Synthetic, 6-0 EP 0.7', 'C 3 Needle, Length 18\"', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    },
+    {
+      "recordNumber": 1500,
+      "error": "Incorrect syntax near '\\'.",
+      "brand_name": "10105",
+      "item": "Bariatric Steel Crutches, 1 Pair",
+      "description1": "Tall Adult",
+      "description2": "1000 lb. Weight Capacity",
+      "rawData": "(NULL, '10105', 'Bariatric Steel Crutches, 1 Pair', 'Tall Adult', '1000 lb. Weight Capacity', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NU...",
+      "problematicPatterns": [
+        "Contains \\n (newline characters)",
+        "Contains backslash escapes"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,335 @@
+{
+  "sourceFile": "DATA TEAM ACTIVE SHEET_ 7-17-2025.xlsx",
+  "sheet": "Sheet1",
+  "headerRow": 3,
+  "dataStartRow": 4,
+  "totalRows": 2726,
+  "totalColumns": 65,
+  "dataRows": 2723,
+  "columns": [
+    {
+      "columnIndex": 1,
+      "columnName": "Brand Name",
+      "cleanName": "brand_name",
+      "sampleCount": 20,
+      "maxLength": 10,
+      "sampleValues": [
+        "Dynarex",
+        "DynaSafety",
+        "Dynarex"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 2,
+      "columnName": "Item#",
+      "cleanName": "item",
+      "sampleCount": 20,
+      "maxLength": 9,
+      "sampleValues": [
+        "1108",
+        "1108UB-10",
+        "1113"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 3,
+      "columnName": "Description1",
+      "cleanName": "description1",
+      "sampleCount": 20,
+      "maxLength": 39,
+      "sampleValues": [
+        "Povidone - Iodine USP Prep Pads",
+        "Povidone - Iodine USP Prep Pads",
+        "Sterile Alcohol Prep Pads"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 4,
+      "columnName": "Description2",
+      "cleanName": "description2",
+      "sampleCount": 20,
+      "maxLength": 52,
+      "sampleValues": [
+        "Antiseptic",
+        "Antiseptic",
+        "Medium"
+      ],
+      "suggestedType": "VARCHAR(100)"
+    },
+    {
+      "columnIndex": 5,
+      "columnName": "Description3",
+      "cleanName": "description3",
+      "sampleCount": 10,
+      "maxLength": 13,
+      "sampleValues": [
+        "0.9g",
+        "0.9g",
+        "0.9g"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 6,
+      "columnName": "Inner - 2",
+      "cleanName": "inner_2",
+      "sampleCount": 10,
+      "maxLength": 4,
+      "sampleValues": [
+        "1/EA",
+        "1/EA",
+        "1/EA"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 7,
+      "columnName": "Inner - 1",
+      "cleanName": "inner_1",
+      "sampleCount": 20,
+      "maxLength": 6,
+      "sampleValues": [
+        "100/BX",
+        "10/BX",
+        "200/BX"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 8,
+      "columnName": "Sellable",
+      "cleanName": "sellable",
+      "sampleCount": 20,
+      "maxLength": 11,
+      "sampleValues": [
+        "100 x 10/CS",
+        "10 x 100/CS",
+        "200 x 10/CS"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 9,
+      "columnName": "Ship + 1",
+      "cleanName": "ship_1",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 10,
+      "columnName": "Ship + 2",
+      "cleanName": "ship_2",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 11,
+      "columnName": "Inner - 2",
+      "cleanName": "inner_2",
+      "sampleCount": 1,
+      "maxLength": 12,
+      "sampleValues": [
+        "616784114514"
+      ],
+      "suggestedType": "BIGINT"
+    },
+    {
+      "columnIndex": 12,
+      "columnName": "Inner - 1",
+      "cleanName": "inner_1",
+      "sampleCount": 20,
+      "maxLength": 12,
+      "sampleValues": [
+        "616784110820",
+        "840117327672",
+        "616784111322"
+      ],
+      "suggestedType": "BIGINT"
+    },
+    {
+      "columnIndex": 13,
+      "columnName": "Sellable",
+      "cleanName": "sellable",
+      "sampleCount": 20,
+      "maxLength": 12,
+      "sampleValues": [
+        "616784110837",
+        "840117327689",
+        "616784111339"
+      ],
+      "suggestedType": "BIGINT"
+    },
+    {
+      "columnIndex": 14,
+      "columnName": "Ship + 1",
+      "cleanName": "ship_1",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 15,
+      "columnName": "Ship + 2",
+      "cleanName": "ship_2",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 16,
+      "columnName": "Inner - 2",
+      "cleanName": "inner_2",
+      "sampleCount": 12,
+      "maxLength": 9,
+      "sampleValues": [
+        "R231121-2",
+        "R240219-1",
+        "R240219-1"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 17,
+      "columnName": "Inner - 1",
+      "cleanName": "inner_1",
+      "sampleCount": 20,
+      "maxLength": 9,
+      "sampleValues": [
+        "R240626-4",
+        "R231110-1",
+        "R240219-1"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 18,
+      "columnName": "Sellable",
+      "cleanName": "sellable",
+      "sampleCount": 20,
+      "maxLength": 9,
+      "sampleValues": [
+        "R240626-2",
+        "R230619-6",
+        "R240219-1"
+      ],
+      "suggestedType": "VARCHAR(50)"
+    },
+    {
+      "columnIndex": 19,
+      "columnName": "Ship + 1",
+      "cleanName": "ship_1",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 20,
+      "columnName": "Ship + 2",
+      "cleanName": "ship_2",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 21,
+      "columnName": "D",
+      "cleanName": "d",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 22,
+      "columnName": "H",
+      "cleanName": "h",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 23,
+      "columnName": "W",
+      "cleanName": "w",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 24,
+      "columnName": "D",
+      "cleanName": "d",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 25,
+      "columnName": "H",
+      "cleanName": "h",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 26,
+      "columnName": "W",
+      "cleanName": "w",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 27,
+      "columnName": "D",
+      "cleanName": "d",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 28,
+      "columnName": "H",
+      "cleanName": "h",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 29,
+      "columnName": "W",
+      "cleanName": "w",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    },
+    {
+      "columnIndex": 30,
+      "columnName": "D",
+      "cleanName": "d",
+      "sampleCount": 0,
+      "maxLength": 0,
+      "sampleValues": [],
+      "suggestedType": "VARCHAR(255)"
+    }
+  ]
+}

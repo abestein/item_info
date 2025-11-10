@@ -1,0 +1,16 @@
+{
+  "totalFailingRows": 27,
+  "commonIssues": {
+    "leading_trailing_whitespace": 23,
+    "special_characters": 16,
+    "quote_or_escape_characters": 13,
+    "null_or_empty": 1524
+  },
+  "specialCharactersFound": [
+    "\"",
+    "'",
+    "&",
+    "₂"
+  ],
+  "totalIssuesFound": 1576
+}

@@ -1,0 +1,1493 @@
+{
+  "totalExcelRows": 2726,
+  "totalSQLRows": 2696,
+  "failingRowsAnalysis": [
+    {
+      "excelRowNumber": 100,
+      "sqlDataIndex": 98,
+      "excelSample": [
+        "LabChoice ",
+        "1304",
+        "Castile Soap Towelettes",
+        "5\" x 7\" (12.7cm x 17.8cm)",
+        "N/A"
+      ],
+      "sqlSample": [
+        "'DynaCare'",
+        "'1305'",
+        "'Nice''N Fresh with Aloe Towelettes'",
+        "'5 1/2\" x 8\" (14cm x 20cm)'",
+        "NULL"
+      ],
+      "issues": [
+        {
+          "column": 0,
+          "excelValue": "LabChoice",
+          "sqlValue": "DynaCare",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 1,
+          "excelValue": "1304",
+          "sqlValue": "1305",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Castile Soap Towelettes",
+          "sqlValue": "Nice'N Fresh with Aloe Towelettes",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "5\" x 7\" (12.7cm x 17.8cm)",
+          "sqlValue": "5 1/2\" x 8\" (14cm x 20cm)",
+          "type": "special_characters"
+        },
+        {
+          "column": 4,
+          "excelValue": "N/A",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 5,
+          "excelValue": "1/EA",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 6,
+          "excelValue": "100/BX",
+          "sqlValue": "70/EA",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 7,
+          "excelValue": "100 x 10/CS",
+          "sqlValue": "70 x 18/CS",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 8,
+          "excelValue": "N/A",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 9,
+          "excelValue": "N/A",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "specialCharactersFound": [
+        "t",
+        "\"",
+        "n"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 200,
+      "sqlDataIndex": 198,
+      "excelSample": [
+        "WeCare",
+        "1463",
+        "AquaGard Hydrating Ointment",
+        "Heals and Protects Dry, Sensitive Skin ",
+        "3.75 oz. (106g)"
+      ],
+      "sqlSample": [
+        "'WeCare'",
+        "'1473'",
+        "'D-Cerin Advanced Moisturizing Cream'",
+        "'3.75 oz. (106g)'",
+        "NULL"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "1463",
+          "sqlValue": "1473",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "AquaGard Hydrating Ointment",
+          "sqlValue": "D-Cerin Advanced Moisturizing Cream",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "Heals and Protects Dry, Sensitive Skin",
+          "sqlValue": "3.75 oz. (106g)",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "3.75 oz. (106g)",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 5,
+          "excelValue": "N/A",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 8,
+          "excelValue": "N/A",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 9,
+          "excelValue": "N/A",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        9
+      ],
+      "specialCharactersFound": [
+        "r",
+        "t",
+        "n"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 300,
+      "sqlDataIndex": 298,
+      "excelSample": [
+        "Dynarex",
+        "2182",
+        "Slipper Socks, Non-Skid Tread, Terry Cloth",
+        "Dark Blue",
+        "Large"
+      ],
+      "sqlSample": [
+        "'Dynarex'",
+        "'2186'",
+        "'Slipper Socks, Non-Skid Tread, Terry Cloth'",
+        "'Yellow'",
+        "'4X-Large'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "2182",
+          "sqlValue": "2186",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 3,
+          "excelValue": "Dark Blue",
+          "sqlValue": "Yellow",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "Large",
+          "sqlValue": "4X-Large",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 5,
+          "excelValue": "N/A",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 8,
+          "excelValue": "N/A",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 9,
+          "excelValue": "N/A",
+          "sqlValue": "",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        3,
+        4,
+        5,
+        8,
+        9
+      ],
+      "specialCharactersFound": [
+        "n",
+        "r",
+        "t"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 400,
+      "sqlDataIndex": 398,
+      "excelSample": [
+        "",
+        "3005",
+        "DynaWound Wound Cleanser Spray",
+        "8 fl. oz. (236.5mL)",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'3013'",
+        "'CuraFoam Foam Dressing'",
+        "'Non-Bordered'",
+        "'6\" x 6\" (15cm x 15cm)'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "3005",
+          "sqlValue": "3013",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "DynaWound Wound Cleanser Spray",
+          "sqlValue": "CuraFoam Foam Dressing",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "8 fl. oz. (236.5mL)",
+          "sqlValue": "Non-Bordered",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "X",
+          "sqlValue": "6\" x 6\" (15cm x 15cm)",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "n",
+        "r"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 500,
+      "sqlDataIndex": 498,
+      "excelSample": [
+        "",
+        "3193UB-2",
+        "Gauze Roll Bandages",
+        "3\", Offset",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'3201UB-1'",
+        "'Compress Bandages'",
+        "'36\" x 36\" (91cm x 91cm)'",
+        "'X'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "3193UB-2",
+          "sqlValue": "3201UB-1",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Gauze Roll Bandages",
+          "sqlValue": "Compress Bandages",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 3,
+          "excelValue": "3\", Offset",
+          "sqlValue": "36\" x 36\" (91cm x 91cm)",
+          "type": "special_characters"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3
+      ],
+      "specialCharactersFound": [
+        "n",
+        "\"",
+        "t"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 600,
+      "sqlDataIndex": 598,
+      "excelSample": [
+        "",
+        "3336",
+        "Sensi-Wrap Self-Adherent Bandage",
+        "Latex-Free",
+        "Yellow, 2\" x 5 yd. (Stretched)"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'3344'",
+        "'Surgical Sponges'",
+        "'All Gauze'",
+        "'8\" x 4\" (20.3cm x 10.2cm) 12-ply'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "3336",
+          "sqlValue": "3344",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Sensi-Wrap Self-Adherent Bandage",
+          "sqlValue": "Surgical Sponges",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "Latex-Free",
+          "sqlValue": "All Gauze",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 4,
+          "excelValue": "Yellow, 2\" x 5 yd. (Stretched)",
+          "sqlValue": "8\" x 4\" (20.3cm x 10.2cm) 12-ply",
+          "type": "special_characters"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "n",
+        "r",
+        "t",
+        "\""
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 700,
+      "sqlDataIndex": 698,
+      "excelSample": [
+        "",
+        "3572",
+        "Clear Surgical Tape ",
+        "1\" x 10 yd. (2.5cm x 9.14m)",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'3586'",
+        "'Porous Tape'",
+        "'White'",
+        "'1/4\" x 10 yd. (1.3cm x 9.14m)'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "3572",
+          "sqlValue": "3586",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Clear Surgical Tape",
+          "sqlValue": "Porous Tape",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "1\" x 10 yd. (2.5cm x 9.14m)",
+          "sqlValue": "White",
+          "type": "special_characters"
+        },
+        {
+          "column": 4,
+          "excelValue": "X",
+          "sqlValue": "1/4\" x 10 yd. (1.3cm x 9.14m)",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "r",
+        "\""
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 800,
+      "sqlDataIndex": 798,
+      "excelSample": [
+        "",
+        "3762-50",
+        "Blue Metal Detectable Woven Fingertip Bandages ",
+        "X",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'3765BULK'",
+        "'Heavy Duty Woven Fabric Knuckle Bandages'",
+        "'1 1/2\" x 3\" (38mm x 76mm)'",
+        "'X'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "3762-50",
+          "sqlValue": "3765BULK",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Blue Metal Detectable Woven Fingertip Bandages",
+          "sqlValue": "Heavy Duty Woven Fabric Knuckle Bandages",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "X",
+          "sqlValue": "1 1/2\" x 3\" (38mm x 76mm)",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3
+      ],
+      "specialCharactersFound": [
+        "t",
+        "n",
+        "r"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 900,
+      "sqlDataIndex": 898,
+      "excelSample": [
+        "",
+        "4232",
+        "Nuns Cap Specimen Collectors ",
+        "with Graduated Markings",
+        "White"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'4243'",
+        "'Paper Souffle Cups'",
+        "'1 oz.'",
+        "'X'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "4232",
+          "sqlValue": "4243",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Nuns Cap Specimen Collectors",
+          "sqlValue": "Paper Souffle Cups",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "with Graduated Markings",
+          "sqlValue": "1 oz.",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "White",
+          "sqlValue": "X",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "n",
+        "t",
+        "r"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1000,
+      "sqlDataIndex": 998,
+      "excelSample": [
+        "",
+        "4448",
+        "CSR Wraps",
+        " 48\" x 48\"",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'4480'",
+        "'Table Paper, Smooth'",
+        "'14\" x 225'' Roll'",
+        "'White'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "4448",
+          "sqlValue": "4480",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "CSR Wraps",
+          "sqlValue": "Table Paper, Smooth",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "48\" x 48\"",
+          "sqlValue": "14\" x 225' Roll",
+          "type": "special_characters"
+        },
+        {
+          "column": 4,
+          "excelValue": "X",
+          "sqlValue": "White",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "r",
+        "\""
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1100,
+      "sqlDataIndex": 1098,
+      "excelSample": [
+        "",
+        "4896",
+        "Manicure Brushes",
+        "X",
+        "12 Per Bag"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'4918'",
+        "'Plastic Thumb Forceps / Tweezers'",
+        "'4.25\"'",
+        "'100 Per Bag'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "4896",
+          "sqlValue": "4918",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Manicure Brushes",
+          "sqlValue": "Plastic Thumb Forceps / Tweezers",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "X",
+          "sqlValue": "4.25\"",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "12 Per Bag",
+          "sqlValue": "100 Per Bag",
+          "type": "encoding_issue"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "n",
+        "r"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1200,
+      "sqlDataIndex": 1198,
+      "excelSample": [
+        "",
+        "6522",
+        "Sterile Nitrile Examination Gloves",
+        "Small",
+        "Powder-Free, Cuffed, Ambidextrous"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'6612'",
+        "'Powder-Free Plus Examination Gloves'",
+        "'Small'",
+        "'Non-Sterile Latex'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "6522",
+          "sqlValue": "6612",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Sterile Nitrile Examination Gloves",
+          "sqlValue": "Powder-Free Plus Examination Gloves",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 4,
+          "excelValue": "Powder-Free, Cuffed, Ambidextrous",
+          "sqlValue": "Non-Sterile Latex",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        4
+      ],
+      "specialCharactersFound": [
+        "t",
+        "r",
+        "n"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1300,
+      "sqlDataIndex": 1298,
+      "excelSample": [
+        "",
+        "7024",
+        "Pen Needles , Non-Toxic",
+        "30G x 5 mm",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'7044'",
+        "'IV Administration Sets, Non-Toxic'",
+        "'92\", 20 Drops/ML'",
+        "'X'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "7024",
+          "sqlValue": "7044",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Pen Needles , Non-Toxic",
+          "sqlValue": "IV Administration Sets, Non-Toxic",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "30G x 5 mm",
+          "sqlValue": "92\", 20 Drops/ML",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3
+      ],
+      "specialCharactersFound": [
+        "n"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1400,
+      "sqlDataIndex": 1398,
+      "excelSample": [
+        "",
+        "8973",
+        "SecureSafe Safety Hypodermic Needles",
+        "Non-Toxic ",
+        "25G x 1 1/2\" "
+      ],
+      "sqlSample": [
+        "NULL",
+        "'9341'",
+        "'Fearless Cartridges, Sterile'",
+        "'Round Liner'",
+        "'1203RL'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "8973",
+          "sqlValue": "9341",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "SecureSafe Safety Hypodermic Needles",
+          "sqlValue": "Fearless Cartridges, Sterile",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "Non-Toxic",
+          "sqlValue": "Round Liner",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 4,
+          "excelValue": "25G x 1 1/2\"",
+          "sqlValue": "1203RL",
+          "type": "special_characters"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "r",
+        "t",
+        "n",
+        "\""
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1500,
+      "sqlDataIndex": 1498,
+      "excelSample": [
+        "",
+        "10103-8",
+        "Aluminum Crutches, Tall ",
+        "5'10\" - 6'6\"",
+        "Weight Capacity: 350 lb."
+      ],
+      "sqlSample": [
+        "NULL",
+        "'10133-6'",
+        "'Offset Cane'",
+        "'Black'",
+        "'Weight Capacity: 250 lb.'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "10103-8",
+          "sqlValue": "10133-6",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Aluminum Crutches, Tall",
+          "sqlValue": "Offset Cane",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "5'10\" - 6'6\"",
+          "sqlValue": "Black",
+          "type": "special_characters"
+        },
+        {
+          "column": 4,
+          "excelValue": "Weight Capacity: 350 lb.",
+          "sqlValue": "Weight Capacity: 250 lb.",
+          "type": "encoding_issue"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "n",
+        "r",
+        "t",
+        "'",
+        "\""
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1600,
+      "sqlDataIndex": 1598,
+      "excelSample": [
+        "",
+        "10266",
+        "Foot Rests",
+        "1 Pair",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'10285-ELR'",
+        "'Greenline Cruiser Wheelchair'",
+        "'20\"'",
+        "'with Elevating Leg Rest'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "10266",
+          "sqlValue": "10285-ELR",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 2,
+          "excelValue": "Foot Rests",
+          "sqlValue": "Greenline Cruiser Wheelchair",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "1 Pair",
+          "sqlValue": "20\"",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "X",
+          "sqlValue": "with Elevating Leg Rest",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "t",
+        "r"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1700,
+      "sqlDataIndex": 1698,
+      "excelSample": [
+        "",
+        "10442",
+        "DynaRest Airfloat 300 Air Mattress",
+        "With Pump",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'10458CH'",
+        "'Bariatric HD Overbed Table'",
+        "'Cherry'",
+        "'X'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "10442",
+          "sqlValue": "10458CH",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "DynaRest Airfloat 300 Air Mattress",
+          "sqlValue": "Bariatric HD Overbed Table",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "With Pump",
+          "sqlValue": "Cherry",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3
+      ],
+      "specialCharactersFound": [
+        "n",
+        "t",
+        "r"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1800,
+      "sqlDataIndex": 1798,
+      "excelSample": [
+        "",
+        "10680",
+        "Ever-Soft Pommel Wedge Gel Foam Cushion ",
+        "18\" x 16\" x 4\" x 2\" ",
+        "Weight Capacity 300 lb."
+      ],
+      "sqlSample": [
+        "NULL",
+        "'10740XL'",
+        "'Full Body Sling'",
+        "'Mesh'",
+        "'X-Large'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "10680",
+          "sqlValue": "10740XL",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Ever-Soft Pommel Wedge Gel Foam Cushion",
+          "sqlValue": "Full Body Sling",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "18\" x 16\" x 4\" x 2\"",
+          "sqlValue": "Mesh",
+          "type": "special_characters"
+        },
+        {
+          "column": 4,
+          "excelValue": "Weight Capacity 300 lb.",
+          "sqlValue": "X-Large",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "r",
+        "t",
+        "n",
+        "\""
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 1900,
+      "sqlDataIndex": 1898,
+      "excelSample": [
+        "",
+        "12911-MH",
+        "Footboard 36\"",
+        "Mahogany ",
+        "w/ 3 Function Staff Control For D100  & D200"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'12923'",
+        "'Clip-On Staff Control Adapter'",
+        "'For D400 & D500'",
+        "'X'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "12911-MH",
+          "sqlValue": "12923",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 2,
+          "excelValue": "Footboard 36\"",
+          "sqlValue": "Clip-On Staff Control Adapter",
+          "type": "special_characters"
+        },
+        {
+          "column": 3,
+          "excelValue": "Mahogany",
+          "sqlValue": "For D400 & D500",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "w/ 3 Function Staff Control For D100  & D200",
+          "sqlValue": "X",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "t",
+        "r",
+        "\"",
+        "n",
+        "&"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 2000,
+      "sqlDataIndex": 1998,
+      "excelSample": [
+        "",
+        "30104",
+        "Heat Moisture Exchanger - B/V Filter (HMEF) 1000, Low Profile",
+        "CO₂ Port",
+        "Adult"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'30602'",
+        "'Tracheostomy Flex Connector'",
+        "'15 mm OD x 15 mm ID'",
+        "'Pediatric'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "30104",
+          "sqlValue": "30602",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Heat Moisture Exchanger - B/V Filter (HMEF) 1000, Low Profile",
+          "sqlValue": "Tracheostomy Flex Connector",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "CO₂ Port",
+          "sqlValue": "15 mm OD x 15 mm ID",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "Adult",
+          "sqlValue": "Pediatric",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "t",
+        "r",
+        "n"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 2100,
+      "sqlDataIndex": 2098,
+      "excelSample": [
+        "",
+        "33000",
+        "O₂  Medium-Concentration Standard Masks",
+        "7'(2.1 m)O₂Tube STD Connector",
+        "Adult"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'33072'",
+        "'Venturi Adjustable Dial Elongated Masks'",
+        "'7''(2.1 m)O₂Tube STD Connector'",
+        "'Adult'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "33000",
+          "sqlValue": "33072",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "O₂  Medium-Concentration Standard Masks",
+          "sqlValue": "Venturi Adjustable Dial Elongated Masks",
+          "type": "encoding_issue"
+        }
+      ],
+      "problemCells": [
+        1,
+        2
+      ],
+      "specialCharactersFound": [
+        "n",
+        "t",
+        "r",
+        "'"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 2200,
+      "sqlDataIndex": 2198,
+      "excelSample": [
+        "",
+        "33203",
+        "Oxygen Supply Tubing",
+        "14'(4.3 m) Crush Resistant Tube, Univ Connector",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'34004'",
+        "'Aerosol Elongated Mask'",
+        "'Pediatric'",
+        "'X'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "33203",
+          "sqlValue": "34004",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Oxygen Supply Tubing",
+          "sqlValue": "Aerosol Elongated Mask",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 3,
+          "excelValue": "14'(4.3 m) Crush Resistant Tube, Univ Connector",
+          "sqlValue": "Pediatric",
+          "type": "special_characters"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3
+      ],
+      "specialCharactersFound": [
+        "n",
+        "'",
+        "r",
+        "t"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 2300,
+      "sqlDataIndex": 2298,
+      "excelSample": [
+        "",
+        "35037",
+        "Soft-Foam Trach Tube Holders, 1-Piece",
+        "Large",
+        "Adult, 22\" Length "
+      ],
+      "sqlSample": [
+        "NULL",
+        "'36111'",
+        "'Peak Flow Meter - Full Range'",
+        "'50-800 L/min'",
+        "'Adult'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "35037",
+          "sqlValue": "36111",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Soft-Foam Trach Tube Holders, 1-Piece",
+          "sqlValue": "Peak Flow Meter - Full Range",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "Large",
+          "sqlValue": "50-800 L/min",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "Adult, 22\" Length",
+          "sqlValue": "Adult",
+          "type": "special_characters"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "t",
+        "r",
+        "\"",
+        "n"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 2400,
+      "sqlDataIndex": 2398,
+      "excelSample": [
+        "",
+        "36304",
+        "Oral Airways (Berman Type)",
+        "80 mm",
+        "Adult Small, Green"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'36357'",
+        "'CGA 870 Mini Oxygen Regulator - Barb Outlet'",
+        "'0-25 LPM'",
+        "'Brass-Sleeved'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "36304",
+          "sqlValue": "36357",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Oral Airways (Berman Type)",
+          "sqlValue": "CGA 870 Mini Oxygen Regulator - Barb Outlet",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "80 mm",
+          "sqlValue": "0-25 LPM",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "Adult Small, Green",
+          "sqlValue": "Brass-Sleeved",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "r",
+        "n",
+        "t"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 2500,
+      "sqlDataIndex": 2498,
+      "excelSample": [
+        "",
+        "42006",
+        "Plastic Test Tubes",
+        "16 x 100 MM",
+        "Polypropylene"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'42134'",
+        "'Reversible Microcentrifuge Tube Racks'",
+        "'60 Holes'",
+        "'Orange'"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "42006",
+          "sqlValue": "42134",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 2,
+          "excelValue": "Plastic Test Tubes",
+          "sqlValue": "Reversible Microcentrifuge Tube Racks",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "16 x 100 MM",
+          "sqlValue": "60 Holes",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 4,
+          "excelValue": "Polypropylene",
+          "sqlValue": "Orange",
+          "type": "length_mismatch"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "t",
+        "r",
+        "n"
+      ],
+      "hasProblematicChars": true
+    },
+    {
+      "excelRowNumber": 2600,
+      "sqlDataIndex": 2598,
+      "excelSample": [
+        "",
+        "12502-BG",
+        "Nightstand, Three Drawer ",
+        "Beige",
+        "X"
+      ],
+      "sqlSample": [
+        "NULL",
+        "'1457'",
+        "'CozyTherm Heating Relief Wrap'",
+        "'Back'",
+        "NULL"
+      ],
+      "issues": [
+        {
+          "column": 1,
+          "excelValue": "12502-BG",
+          "sqlValue": "1457",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 2,
+          "excelValue": "Nightstand, Three Drawer",
+          "sqlValue": "CozyTherm Heating Relief Wrap",
+          "type": "length_mismatch"
+        },
+        {
+          "column": 3,
+          "excelValue": "Beige",
+          "sqlValue": "Back",
+          "type": "encoding_issue"
+        },
+        {
+          "column": 4,
+          "excelValue": "X",
+          "sqlValue": "",
+          "type": "encoding_issue"
+        }
+      ],
+      "problemCells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "specialCharactersFound": [
+        "t",
+        "n",
+        "r"
+      ],
+      "hasProblematicChars": true
+    }
+  ],
+  "commonIssues": {
+    "specialCharacters": 11,
+    "quotingIssues": 0,
+    "encodingProblems": 36,
+    "nullMismatches": 0,
+    "lengthMismatches": 60
+  }
+}

@@ -67,7 +67,10 @@
       "Bash(call agent.bat sql-mcp \"Get the full definition of stored procedure sp_Refresh_Item_Barry_UPC. Show me the complete SQL code for this procedure.\")",
       "Bash(DEBUG_ROUTER=1 node agent-router.js:*)",
       "Bash(npm i:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Major UI redesign and enhanced agent system\n\n- Redesign login page with modern, professional styling\n- Update global theme with improved color scheme and typography\n- Enhance user management and permissions interfaces\n- Improve agent system with SQL MCP and orchestrator enhancements\n- Update authentication middleware and routes\n- Add Claude Code configuration for project workflows\n- Update frontend and backend dependencies\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []

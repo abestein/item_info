@@ -1,0 +1,337 @@
+{
+  "timestamp": "2025-09-16T00:52:40.665Z",
+  "totalRecordsAnalyzed": 27,
+  "successfulRecords": 0,
+  "failedRecords": 27,
+  "errorPatterns": {
+    "Incorrect": 27
+  },
+  "detailedFailures": [
+    {
+      "recordNumber": 100,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "('DynaCare', '1308', 'Facial Tissues', '8\" x 7\" (20.3 cm x 17.8 cm)', NULL, NULL, '100/BX', '100 x 3",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 200,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "('WeCare', '1465', 'AquaGard Hydrating Ointment', 'Heals and Protects Dry, Sensitive Skin', '0.9 g',",
+        "end": " NULL, NULL, NULL, '67777-014-05', '67777-014-65', NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 300,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 66 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "('Dynarex', '2184', 'Slipper Socks, Non-Skid Tread, Terry Cloth', 'Gray', '2X-Large', NULL, '1/PR', ",
+        "end": "', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 400,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '3008', 'Retractable Tape Measures', 'Plastic Case , Reusable', '72\" (182.8cm)', NULL, NULL, ",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 500,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '3194UB-1', 'Gauze Roll Bandages', '4\", Offset', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NUL",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 600,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '3338', 'Sensi-Wrap Self-Adherent Bandage', 'Latex-Free', 'Yellow, 3\" x 5 yd. (Stretched)', N",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 700,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '3574', 'Clear Surgical Tape', '3\" X 10 yd. (7.6cm x 9.14m)', 'X', NULL, NULL, NULL, NULL, NU",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 800,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '3762UB-8', 'Blue Metal Detectable Woven Fingertip Bandages', 'X', 'X', NULL, NULL, NULL, NUL",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 900,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '4235', '3 OZ. Plastic Cups', 'For All Purpose Use', 'X', NULL, NULL, NULL, NULL, NULL, NULL,",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1000,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '4460', 'Self-Sealing Sterilization Pouches', 'w/ Internal & External Indicators', '2 1/4\" x ",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1100,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '4901', 'Obstetrical Kit', 'Disposable', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1200,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 66 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '6524', 'Sterile Nitrile Examination Gloves', 'Large', 'Powder-Free, Cuffed, Ambidextrous', N",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1300,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '7026', 'Pen Needles , Non-Toxic', '30G x 8 mm', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NUL",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1400,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 68 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '9101', 'Nylon Sutures, Black Monofilament', 'Non-Absorbable, Synthetic, 6-0 EP 0.7', 'C 3 Ne",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1500,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '10105', 'Bariatric Steel Crutches, 1 Pair', 'Tall Adult', '1000 lb. Weight Capacity', NULL, ",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1600,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '10268', 'Wheelchair Anti-Tippers', 'For S3 & S4 Series', '1 Pair', NULL, NULL, NULL, NULL, N",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1700,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '10444', 'DynaRest Airfloat Deluxe Air Mattress', 'With Perimeter and Digital Pump', '36\" x 8",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1800,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '10685', 'Ever-Soft Pommel Gel Foam Cushion', '18\" x 16\" x 3\"', 'Weight Capacity 300 lb.', NU",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 1900,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '12912-CH', 'Footboard 36\"', 'Amber Cherry', 'For DB200 & DB300', NULL, NULL, NULL, NULL, NUL",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 2000,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Contains non-ASCII characters",
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '30106', 'Hygroscopic Condenser Humidifier - BV Filter (HMEF) 1500', 'CO₂ Port, Flex Tube', '",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 2100,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Contains non-ASCII characters",
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '33002', 'O₂ Medium-Concentration Standard Masks', '7''(2.1 m)O₂Tube STD Connector', 'Pediatr",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 2200,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '33205', 'Oxygen Supply Tubing', '25''(7.6 m) Crush Resistant Tube, STD Connector', 'X', NULL",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 2300,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '35051', 'Tracheostomy Gauze Sponges', '100% Cotton', '4\" x 4\" 12 - Ply', NULL, NULL, NULL, N",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 2400,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '36306', 'Oral Airways (Berman Type)', '90 mm', 'Adult Medium, Yellow', NULL, NULL, NULL, NUL",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 2500,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 64 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '42020', 'Flange Plug Caps', 'For 12 MM Test Tube', 'Blue', NULL, NULL, NULL, NULL, NULL, NUL",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 2600,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '12505-BG', 'Dresser, Four Drawer', 'Beige', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NULL, N",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    },
+    {
+      "recordNumber": 2700,
+      "error": "Incorrect syntax near ';'.",
+      "issues": [
+        "Wrong column count: 65 (expected 67)",
+        "Does not end with closing parenthesis"
+      ],
+      "recordSnippet": {
+        "start": "(NULL, '31004', 'Vortex 72 Closed Suction Tracheal Catheters, T-Piece', '10 Fr (3.3mm) 30.5cm / 12\"'",
+        "end": "L, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); INSERT INTO data_team_active_items ("
+      }
+    }
+  ]
+}

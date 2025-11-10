@@ -1,0 +1,67 @@
+{
+  "summary": {
+    "totalAnalyzed": 500,
+    "truncationErrors": 7,
+    "syntaxErrors": 5,
+    "otherErrors": 0
+  },
+  "truncationExamples": [
+    {
+      "record": 305,
+      "error": "String or binary data would be truncated in table 'Item_DimensionsBU.dbo.data_team_active_items', column 'description1'. Truncated value: 'Double Sided Slipper Socks, Non-Skid Tread, Terry '.",
+      "data": "('Dynarex', '2190', 'Double Sided Slipper Socks, Non-Skid Tread, Terry Cloth', 'Red', 'Small', NULL, '1/PR', '1 x 48/CS', NULL, NULL, NULL, 616784219011, 616784219035, NULL, NULL, NULL, 'R240502-2', 'R240502-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COM', NULL, NULL, NULL, NULL, NULL, 'NO', 'NO', 'NO', NULL, NULL, 'NO', NULL, 'NO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)"
+    },
+    {
+      "record": 306,
+      "error": "String or binary data would be truncated in table 'Item_DimensionsBU.dbo.data_team_active_items', column 'description1'. Truncated value: 'Double Sided Slipper Socks, Non-Skid Tread, Terry '.",
+      "data": "('Dynarex', '2191', 'Double Sided Slipper Socks, Non-Skid Tread, Terry Cloth', 'Green', 'Medium', NULL, '1/PR', '1 x 48/CS', NULL, NULL, NULL, 616784219110, 616784219134, NULL, NULL, NULL, 'R240502-2', 'R240502-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COM', NULL, NULL, NULL, NULL, NULL, 'NO', 'NO', 'NO', NULL, NULL, 'NO', NULL, 'NO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)"
+    },
+    {
+      "record": 307,
+      "error": "String or binary data would be truncated in table 'Item_DimensionsBU.dbo.data_team_active_items', column 'description1'. Truncated value: 'Double Sided Slipper Socks, Non-Skid Tread, Terry '.",
+      "data": "('Dynarex', '2192', 'Double Sided Slipper Socks, Non-Skid Tread, Terry Cloth', 'Dark Blue', 'Large', NULL, '1/PR', '1 x 48/CS', NULL, NULL, NULL, 616784219219, 616784219233, NULL, NULL, NULL, 'R240502-2', 'R240502-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COM', NULL, NULL, NULL, NULL, NULL, 'NO', 'NO', 'NO', NULL, NULL, 'NO', NULL, 'NO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)"
+    },
+    {
+      "record": 308,
+      "error": "String or binary data would be truncated in table 'Item_DimensionsBU.dbo.data_team_active_items', column 'description1'. Truncated value: 'Double Sided Slipper Socks, Non-Skid Tread, Terry '.",
+      "data": "('Dynarex', '2193', 'Double Sided Slipper Socks, Non-Skid Tread, Terry Cloth', 'Beige', 'X-Large', NULL, '1/PR', '1 x 48/CS', NULL, NULL, NULL, 616784219318, 616784219332, NULL, NULL, NULL, 'R240502-2', 'R240502-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COM', NULL, NULL, NULL, NULL, NULL, 'NO', 'NO', 'NO', NULL, NULL, 'NO', NULL, 'NO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)"
+    },
+    {
+      "record": 309,
+      "error": "String or binary data would be truncated in table 'Item_DimensionsBU.dbo.data_team_active_items', column 'description1'. Truncated value: 'Double Sided Slipper Socks, Non-Skid Tread, Terry '.",
+      "data": "('Dynarex', '2194', 'Double Sided Slipper Socks, Non-Skid Tread, Terry Cloth', 'Gray', '2X-Large', NULL, '1/PR', '1 x 48/CS', NULL, NULL, NULL, 616784219417, 616784219431, NULL, NULL, NULL, 'R240502-2', 'R240502-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COM', NULL, NULL, NULL, NULL, NULL, 'NO', 'NO', 'NO', NULL, NULL, 'NO', NULL, 'NO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)"
+    }
+  ],
+  "syntaxExamples": [
+    {
+      "record": 100,
+      "error": "Incorrect syntax near '\\'.",
+      "data": "('DynaCare', '1308', 'Facial Tissues', '8\" x 7\\\" (20.3 cm x 17.8 cm)', NULL, NULL, '100/BX', '100 x 30/CS', NULL, NULL, NULL, 616784130828, 616784130835, NULL, NULL, NULL, 'R250411-1', 'R250411-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COM', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);\\n\\nINSERT INTO data_team_active_items ("
+    },
+    {
+      "record": 200,
+      "error": "Incorrect syntax near '\\'.",
+      "data": "('WeCare', '1465', 'AquaGard Hydrating Ointment', 'Heals and Protects Dry, Sensitive Skin', '0.9 g', '1/EA', '144/BX', '144 x 12/CS', NULL, NULL, NULL, 616784146522, 616784146539, NULL, NULL, 'R250307-1', 'R250307-1', 'R250502-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'OTC', NULL, NULL, NULL, NULL, NULL, 'YES', 'NO', 'NO', NULL, '36 months', 'NO', NULL, 'YES', NULL, NULL, NULL, NULL, NULL, NULL, '67777-014-05', '67777-014-65', NULL, NULL);\\n\\nINSERT INTO data_team_active_items ("
+    },
+    {
+      "record": 300,
+      "error": "Incorrect syntax near '\\'.",
+      "data": "('Dynarex', '2184', 'Slipper Socks, Non-Skid Tread, Terry Cloth', 'Gray', '2X-Large', NULL, '1/PR', '1 x 48/CS', NULL, NULL, NULL, 616784218410, 616784218434, NULL, NULL, NULL, 'R240502-2', 'R240502-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'COM', NULL, NULL, NULL, NULL, NULL, 'NO', 'NO', 'NO', NULL, NULL, 'NO', NULL, 'NO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);\\n\\nINSERT INTO data_team_active_items ("
+    },
+    {
+      "record": 400,
+      "error": "Incorrect syntax near '\\'.",
+      "data": "(NULL, '3008', 'Retractable Tape Measures', 'Plastic Case , Reusable', '72\" (182.8cm)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);\\n\\nINSERT INTO data_team_active_items ("
+    },
+    {
+      "record": 500,
+      "error": "Incorrect syntax near '\\'.",
+      "data": "(NULL, '3194UB-1', 'Gauze Roll Bandages', '4\", Offset', 'X', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);\\n\\nINSERT INTO data_team_active_items ("
+    }
+  ],
+  "recommendations": [
+    "Increase field sizes for description1, description3 from 50 to at least 100 characters",
+    "Consider increasing brand_name and item fields from 50 to 75-100 characters",
+    "Fix remaining backslash escape sequences in dimension values"
+  ]
+}

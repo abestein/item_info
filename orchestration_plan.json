@@ -1,0 +1,15 @@
+{
+  "originalRequest": "Check authentication setup and database structure for users",
+  "agents": [
+    "sql-mcp"
+  ],
+  "prompts": [
+    {
+      "agent": "sql-mcp",
+      "prompt": "Handle database operations including schema validation, data import, and transaction management.",
+      "reason": "Request involves database operations"
+    }
+  ],
+  "missingCapabilities": [],
+  "timestamp": "2025-10-27T02:51:35.922Z"
+}

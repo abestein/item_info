@@ -1,0 +1,9 @@
+{
+  "failingRowsComparison": [],
+  "patterns": {
+    "mismatchedValues": [],
+    "encodingIssues": [],
+    "quotingProblems": [],
+    "nullHandling": []
+  }
+}

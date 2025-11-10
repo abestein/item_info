@@ -1,0 +1,2 @@
+Sqlcmd: Error: Microsoft ODBC Driver 17 for SQL Server : Login failed for user 'DYNATILL\A.Stein'..
+Sqlcmd: Error: Microsoft ODBC Driver 17 for SQL Server : Cannot open database "item_information" requested by the login. The login failed..
