@@ -1,6 +1,6 @@
 # Multi-Agent Development System
 
-A comprehensive 10-agent system for your React + Node.js + SQL Server application, featuring specialized agents with inter-agent communication and SQL MCP integration.
+A comprehensive 12-agent system for your React + Node.js + SQL Server application, featuring specialized agents with inter-agent communication, SQL MCP integration, and Excel processing capabilities.
 
 ## 🏗️ Agent Structure
 
@@ -13,13 +13,17 @@ A comprehensive 10-agent system for your React + Node.js + SQL Server applicatio
 │   └── navigation/            # (4) Sidebar and navigation
 ├── data-agents/
 │   ├── sql-mcp/              # (5) SQL Server via MCP
-│   └── transactions/          # (8) Data transactions
+│   ├── excel-mcp/            # (6) Excel file processing via MCP
+│   └── transactions/          # (7) Data transactions
 ├── system-agents/
-│   ├── auth/                  # (6) Authentication
-│   ├── backend-control/       # (7) Admin panels
-│   └── api-bridge/           # (9) API endpoints
-└── meta-agents/
-    └── gap-analyzer/          # (10) Gap analysis
+│   ├── auth/                  # (8) Authentication
+│   ├── backend-control/       # (9) Admin panels
+│   └── api-bridge/           # (10) API endpoints
+├── meta-agents/
+│   ├── gap-analyzer/          # (11) Gap analysis
+│   └── router/               # (12) Intelligent request routing
+├── orchestrator/              # General orchestration
+└── workflow-orchestrator/     # Multi-step workflow management
 ```
 
 ## 🎯 Agent Responsibilities
@@ -31,16 +35,22 @@ A comprehensive 10-agent system for your React + Node.js + SQL Server applicatio
 4. **navigation**: Sidebar menus, top ribbon/toolbar, breadcrumbs
 
 ### Data Agents  
-5. **sql-mcp**: Direct SQL Server access through MCP for queries
-8. **transactions**: CRUD operations, batch updates, data integrity
+5. **sql-mcp**: Direct SQL Server access through MCP for queries and schema operations
+6. **excel-mcp**: Excel file processing through MCP protocol for spreadsheet operations
+7. **transactions**: CRUD operations, batch updates, data integrity, Excel file analysis
 
 ### System Agents
-6. **auth**: Login, JWT, permissions, role management
-7. **backend-control**: Admin panels, settings pages, system config
-9. **api-bridge**: REST/GraphQL endpoints, state management, data flow
+8. **auth**: Login, JWT, permissions, role management
+9. **backend-control**: Admin panels, settings pages, system config
+10. **api-bridge**: REST/GraphQL endpoints, state management, data flow
 
 ### Meta Agents
-10. **gap-analyzer**: Finds missing features, integration issues
+11. **gap-analyzer**: Finds missing features, integration issues, architecture analysis
+12. **router**: Intelligent request routing to appropriate specialized agents
+
+### Orchestration Agents
+- **orchestrator**: General coordination and task management
+- **workflow-orchestrator**: Multi-step workflow planning and execution with user approval
 
 ## 🚀 Quick Start
 
@@ -81,6 +91,9 @@ agent.bat gap-analyzer "Analyze the application for missing admin features"
 
 # Query database through SQL MCP
 agent.bat sql-mcp "Show me the schema for the users table"
+
+# Process Excel files through Excel MCP
+agent.bat excel-mcp "Analyze the vendor data in the uploaded Excel file"
 ```
 
 ## 🔧 Agent Commands
@@ -99,13 +112,16 @@ agent.bat table-views "Add user management table"
 agent.bat visualizations "Create revenue dashboard"
 agent.bat navigation "Add admin menu section"
 agent.bat sql-mcp "Query monthly sales data"
+agent.bat excel-mcp "Process vendor spreadsheet data"
 agent.bat transactions "Implement user CRUD operations"
 agent.bat auth "Add two-factor authentication"
 agent.bat backend-control "Create system settings page"
 agent.bat api-bridge "Design user management API"
 agent.bat gap-analyzer "Find missing features"
+agent.bat router "Route this request to the best agent"
+agent.bat workflow-orchestrator "Plan and execute multi-step workflow"
 
-# Install SQL MCP server
+# Install MCP servers
 agent.bat install-sql-mcp
 ```
 
@@ -115,6 +131,21 @@ agent.bat install-sql-mcp
 ./agent.sh list
 ./agent.sh frontend-pages "Create login page"
 ./agent.sh gap-analyzer "Check what we're missing"
+```
+
+## ⚡ Shortcut Commands
+
+For frequently used agents, convenient shortcuts are available:
+
+```bash
+# Shortcut for SQL MCP agent
+SM.bat "Show me all tables with UPC columns"
+
+# Shortcut for Transactions agent  
+TX.bat "Process the uploaded Excel file for vendor items"
+
+# Shortcut for Workflow Orchestrator agent
+AO.bat "Plan a multi-step user registration workflow"
 ```
 
 ## 🔗 Inter-Agent Communication
@@ -127,11 +158,13 @@ Agents can consult each other based on permissions defined in their `config.json
 - **visualizations** can consult: api-bridge, sql-mcp, table-views, frontend-pages
 - **navigation** can consult: auth, frontend-pages, api-bridge, backend-control
 - **sql-mcp** can consult: transactions, gap-analyzer
-- **transactions** can consult: sql-mcp, auth, api-bridge, gap-analyzer
+- **excel-mcp** can consult: transactions, sql-mcp, gap-analyzer
+- **transactions** can consult: sql-mcp, excel-mcp, auth, api-bridge, gap-analyzer
 - **auth** can consult: api-bridge, frontend-pages, navigation, transactions
 - **backend-control** can consult: auth, table-views, api-bridge, transactions
 - **api-bridge** can consult: auth, transactions, frontend-pages, sql-mcp
 - **gap-analyzer** can consult: ALL agents (and be consulted by all)
+- **router** can route to: ALL agents based on request analysis
 
 ## 🗄️ SQL MCP Integration
 
@@ -145,7 +178,7 @@ Add this to your `claude_desktop_config.json`:
     "sql-server-mcp": {
       "command": "node",
       "args": [".agents/data-agents/sql-mcp/index.js"],
-      "cwd": "C:/Users/AS/source/repos/item_information/item_information",
+      "cwd": "C:/Users/A.Stein/Source/Repos/item_info",
       "env": {
         "NODE_ENV": "production"
       }
@@ -166,17 +199,58 @@ The SQL MCP server provides:
 - `execute_stored_procedure`: Run stored procedures
 - `get_query_plan`: Analyze query performance
 
+## 📊 Excel MCP Integration
+
+### Claude Desktop Configuration
+
+Add this to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "excel-server-mcp": {
+      "command": "node",
+      "args": [".agents/data-agents/excel-mcp/index.js"],
+      "cwd": "C:/Users/A.Stein/Source/Repos/item_info",
+      "env": {
+        "NODE_ENV": "production",
+        "EXCEL_TEMP_DIR": "./uploads/temp",
+        "MAX_FILE_SIZE": "50MB"
+      }
+    }
+  }
+}
+```
+
+### Excel MCP Capabilities
+
+The Excel MCP server provides:
+- Read Excel workbooks and worksheets
+- Extract data from specific ranges
+- Validate Excel file structure
+- Convert Excel to JSON/CSV formats
+- Generate Excel reports from data
+- Handle multiple worksheet operations
+- Process Excel formulas and calculations
+- Manage Excel file metadata
+
+### Supported Formats
+- `.xlsx` (Excel 2007+)
+- `.xls` (Excel 97-2003)
+- `.csv` (Comma Separated Values)
+- `.tsv` (Tab Separated Values)
+
 ### Usage Examples
 
 ```bash
-# Basic queries
-agent.bat sql-mcp "List all tables in the database"
-agent.bat sql-mcp "Show the schema for the vendor_items_temp table"
-agent.bat sql-mcp "Get the top 10 users by created date"
+# Basic Excel operations
+agent.bat excel-mcp "Read the vendor data from sheet1 of the uploaded file"
+agent.bat excel-mcp "Convert the Excel file to JSON format"
+agent.bat excel-mcp "Validate the structure of the imported spreadsheet"
 
 # Complex analysis
-agent.bat sql-mcp "Find all tables with UPC-related columns"
-agent.bat sql-mcp "Analyze the performance of vendor item queries"
+agent.bat excel-mcp "Extract UPC codes from column B and validate format"
+agent.bat excel-mcp "Generate a summary report of the vendor items data"
 ```
 
 ## 📁 File Patterns
@@ -191,6 +265,7 @@ Each agent monitors specific file patterns:
 
 ### Data Agents
 - **sql-mcp**: `*.sql`, `database/**/*`
+- **excel-mcp**: `**/*.xlsx`, `**/*.xls`, `**/*.csv`, `uploads/**/*`, `helpers/**/*Excel*.js`
 - **transactions**: `helpers/**/*Handler.js`, `routes/**/*.js`
 
 ### System Agents  
@@ -200,6 +275,28 @@ Each agent monitors specific file patterns:
 
 ### Meta Agents
 - **gap-analyzer**: `**/*` (all files for comprehensive analysis)
+- **router**: `.agents/**/config.json`, `app.js`, `routes/**/*.js`
+
+## 🤖 Intelligent Request Routing
+
+The **router** agent analyzes user requests and automatically routes them to the most appropriate specialized agent:
+
+### Routing Rules
+- **SQL operations**: Keywords like "database", "sql", "query", "table" → `sql-mcp`
+- **Excel operations**: Keywords like "excel", "spreadsheet", "xlsx", "csv" → `excel-mcp`
+- **Data analysis**: Keywords like "analyze", "report", "chart", "dashboard" → `gap-analyzer`
+- **Transaction processing**: Keywords like "transaction", "payment", "process" → `transactions`
+- **General tasks**: Keywords like "help", "create", "build" → `orchestrator`
+
+### Usage
+```bash
+# Router automatically selects the best agent
+agent.bat router "I need to analyze the sales data in the Excel file"
+# → Routes to excel-mcp agent
+
+agent.bat router "Create a new user management table with proper indexes"
+# → Routes to sql-mcp agent
+```
 
 ## 🎯 Example Workflows
 
@@ -228,7 +325,19 @@ agent.bat navigation "Add profile link to user menu"
 agent.bat auth "Add profile edit permissions"
 ```
 
-### 2. Debug Performance Issue
+### 2. Process Excel Data Workflow
+```bash
+# Use workflow orchestrator for complex multi-step process
+AO.bat "Create a workflow to import vendor data from Excel, validate it, and update the database"
+
+# Or step by step
+agent.bat excel-mcp "Analyze the uploaded vendor Excel file structure"
+agent.bat excel-mcp "Extract and validate vendor data from the spreadsheet"
+agent.bat transactions "Import the validated vendor data into the database"
+agent.bat gap-analyzer "Verify the data import was successful and complete"
+```
+
+### 3. Debug Performance Issue
 ```bash
 # Analyze the problem
 agent.bat gap-analyzer "Find performance bottlenecks in the application"
@@ -246,7 +355,7 @@ agent.bat api-bridge "Add caching and optimize response times"
 agent.bat table-views "Add virtualization for large datasets"
 ```
 
-### 3. Add Admin Feature
+### 4. Add Admin Feature
 ```bash
 # Plan the admin feature
 agent.bat gap-analyzer "What admin features are we missing?"
@@ -299,6 +408,18 @@ agent.bat gap-analyzer "What security improvements does the application need?"
 
 # Performance analysis
 agent.bat gap-analyzer "What performance optimizations should we implement?"
+```
+
+### Workflow Orchestration
+
+The workflow-orchestrator agent helps plan and execute complex multi-step tasks:
+
+```bash
+# Plan complex workflows
+AO.bat "Plan a complete user registration workflow with email verification"
+
+# Multi-agent coordination
+AO.bat "Create a workflow to migrate legacy data, update schema, and test everything"
 ```
 
 ## 🛠️ Customization
@@ -358,7 +479,9 @@ Edit the `consultationPermissions` in each agent's `config.json`:
 1. **Python not found**: Install Python 3.8+ and ensure it's in PATH
 2. **Dependencies fail**: Run `pip install -r .agents/orchestrator/requirements.txt` manually
 3. **SQL MCP not working**: Check your `.env` file has correct database credentials
-4. **Agent not found**: Run `agent.bat list` to see available agents
+4. **Excel MCP not working**: Verify file permissions and temp directory access
+5. **Agent not found**: Run `agent.bat list` to see available agents
+6. **Shortcut not working**: Ensure `agent.bat` is in the same directory as shortcuts
 
 ### Debug Mode
 
@@ -379,35 +502,43 @@ The agent system is designed to work with your current codebase:
 - **React Components**: Agents understand your Ant Design + TypeScript setup
 - **Express API**: Agents know your route structure and middleware
 - **SQL Server**: Direct database access through MCP
+- **Excel Processing**: Automated spreadsheet analysis and data extraction
 - **Authentication**: Agents respect your JWT implementation
 - **File Uploads**: Agents understand your Excel processing workflow
 
 ### Development Workflow
 
 1. **Planning**: Use `gap-analyzer` to identify what needs to be built
-2. **Design**: Use `api-bridge` and `sql-mcp` to design data flow
-3. **Backend**: Use `transactions` and `auth` for server-side implementation
-4. **Frontend**: Use `frontend-pages`, `table-views`, `visualizations` for UI
-5. **Integration**: Use `navigation` and `api-bridge` to connect everything
-6. **Admin**: Use `backend-control` for administrative features
-7. **Validation**: Use `gap-analyzer` to ensure nothing is missing
+2. **Routing**: Use `router` to automatically select the right agent
+3. **Design**: Use `api-bridge` and `sql-mcp` to design data flow
+4. **Backend**: Use `transactions` and `auth` for server-side implementation
+5. **Frontend**: Use `frontend-pages`, `table-views`, `visualizations` for UI
+6. **Integration**: Use `navigation` and `api-bridge` to connect everything
+7. **Admin**: Use `backend-control` for administrative features
+8. **Excel**: Use `excel-mcp` for spreadsheet processing
+9. **Orchestration**: Use `workflow-orchestrator` for complex multi-step tasks
+10. **Validation**: Use `gap-analyzer` to ensure nothing is missing
 
 ## 🔐 Security Notes
 
 - Agents respect your existing authentication system
 - SQL MCP uses your existing database credentials
+- Excel MCP processes files in secure temporary directories
 - No sensitive data is logged or stored by the agent system
 - Inter-agent communication is local and secure
 - All database operations go through your established connection patterns
+- File uploads are validated and sandboxed
 
 ## 📈 Performance
 
 - Agents run on-demand, no background processes
 - SQL MCP uses connection pooling for efficiency  
+- Excel MCP processes files in optimized chunks
 - Inter-agent consultation is asynchronous and parallel-capable
 - File pattern matching is optimized for large codebases
 - Gap analysis can be cached and incremental
+- Router provides efficient request distribution
 
 ---
 
-**Ready to use your agent system!** Start with `agent.bat list` to see all available agents and begin building with AI assistance.
+**Ready to use your agent system!** Start with `agent.bat list` to see all available agents, or use shortcuts like `SM.bat` (SQL), `TX.bat` (Transactions), and `AO.bat` (Workflow Orchestrator) for quick access to frequently used agents.

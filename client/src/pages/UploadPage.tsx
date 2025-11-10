@@ -3,8 +3,9 @@ import { Card, Form, Upload, Input, Checkbox, Button, Progress, Alert, message, 
 import { UploadOutlined, InboxOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import axios from 'axios';
-
-const API_URL = 'http://localhost:3000/api';
+import { API_CONFIG } from '../config/api.config';
+import { API_CONFIG } from '../config/api.config';
+const API_URL = API_CONFIG.BASE_URL;
 
 interface UploadResult {
     success: boolean;
@@ -145,7 +146,7 @@ const UploadPage: React.FC = () => {
                     >
                         <Upload.Dragger {...uploadProps}>
                             <p className="ant-upload-drag-icon">
-                                <InboxOutlined style={{ fontSize: 48, color: '#1890ff' }} />
+                                <InboxOutlined style={{ fontSize: 48, color: '#043168' }} />
                             </p>
                             <p className="ant-upload-text">Click or drag file to this area to upload</p>
                             <p className="ant-upload-hint">
@@ -270,8 +271,8 @@ const UploadPage: React.FC = () => {
                 variant="borderless"
                 style={{
                     borderRadius: 8,
-                    borderLeft: '4px solid #1890ff',
-                    backgroundColor: '#f0f8ff'
+                    borderLeft: '4px solid #043168',
+                    backgroundColor: 'rgba(4, 49, 104, 0.05)'
                 }}
             >
                 <List

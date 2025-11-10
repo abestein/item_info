@@ -1,7 +1,66 @@
 /* src/styles/global.css */
 
-/* Import modern font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Dynarex Design System - Global Styles */
+
+/* CSS Variables for Dynarex Design Tokens */
+:root {
+    /* Primary Colors */
+    --color-primary: #00acac;
+    --color-navy: #043168;
+    --color-navy-hover: #032557;
+    --color-success: #28a745;
+    --color-warning: #ffc107;
+    --color-error: #dc3545;
+    --color-info: #348fe2;
+
+    /* Neutral Colors */
+    --color-white: #ffffff;
+    --color-bg-light: #f2f3f4;
+    --color-bg-gray: #DFDFE1;
+    --color-border: #c5c5c7;
+    --color-border-light: #dee2e6;
+    --color-text-muted: #6c757d;
+    --color-text-dark: #20252a;
+
+    /* Spacing - Standardized */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+
+    /* Border Radius - Standardized to 8px primary */
+    --border-radius: 8px;
+    --border-radius-sm: 6px;
+    --border-radius-lg: 12px;
+
+    /* Border Width */
+    --border-width: 1px;
+    --border-width-thick: 2px;
+
+    /* Transitions */
+    --transition-speed: 0.3s;
+    --transition-speed-fast: 0.2s;
+    --transition-easing: ease-in-out;
+
+    /* Component Heights */
+    --input-height: 48px;
+    --input-height-default: 32px;
+    --button-height: 48px;
+    --button-height-default: 32px;
+
+    /* Font Weights - Standardized */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 
 /* Base styles */
 * {
@@ -11,11 +70,14 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-text-dark);
+    background-color: #ffffff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: 'liga' 1, 'calt' 1;
 }
 
 /* Custom scrollbar for dark theme */
@@ -43,9 +105,50 @@ body {
     font-variant-numeric: tabular-nums;
 }
 
-.ant-table-thead > tr > th {
-    font-weight: 600;
-    background: #1f1f1f !important;
+.ant-table-thead > tr > th,
+.ant-table-thead th {
+    font-weight: var(--font-weight-semibold) !important;
+    background: #043168 !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Force white text in table headers - Enhanced */
+.ant-table-thead > tr > th *,
+.ant-table-thead th *,
+.ant-table-thead > tr > th span,
+.ant-table-thead th span {
+    color: #ffffff !important;
+}
+
+/* Table header icons (filter, sort) - Enhanced */
+.ant-table-thead > tr > th .anticon,
+.ant-table-thead th .anticon {
+    color: #ffffff !important;
+}
+
+.ant-table-column-sorter,
+.ant-table-column-sorter * {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.ant-table-column-sorter-up.active,
+.ant-table-column-sorter-down.active {
+    color: #ffffff !important;
+}
+
+.ant-table-filter-trigger,
+.ant-table-filter-trigger * {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.ant-table-filter-trigger.active {
+    color: #ffffff !important;
+}
+
+.ant-table-filter-trigger-container,
+.ant-table-filter-trigger-container * {
+    color: #ffffff !important;
 }
 
 .ant-table-tbody > tr:hover > td {
@@ -64,27 +167,96 @@ body {
 /* Card hover effects */
 .ant-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: var(--border-radius) !important;
+    overflow: hidden;
 }
 
     .ant-card:hover {
         transform: translateY(-2px);
     }
 
-/* Button improvements */
-.ant-btn {
-    font-weight: 500;
-    transition: all 0.2s ease;
+/* Card headers - Enhanced for better visibility */
+.ant-card-head {
+    background: #043168 !important;
+    border-bottom: 1px solid var(--color-border) !important;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
 }
 
-    /* Better focus styles */
-    .ant-input:focus,
-    .ant-select-focused,
-    .ant-btn:focus {
-        box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.2);
-    }
+.ant-card-head-title,
+.ant-card-head-title * {
+    color: #ffffff !important;
+    font-weight: var(--font-weight-semibold) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.ant-card-extra {
+    color: #ffffff !important;
+}
+
+/* Buttons in card extra should maintain their own styling */
+.ant-card-extra .ant-btn:not(.ant-btn-text):not(.ant-btn-link) {
+    color: initial !important;
+}
+
+/* Text buttons and links in card extra should be white */
+.ant-card-extra .ant-btn-text,
+.ant-card-extra .ant-btn-link {
+    color: #ffffff !important;
+}
+
+.ant-card-extra .ant-btn-text:hover,
+.ant-card-extra .ant-btn-link:hover {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Icons in card extra */
+.ant-card-extra .anticon:not(.ant-btn .anticon) {
+    color: #ffffff !important;
+}
+
+/* Button improvements - Dynarex Style */
+.ant-btn {
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed) var(--transition-easing);
+}
+
+.ant-btn-primary {
+    background-color: var(--color-navy);
+    border-color: var(--color-navy);
+}
+
+.ant-btn-primary:hover {
+    background-color: var(--color-navy-hover);
+    border-color: var(--color-navy-hover);
+}
+
+/* Input and Form Control improvements */
+.ant-input,
+.ant-input-password,
+.ant-select-selector,
+.ant-picker {
+    border-radius: var(--border-radius) !important;
+    border-color: var(--color-border);
+}
+
+.ant-input:focus,
+.ant-input-password:focus,
+.ant-select-focused .ant-select-selector,
+.ant-picker-focused {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(0, 172, 172, 0.2);
+}
+
+.ant-btn:focus {
+    box-shadow: none;
+}
 
 /* Page animations */
 .page-container {
+    padding: var(--spacing-lg);
+    padding-left: var(--spacing-xl) !important;
+    padding-right: var(--spacing-xl) !important;
     animation: fadeIn 0.3s ease-in-out;
 }
 
@@ -102,14 +274,14 @@ body {
 
 /* Filter dropdown improvements */
 .ant-table-filter-dropdown {
-    padding: 8px !important;
-    border-radius: 8px !important;
+    padding: var(--spacing-sm) !important;
+    border-radius: var(--border-radius) !important;
     background: #1f1f1f !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+    box-shadow: var(--shadow-lg) !important;
 }
 
     .ant-table-filter-dropdown .ant-btn-primary {
-        font-weight: 500;
+        font-weight: var(--font-weight-medium);
     }
 
     /* Date picker in filter */

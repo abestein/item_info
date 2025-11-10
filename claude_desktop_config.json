@@ -3,9 +3,19 @@
     "sql-server-mcp": {
       "command": "node",
       "args": [".agents/data-agents/sql-mcp/index.js"],
-      "cwd": "C:/Users/AS/source/repos/item_information/item_information",
+      "cwd": "C:/Users/A.Stein/Source/Repos/item_info",
       "env": {
         "NODE_ENV": "production"
+      }
+    },
+    "excel-mcp-server": {
+      "command": "node",
+      "args": [".agents/data-agents/excel-mcp/index.js"],
+      "cwd": "C:/Users/A.Stein/Source/Repos/item_info",
+      "env": {
+        "NODE_ENV": "production",
+        "EXCEL_TEMP_DIR": "./uploads/temp",
+        "MAX_FILE_SIZE": "50MB"
       }
     }
   },

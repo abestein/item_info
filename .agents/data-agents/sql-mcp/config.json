@@ -23,13 +23,18 @@
       "*.sql",
       "database/**/*",
       "sql/**/*",
+      "config/database.js",
+      "config/permissions.js",
+      "app.js",
       ".agents/data-agents/sql-mcp/**/*"
     ],
     "exclude": [
       "node_modules/**/*",
-      "client/**/*"
+      "client/**/*",
+      ".env"
     ]
   },
+  "securityLevel": "moderate",
   "consultationPermissions": {
     "canConsult": [
       "transactions",

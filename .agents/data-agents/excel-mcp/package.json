@@ -1,0 +1,30 @@
+{
+  "name": "excel-mcp-server",
+  "version": "1.0.0",
+  "description": "Excel MCP Server for spreadsheet operations through Model Context Protocol",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "excel",
+    "mcp",
+    "spreadsheet",
+    "exceljs",
+    "data-processing"
+  ],
+  "author": "Item Information System",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "exceljs": "^4.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

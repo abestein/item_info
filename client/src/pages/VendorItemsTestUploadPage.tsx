@@ -1,11 +1,12 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Form, Upload, Input, Checkbox, Button, Progress, Alert, Space, List, Table, App, Collapse, Tag } from 'antd';
 import { UploadOutlined, InboxOutlined, CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import axios from 'axios';
 import { authService } from '../services/authService';
 
-const API_URL = import.meta.env.VITE_API_URL_LOCAL || 'http://localhost:3000/api';
+import { API_CONFIG } from '../config/api.config';
+const API_URL = API_CONFIG.BASE_URL;
 
 interface VendorUploadResult {
     success: boolean;
@@ -208,11 +209,11 @@ const VendorItemsTestUploadPage: React.FC = () => {
                                             <strong>Row {error.row}:</strong> {error.message}
                                         </div>
                                         <div style={{ fontSize: 12, color: '#666' }}>
-                                            • Item Code: {error.itemCode}<br />
-                                            • Column: {error.column}<br />
-                                            • Value: "{error.value}"
-                                            {error.existingUOM && <><br />• Already in: {error.existingUOM}</>}
-                                            {error.existingItem && <><br />• Conflicts with: {error.existingItem} (Row {error.existingRow})</>}
+                                            � Item Code: {error.itemCode}<br />
+                                            � Column: {error.column}<br />
+                                            � Value: "{error.value}"
+                                            {error.existingUOM && <><br />� Already in: {error.existingUOM}</>}
+                                            {error.existingItem && <><br />� Conflicts with: {error.existingItem} (Row {error.existingRow})</>}
                                         </div>
                                     </div>
                                 </List.Item>
@@ -265,7 +266,7 @@ const VendorItemsTestUploadPage: React.FC = () => {
                     >
                         <Upload.Dragger {...uploadProps}>
                             <p className="ant-upload-drag-icon">
-                                <InboxOutlined style={{ fontSize: 48, color: '#1890ff' }} />
+                                <InboxOutlined style={{ fontSize: 48, color: '#043168' }} />
                             </p>
                             <p className="ant-upload-text">Click or drag file to this area to upload</p>
                             <p className="ant-upload-hint">
@@ -335,7 +336,7 @@ const VendorItemsTestUploadPage: React.FC = () => {
                                                 <p><CheckCircleOutlined style={{ color: '#52c41a' }} /> {result.validRows} valid rows (with data in 4th column)</p>
                                                 <p><CheckCircleOutlined style={{ color: '#52c41a' }} /> {result.successfulRows} rows imported successfully</p>
                                                 {result.skippedRows > 0 && (
-                                                    <p style={{ color: '#faad14' }}>⚠️ {result.skippedRows} rows skipped (missing 4th column)</p>
+                                                    <p style={{ color: '#faad14' }}>?? {result.skippedRows} rows skipped (missing 4th column)</p>
                                                 )}
                                                 {result.failedRows > 0 && (
                                                     <p><CloseCircleOutlined style={{ color: '#f5222d' }} /> {result.failedRows} rows failed</p>
@@ -425,12 +426,12 @@ const VendorItemsTestUploadPage: React.FC = () => {
                 <List
                     size="small"
                     dataSource={[
-                        'Data is mapped by column position: Column A → column1, Column B → column2, etc.',
+                        'Data is mapped by column position: Column A ? column1, Column B ? column2, etc.',
                         'Rows that have no data in the 4th column (Column D) will be skipped entirely',
                         'UPC Validation Rules:',
-                        '  • UPCs must be exactly 12 numeric digits, the letter "X", or empty',
-                        '  • Same UPC cannot appear in multiple UOM columns for the same item',
-                        '  • Same UPC cannot be used for different items',
+                        '  � UPCs must be exactly 12 numeric digits, the letter "X", or empty',
+                        '  � Same UPC cannot appear in multiple UOM columns for the same item',
+                        '  � Same UPC cannot be used for different items',
                         'Empty cells are saved as NULL in the database',
                         'All data is stored as text (NVARCHAR) in columns column1 through column26',
                         'Table vendor_items_temp will be created automatically if it doesn\'t exist'
@@ -442,7 +443,7 @@ const VendorItemsTestUploadPage: React.FC = () => {
                                 paddingLeft: item.startsWith('  ') ? 20 : 0,
                                 fontWeight: item.includes('UPC Validation') ? 'bold' : 'normal'
                             }}>
-                                {item.startsWith('  ') ? item : `• ${item}`}
+                                {item.startsWith('  ') ? item : `� ${item}`}
                             </span>
                         </List.Item>
                     )}

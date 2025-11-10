@@ -1,11 +1,11 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Table, message, Spin, Input, Button, Space, Modal, Descriptions, Tag } from 'antd';
 import { SearchOutlined, EyeOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import type { ColumnsType, FilterDropdownProps } from 'antd/es/table';
 import type { Key } from 'antd/es/table/interface';
 import axios from 'axios';
-
-const API_URL = 'http://192.168.254.20:3000/api';
+import { API_CONFIG } from '../config/api.config';
+const API_URL = API_CONFIG.BASE_URL;
 
 interface DataRecord {
     [key: string]: any;
@@ -121,7 +121,7 @@ const HomePage: React.FC = () => {
 
                         // Filter icon
                         filterIcon: (filtered: boolean) => (
-                            <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+                            <SearchOutlined style={{ color: filtered ? '#043168' : undefined }} />
                         ),
 
                         // Filter function
@@ -160,7 +160,7 @@ const HomePage: React.FC = () => {
                             if (typeof value === 'boolean') {
                                 return (
                                     <Tag color={value ? 'success' : 'error'}>
-                                        {value ? '✓ Confirmed' : '✗ Pending'}
+                                        {value ? '? Confirmed' : '? Pending'}
                                     </Tag>
                                 );
                             }
@@ -223,7 +223,7 @@ const HomePage: React.FC = () => {
         if (typeof value === 'boolean') {
             return (
                 <Tag color={value ? 'success' : 'warning'} style={{ fontSize: '14px' }}>
-                    {value ? '✓ Confirmed' : '⚠ Pending Confirmation'}
+                    {value ? '? Confirmed' : '? Pending Confirmation'}
                 </Tag>
             );
         }
@@ -243,9 +243,9 @@ const HomePage: React.FC = () => {
                 style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
                 extra={
                     <Space>
-                        <InfoCircleOutlined style={{ color: '#1890ff' }} />
+                        <InfoCircleOutlined style={{ color: '#043168' }} />
                         <span style={{ fontSize: '14px', color: '#666' }}>
-                            Click 👁 to view details • Click headers to sort • Use 🔍 to filter
+                            Click ?? to view details � Click headers to sort � Use ?? to filter
                         </span>
                     </Space>
                 }
@@ -326,7 +326,7 @@ const HomePage: React.FC = () => {
                             <div><strong>UPC:</strong> {selectedRecord.upc || 'N/A'}</div>
                             <div><strong>Status:</strong> {formatDetailValue('confirmed', selectedRecord.confirmed)}</div>
                             {selectedRecord.weight && (
-                                <div><strong>Dimensions:</strong> {selectedRecord.length}×{selectedRecord.width}×{selectedRecord.height} in, {selectedRecord.weight} lbs</div>
+                                <div><strong>Dimensions:</strong> {selectedRecord.length}�{selectedRecord.width}�{selectedRecord.height} in, {selectedRecord.weight} lbs</div>
                             )}
                         </Space>
                     </Card>

@@ -7,11 +7,11 @@ export const darkThemeConfig: ThemeConfig = {
     algorithm: theme.darkAlgorithm,
     token: {
         // Primary color
-        colorPrimary: '#1890ff',
-        colorSuccess: '#52c41a',
-        colorWarning: '#faad14',
-        colorError: '#ff4d4f',
-        colorInfo: '#1890ff',
+        colorPrimary: '#043168',
+        colorSuccess: '#28a745',
+        colorWarning: '#ffc107',
+        colorError: '#dc3545',
+        colorInfo: '#043168',
 
         // Dark backgrounds
         colorBgContainer: '#141414',
@@ -24,7 +24,7 @@ export const darkThemeConfig: ThemeConfig = {
         colorBorder: '#303030',
 
         // Typography
-        fontFamily: `'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`,
+        fontFamily: `'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`,
         fontSize: 14,
         fontSizeLG: 16,
         fontWeightStrong: 600,
@@ -36,8 +36,8 @@ export const darkThemeConfig: ThemeConfig = {
         marginLG: 24,
 
         // Border
-        borderRadius: 6,
-        borderRadiusLG: 8,
+        borderRadius: 8,
+        borderRadiusLG: 10,
 
         // Shadow
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.45)',
@@ -50,8 +50,8 @@ export const darkThemeConfig: ThemeConfig = {
         },
         Menu: {
             darkItemBg: '#141414',
-            darkItemSelectedBg: '#1890ff',
-            darkItemHoverBg: 'rgba(255, 255, 255, 0.08)',
+            darkItemSelectedBg: '#043168',
+            darkItemHoverBg: 'rgba(4, 49, 104, 0.3)',
         },
         Table: {
             headerBg: '#1f1f1f',
@@ -62,7 +62,7 @@ export const darkThemeConfig: ThemeConfig = {
             colorBgContainer: '#141414',
         },
         Button: {
-            primaryShadow: '0 2px 8px rgba(24, 144, 255, 0.25)',
+            primaryShadow: '0 2px 8px rgba(4, 49, 104, 0.25)',
         },
         Input: {
             colorBgContainer: '#1f1f1f',
@@ -71,19 +71,29 @@ export const darkThemeConfig: ThemeConfig = {
     },
 };
 
-// Light theme configuration (matching your current design)
+// Light theme configuration (matching login page design)
 export const lightThemeConfig: ThemeConfig = {
     token: {
-        // Primary color (keeping your blue)
-        colorPrimary: '#1890ff',
+        // Primary color (matching login page)
+        colorPrimary: '#043168',
+        colorSuccess: '#28a745',
+        colorWarning: '#ffc107',
+        colorError: '#dc3545',
+        colorInfo: '#043168',
 
         // Typography
-        fontFamily: `'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`,
+        fontFamily: `'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`,
         fontSize: 14,
         fontWeightStrong: 600,
 
+        // Background colors
+        colorBgContainer: '#ffffff',
+        colorBgLayout: '#DFDFE1',
+        colorBorder: '#c5c5c7',
+
         // Border radius
-        borderRadius: 6,
+        borderRadius: 8,
+        borderRadiusLG: 10,
 
         // Shadows
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -91,18 +101,25 @@ export const lightThemeConfig: ThemeConfig = {
     },
     components: {
         Layout: {
-            bodyBg: '#f5f5f5',
+            bodyBg: '#DFDFE1',
             headerBg: '#fff',
             siderBg: '#fff',
         },
         Menu: {
             itemBg: '#fff',
-            itemSelectedBg: '#e6f7ff',
-            itemHoverBg: '#f5f5f5',
+            itemSelectedBg: 'rgba(4, 49, 104, 0.1)',
+            itemHoverBg: 'rgba(4, 49, 104, 0.05)',
         },
         Table: {
-            headerBg: '#fafafa',
-            rowHoverBg: '#f5f5f5',
+            headerBg: '#DFDFE1',
+            rowHoverBg: 'rgba(4, 49, 104, 0.05)',
+            borderColor: '#c5c5c7',
+        },
+        Button: {
+            primaryShadow: '0 4px 12px rgba(4, 49, 104, 0.2)',
+        },
+        Input: {
+            colorBorder: '#c5c5c7',
         },
     },
 };

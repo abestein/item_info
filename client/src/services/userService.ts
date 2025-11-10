@@ -187,9 +187,46 @@ class UserService {
     }
   }
 
+  // Role management
+  async getRoles(): Promise<any[]> {
+    try {
+      const response = await axios.get(`${API_URL}/roles`, {
+        headers: this.getAuthHeaders()
+      });
+      return response.data.roles || [];
+    } catch (error: any) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
+  async updateRolePermissions(role: string, permissions: string[]): Promise<void> {
+    try {
+      await axios.put(`${API_URL}/roles/${role}/permissions`,
+        { permissions },
+        { headers: this.getAuthHeaders() }
+      );
+    } catch (error: any) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
+  async getRolePermissions(role: string): Promise<any> {
+    try {
+      const response = await axios.get(`${API_URL}/roles/${role}/permissions`, {
+        headers: this.getAuthHeaders()
+      });
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
   async getAvailablePages(): Promise<PagePermission[]> {
     try {
-      const response = await axios.get(`${API_URL}/permissions/pages`, {
+      const response = await axios.get(`${API_URL}/roles/pages/available`, {
         headers: this.getAuthHeaders()
       });
       return response.data.pages || [];

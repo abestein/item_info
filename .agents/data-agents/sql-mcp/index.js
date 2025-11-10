@@ -11,7 +11,7 @@ import {
 import sql from 'mssql';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: '../../../.env' });
 
 class SQLServerMCP {
   constructor() {
@@ -37,9 +37,9 @@ class SQLServerMCP {
       const config = {
         user: process.env.DB_USER || 'sa',
         password: process.env.DB_PASSWORD,
-        server: process.env.DB_HOST || 'localhost',
+        server: process.env.DB_SERVER || process.env.DB_HOST || 'localhost',
         port: parseInt(process.env.DB_PORT) || 1433,
-        database: process.env.DB_NAME || 'master',
+        database: process.env.DB_DATABASE || process.env.DB_NAME || 'master',
         options: {
           encrypt: false,
           trustServerCertificate: true,
@@ -204,6 +204,33 @@ class SQLServerMCP {
             required: ['query'],
           },
         },
+        {
+          name: 'get_stored_procedure_definition',
+          description: 'Get the SQL definition/code of a stored procedure',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              procedureName: {
+                type: 'string',
+                description: 'Name of the stored procedure to get definition for',
+              },
+            },
+            required: ['procedureName'],
+          },
+        },
+        {
+          name: 'list_stored_procedures',
+          description: 'List all stored procedures in the database',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              schema: {
+                type: 'string',
+                description: 'Schema name (optional, defaults to dbo)',
+              },
+            },
+          },
+        },
       ],
     }));
 
@@ -285,7 +312,13 @@ class SQLServerMCP {
           
           case 'get_query_plan':
             return await this.getQueryPlan(args.query);
-          
+
+          case 'get_stored_procedure_definition':
+            return await this.getStoredProcedureDefinition(args.procedureName);
+
+          case 'list_stored_procedures':
+            return await this.listStoredProcedures(args.schema);
+
           default:
             throw new Error(`Unknown tool: ${name}`);
         }
@@ -597,11 +630,11 @@ class SQLServerMCP {
   async getDatabaseSchema() {
     const tables = await this.getAllTables();
     const schema = {};
-    
+
     for (const table of tables) {
       const tableName = table.TABLE_NAME;
       const result = await this.connectionPool.request().query(`
-        SELECT 
+        SELECT
           COLUMN_NAME,
           DATA_TYPE,
           IS_NULLABLE,
@@ -610,19 +643,89 @@ class SQLServerMCP {
         WHERE TABLE_NAME = '${tableName}'
         ORDER BY ORDINAL_POSITION
       `);
-      
+
       schema[tableName] = result.recordset;
     }
-    
+
     return schema;
+  }
+
+  async getStoredProcedureDefinition(procedureName) {
+    try {
+      const query = `
+        SELECT OBJECT_DEFINITION(OBJECT_ID(@procedureName)) AS ProcedureDefinition
+      `;
+
+      const request = this.connectionPool.request();
+      request.input('procedureName', sql.VarChar, procedureName);
+      const result = await request.query(query);
+
+      const definition = result.recordset[0]?.ProcedureDefinition;
+
+      if (!definition) {
+        throw new Error(`Stored procedure '${procedureName}' not found`);
+      }
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              procedureName,
+              definition,
+            }, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      throw new Error(`Failed to get stored procedure definition: ${error.message}`);
+    }
+  }
+
+  async listStoredProcedures(schema = 'dbo') {
+    try {
+      const query = `
+        SELECT
+          ROUTINE_SCHEMA,
+          ROUTINE_NAME,
+          CREATED,
+          LAST_ALTERED
+        FROM INFORMATION_SCHEMA.ROUTINES
+        WHERE ROUTINE_TYPE = 'PROCEDURE'
+        ${schema ? 'AND ROUTINE_SCHEMA = @schema' : ''}
+        ORDER BY ROUTINE_SCHEMA, ROUTINE_NAME
+      `;
+
+      const request = this.connectionPool.request();
+      if (schema) {
+        request.input('schema', sql.VarChar, schema);
+      }
+
+      const result = await request.query(query);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              schema: schema || 'all',
+              procedures: result.recordset,
+              count: result.recordset.length,
+            }, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      throw new Error(`Failed to list stored procedures: ${error.message}`);
+    }
   }
 
   async run() {
     await this.initializeDatabase();
-    
+
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    
+
     console.error('SQL Server MCP server running on stdio');
   }
 }

@@ -14,10 +14,26 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Set up view engine for EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Set up layouts
+const expressLayouts = require('express-ejs-layouts');
+app.use(expressLayouts);
+app.set('layout', 'layouts/main');
+
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' })); // Increase limit for large Excel data imports
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static('public'));
+
+// Debug all requests
+app.use((req, res, next) => {
+    console.log(`[DEBUG] ${new Date().toISOString()} - ${req.method} ${req.path}`);
+    next();
+});
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -66,7 +82,11 @@ const authRoutes = require('./routes/auth')(dbConfig);
 const dashboardRoutes = require('./routes/dashboard')(dbConfig);
 const userRoutes = require('./routes/users')(dbConfig);
 const permissionsRoutes = require('./routes/permissions')(dbConfig);
-const { authMiddleware, adminMiddleware } = require('./middleware/auth');
+const roleRoutes = require('./routes/roles')(dbConfig);
+const dataTeamUploadRoutes = require('./routes/data_team_upload');
+const dataTeamComparisonRoutes = require('./routes/data_team_comparison');
+const newDashboardRoutes = require('./routes/new_dashboard');
+const { authMiddleware, adminMiddleware, editorMiddleware } = require('./middleware/auth');
 
 // Add auth routes with rate limiting
 app.use('/api/auth', authLimiter, authRoutes);
@@ -79,6 +99,9 @@ app.use('/api/users', authMiddleware, adminMiddleware, apiLimiter, userRoutes);
 
 // Permissions routes (admin only)
 app.use('/api/permissions', authMiddleware, adminMiddleware, apiLimiter, permissionsRoutes);
+
+// Role management routes (admin only)
+app.use('/api/roles', authMiddleware, adminMiddleware, apiLimiter, roleRoutes);
 
 // Progress tracking
 let uploadProgress = {};
@@ -119,6 +142,51 @@ app.get('/api/items', authMiddleware, async (req, res) => {
         res.status(500).json({
             success: false,
             error: 'Error fetching items'
+        });
+    }
+});
+
+// Get data team active items (protected)
+app.get('/api/data-team-items', authMiddleware, async (req, res) => {
+    try {
+        await sql.connect(dbConfig);
+        const result = await sql.query`SELECT * FROM data_team_active_items ORDER BY id DESC`;
+        res.json({
+            success: true,
+            data: result.recordset
+        });
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({
+            success: false,
+            error: 'Error fetching data team items'
+        });
+    }
+});
+
+// Get single data team item by ID (protected)
+app.get('/api/data-team-item/:id', authMiddleware, async (req, res) => {
+    try {
+        const { id } = req.params;
+        await sql.connect(dbConfig);
+        const result = await sql.query`SELECT * FROM data_team_active_items WHERE id = ${id}`;
+
+        if (result.recordset.length === 0) {
+            return res.status(404).json({
+                success: false,
+                error: 'Item not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: result.recordset[0]
+        });
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({
+            success: false,
+            error: 'Error fetching item details'
         });
     }
 });
@@ -403,6 +471,32 @@ app.post('/api/upload-vendor-items-test', authMiddleware, upload.single('excelFi
 // Health check (public)
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date() });
+});
+
+// Data team routes
+app.use('/api', authMiddleware, dataTeamUploadRoutes);
+app.use('/api', authMiddleware, dataTeamComparisonRoutes);
+app.use('/api', authMiddleware, newDashboardRoutes);
+
+// Store dbConfig in app.locals for routes to access
+app.locals.dbConfig = dbConfig;
+
+// View routes (protected)
+app.get('/upload-data-team', authMiddleware, (req, res) => {
+    res.render('upload_data_team', {
+        title: 'Upload Data Team Items',
+        user: req.user,
+        activePage: 'upload-data-team'
+    });
+});
+
+// Comparison page route (editor/admin only)
+app.get('/compare-data-team', authMiddleware, editorMiddleware, (req, res) => {
+    res.render('compare_data_team', {
+        title: 'Compare Data Team Items',
+        user: req.user,
+        activePage: 'compare-data-team'
+    });
 });
 
 // Helper function to get local IP

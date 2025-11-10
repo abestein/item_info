@@ -27,7 +27,7 @@ const DashboardSummaryCards: React.FC<DashboardSummaryCardsProps> = ({ data }) =
             title: 'Total Items',
             value: data.totalItems,
             icon: <DatabaseOutlined />,
-            color: '#1890ff',
+            color: '#043168',
         },
         {
             title: 'Approved',

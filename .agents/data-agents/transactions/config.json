@@ -25,19 +25,27 @@
       "helpers/**/*Handler.js",
       "helpers/**/*Upload*.js",
       "helpers/uploadHandler.js",
-      "helpers/vendorItems*.js", 
+      "helpers/vendorItems*.js",
       "routes/**/*.js",
-      "middleware/**/*.js"
+      "middleware/**/*.js",
+      "config/database.js",
+      "utils/**/*validation*.js",
+      "utils/**/*transaction*.js"
     ],
     "exclude": [
       "client/**/*",
       "public/**/*",
-      "middleware/auth.js"
+      "middleware/auth.js",
+      "routes/auth.js",
+      "node_modules/**/*",
+      ".env"
     ]
   },
+  "securityLevel": "moderate",
   "consultationPermissions": {
     "canConsult": [
       "sql-mcp",
+      "excel-mcp-server",
       "auth",
       "api-bridge", 
       "gap-analyzer"
@@ -51,7 +59,7 @@
   },
   "dependencies": {
     "database": "SQL Server with mssql package",
-    "fileProcessing": "ExcelJS for Excel imports",
+    "fileProcessing": "ExcelJS for Excel imports + Excel MCP for advanced operations",
     "validation": "Custom business rule validation",
     "transactions": "Database transaction management"
   }

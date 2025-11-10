@@ -1,0 +1,59 @@
+{
+  "name": "agent-router",
+  "description": "Intelligent agent router that determines which specialized agent to call based on user requests",
+  "type": "meta-agent",
+  "version": "1.0.0",
+  "capabilities": [
+    "request-analysis",
+    "agent-routing",
+    "context-understanding",
+    "multi-agent-orchestration"
+  ],
+  "routing_rules": {
+    "sql_operations": {
+      "keywords": ["database", "sql", "query", "table", "select", "insert", "update", "delete", "mssql"],
+      "target_agent": "sql-mcp",
+      "confidence_threshold": 0.3
+    },
+    "data_analysis": {
+      "keywords": ["analyze", "report", "chart", "graph", "statistics", "trends", "dashboard"],
+      "target_agent": "gap-analyzer",
+      "confidence_threshold": 0.2
+    },
+    "transaction_processing": {
+      "keywords": ["transaction", "payment", "order", "process", "workflow"],
+      "target_agent": "transactions",
+      "confidence_threshold": 0.5
+    },
+    "excel_operations": {
+      "keywords": ["excel", "spreadsheet", "xlsx", "xls", "csv", "workbook", "worksheet"],
+      "target_agent": "excel-mcp",
+      "confidence_threshold": 0.25
+    },
+    "general_tasks": {
+      "keywords": ["help", "create", "generate", "assist", "build"],
+      "target_agent": "orchestrator",
+      "confidence_threshold": 0.5
+    }
+  },
+  "fallback_agent": "orchestrator",
+  "max_routing_attempts": 3,
+  "filePatterns": {
+    "include": [
+      ".agents/**/config.json",
+      ".agents/meta-agents/router/**/*",
+      "app.js",
+      "routes/**/*.js",
+      "package*.json"
+    ],
+    "exclude": [
+      "node_modules/**/*",
+      ".git/**/*",
+      "uploads/**/*",
+      ".env",
+      "client/**/*",
+      ".agents/**/node_modules/**/*"
+    ]
+  },
+  "securityLevel": "moderate"
+}

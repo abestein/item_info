@@ -1,0 +1,80 @@
+{
+  "name": "Orchestrator Agent",
+  "type": "system-orchestrator",
+  "version": "1.0.0",
+  "expertise": [
+    "agent-coordination",
+    "system-orchestration", 
+    "multi-agent-workflows",
+    "system-integration",
+    "resource-management",
+    "workflow-execution"
+  ],
+  "responsibilities": [
+    "Coordinate multi-agent interactions",
+    "Manage system-wide workflows",
+    "Handle agent lifecycle management", 
+    "Execute complex multi-step tasks",
+    "Resolve agent conflicts and dependencies",
+    "Monitor system health and performance"
+  ],
+  "filePatterns": {
+    "include": [
+      ".agents/**/*",
+      "app.js",
+      "package*.json",
+      "config/**/*",
+      "routes/**/*.js",
+      "middleware/**/*.js",
+      "helpers/**/*.js",
+      "utils/**/*.js"
+    ],
+    "exclude": [
+      "node_modules/**/*",
+      ".git/**/*", 
+      "uploads/**/*",
+      ".env",
+      "client/node_modules/**/*",
+      ".agents/**/node_modules/**/*",
+      ".vs/**/*",
+      ".vscode/**/*",
+      "obj/**/*"
+    ]
+  },
+  "securityLevel": "administrator",
+  "consultationPermissions": {
+    "canConsult": [
+      "sql-mcp",
+      "transactions",
+      "gap-analyzer", 
+      "router",
+      "frontend-pages",
+      "table-views",
+      "visualizations",
+      "navigation",
+      "auth",
+      "backend-control",
+      "api-bridge"
+    ],
+    "canBeConsultedBy": [
+      "sql-mcp",
+      "transactions",
+      "gap-analyzer",
+      "router"
+    ]
+  },
+  "dependencies": {
+    "scope": "System-wide orchestration",
+    "agents": "All specialized agents",
+    "coverage": "Full application stack",
+    "coordination": "Agent workflow management"
+  },
+  "orchestrationCapabilities": [
+    "Multi-agent task coordination",
+    "Workflow state management",
+    "Error handling and recovery",
+    "Resource allocation and scheduling",
+    "Inter-agent communication protocols",
+    "System health monitoring"
+  ]
+}

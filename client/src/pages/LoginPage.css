@@ -1,0 +1,530 @@
+/* Split Screen Login Design */
+
+/* Main Container */
+.split-login-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+/* Logo Container - Spans both sections */
+.logo-container {
+    position: absolute;
+    top: 33vh;
+    left: 70px;
+    z-index: 999;
+    width: auto;
+}
+
+.logo-spanning {
+    width: 634.984px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Responsive logo positioning */
+@media (min-width: 1400px) {
+    .logo-container {
+        left: 100px;
+    }
+    .logo-spanning {
+        width: 634.984px;
+    }
+}
+
+@media (max-width: 1399px) and (min-width: 1024px) {
+    .logo-container {
+        left: 70px;
+    }
+    .logo-spanning {
+        width: 500px;
+    }
+}
+
+@media (max-width: 1023px) and (min-width: 768px) {
+    .logo-container {
+        left: 60px;
+    }
+    .logo-spanning {
+        width: 400px;
+    }
+}
+
+/* ============================================
+   LEFT SECTION - Dark Blue (#043168)
+   ============================================ */
+.left-section {
+    flex: 0 0 33.33%;
+    background: #043168;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.left-content {
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin-top: 0;
+}
+
+/* Welcome Text */
+.welcome-title {
+    font-size: 42px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    margin-bottom: 12px !important;
+    letter-spacing: -0.5px;
+    position: absolute;
+    top: calc(33vh - 140px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+}
+
+.welcome-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0;
+    position: absolute;
+    top: calc(33vh - 80px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+}
+
+/* Triangle Watermark - Bottom Right Corner */
+.triangle-watermark {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.triangle-watermark img {
+    width: 300px;
+    height: auto;
+    opacity: 0.2;
+}
+
+/* ============================================
+   RIGHT SECTION - Light Gray (#DFDFE1)
+   ============================================ */
+.right-section {
+    flex: 0 0 66.67%;
+    background: #DFDFE1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+}
+
+.right-content {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 100px;
+}
+
+/* Form Title */
+.form-title {
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    color: #043168 !important;
+    text-align: center;
+    margin-bottom: 8px !important;
+}
+
+.form-subtitle {
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+/* Form Styling */
+.split-login-form {
+    margin-bottom: 20px;
+}
+
+.split-login-form .ant-form-item {
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+.split-form-input {
+    background: #ffffff !important;
+    border: 2px solid #c5c5c7 !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    height: 48px !important;
+    box-sizing: border-box !important;
+}
+
+.split-form-input:hover {
+    border-color: #043168 !important;
+}
+
+.split-form-input:focus,
+.split-form-input.ant-input-focused,
+.split-form-input.ant-input-affix-wrapper-focused {
+    border-color: #043168 !important;
+    box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.1) !important;
+    outline: none !important;
+}
+
+/* Password Input */
+.split-form-input.ant-input-password {
+    padding: 12px 16px !important;
+    display: flex;
+    align-items: center;
+    height: 48px !important;
+    box-sizing: border-box !important;
+}
+
+.split-form-input.ant-input-password:hover {
+    border-color: #043168 !important;
+}
+
+.split-form-input.ant-input-password.ant-input-affix-wrapper-focused {
+    border-color: #043168 !important;
+    box-shadow: 0 0 0 3px rgba(4, 49, 104, 0.1) !important;
+    outline: none !important;
+}
+
+.split-form-input.ant-input-password input {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    height: 100%;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.split-form-input.ant-input-password input:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.split-form-input.ant-input-password .ant-input-prefix {
+    margin-left: 0 !important;
+    margin-right: 12px !important;
+}
+
+.split-form-input.ant-input-password .ant-input-suffix {
+    margin-right: 0 !important;
+    margin-left: 12px !important;
+}
+
+/* Input Prefix Icons */
+.split-form-input .ant-input-prefix {
+    margin-right: 12px;
+}
+
+/* Form Options (Remember Me & Forgot Password) */
+.split-form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.split-remember {
+    font-size: 14px;
+    color: #495057;
+}
+
+.split-remember .ant-checkbox-inner {
+    border-color: #c5c5c7;
+    border-width: 2px;
+}
+
+.split-remember .ant-checkbox:hover .ant-checkbox-inner {
+    border-color: #043168;
+}
+
+.split-remember .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #043168 !important;
+    border-color: #043168 !important;
+}
+
+.split-remember .ant-checkbox-checked::after {
+    border-color: #043168 !important;
+}
+
+.split-remember .ant-checkbox-wrapper:hover .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #043168 !important;
+    border-color: #043168 !important;
+}
+
+.split-forgot-link {
+    font-size: 14px;
+    color: #043168;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.split-forgot-link:hover {
+    color: #032649;
+    text-decoration: underline;
+}
+
+/* Login Button */
+.split-login-button,
+.split-login-button.ant-btn,
+.split-login-button.ant-btn-primary {
+    width: 100%;
+    height: 48px !important;
+    background-color: #043168 !important;
+    background: #043168 !important;
+    border: none !important;
+    border-color: #043168 !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(4, 49, 104, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.split-login-button:hover,
+.split-login-button.ant-btn:hover,
+.split-login-button.ant-btn-primary:hover,
+.split-login-button:focus,
+.split-login-button.ant-btn:focus,
+.split-login-button.ant-btn-primary:focus {
+    background-color: #043168 !important;
+    background: #043168 !important;
+    border-color: #043168 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(4, 49, 104, 0.3) !important;
+    opacity: 0.9;
+    color: #ffffff !important;
+}
+
+.split-login-button:active,
+.split-login-button.ant-btn:active,
+.split-login-button.ant-btn-primary:active {
+    transform: translateY(0);
+    background-color: #043168 !important;
+    background: #043168 !important;
+    border-color: #043168 !important;
+}
+
+.split-login-button.ant-btn-loading {
+    opacity: 0.8;
+    background-color: #043168 !important;
+    background: #043168 !important;
+}
+
+/* Footer */
+.split-footer {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.split-footer p {
+    font-size: 12px;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* Error Messages */
+.split-login-form .ant-form-item-explain-error {
+    font-size: 12px;
+    margin-top: 4px;
+    color: #dc3545;
+}
+
+.split-login-form .ant-form-item-has-error .split-form-input {
+    border-color: #dc3545 !important;
+}
+
+.split-login-form .ant-form-item-has-error .split-form-input:focus {
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .left-section {
+        flex: 0 0 35%;
+        padding: 40px;
+    }
+
+    .right-section {
+        flex: 0 0 65%;
+    }
+
+    .logo-container {
+        top: 30vh;
+    }
+
+    .welcome-title {
+        font-size: 36px !important;
+        top: calc(30vh - 120px);
+    }
+
+    .welcome-subtitle {
+        top: calc(30vh - 70px);
+    }
+
+    .triangle-watermark {
+        bottom: 0;
+        right: 0;
+    }
+
+    .triangle-watermark img {
+        width: 300px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .split-login-container {
+        flex-direction: column;
+    }
+
+    .logo-container {
+        left: 50px;
+        top: 30vh;
+    }
+
+    .logo-spanning {
+        max-width: 220px;
+        height: auto;
+    }
+
+    .left-section {
+        flex: 0 0 auto;
+        min-height: 40vh;
+        padding: 40px 30px;
+    }
+
+    .right-section {
+        flex: 1;
+        padding: 40px 30px;
+    }
+
+    .left-content {
+        max-width: 100%;
+        margin-top: 60px;
+    }
+
+    .welcome-title {
+        font-size: 28px !important;
+        top: calc(30vh - 100px);
+    }
+
+    .welcome-subtitle {
+        font-size: 16px;
+        top: calc(30vh - 55px);
+    }
+
+    .triangle-watermark {
+        bottom: 0;
+        right: 0;
+    }
+
+    .triangle-watermark img {
+        width: 200px;
+    }
+
+    .form-title {
+        font-size: 26px !important;
+    }
+
+    .right-content {
+        max-width: 100%;
+        margin-top: 80px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .logo-container {
+        left: 40px;
+        top: 28vh;
+    }
+
+    .logo-spanning {
+        max-width: 180px;
+        height: auto;
+    }
+
+    .left-section {
+        padding: 30px 20px;
+    }
+
+    .right-section {
+        padding: 30px 20px;
+    }
+
+    .welcome-title {
+        font-size: 24px !important;
+        top: calc(28vh - 90px);
+    }
+
+    .welcome-subtitle {
+        top: calc(28vh - 50px);
+    }
+
+    .form-title {
+        font-size: 22px !important;
+    }
+
+    .split-form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.left-content,
+.right-content {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Smooth transitions for all interactive elements */
+a,
+button,
+input,
+.ant-checkbox {
+    transition: all 0.2s ease;
+}
+
+/* Focus visible for accessibility */
+.split-login-button:focus-visible,
+.split-form-input:focus-visible {
+    outline: 2px solid #043168;
+    outline-offset: 2px;
+}

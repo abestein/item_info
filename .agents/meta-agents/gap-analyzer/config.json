@@ -23,16 +23,33 @@
   ],
   "filePatterns": {
     "include": [
-      "**/*"
+      "**/*.js",
+      "**/*.ts", 
+      "**/*.tsx",
+      "**/*.json",
+      "**/*.css",
+      "**/*.scss",
+      "**/*.html",
+      "**/*.md",
+      "config/**/*",
+      "package*.json",
+      ".agents/**/config.json"
     ],
     "exclude": [
       "node_modules/**/*",
       ".git/**/*",
       "uploads/**/*",
       "*.log",
-      ".env"
+      ".env",
+      ".agents/**/node_modules/**/*",
+      ".agents/**/.claude-code",
+      ".vs/**/*",
+      ".vscode/**/*",
+      ".aider*",
+      "obj/**/*"
     ]
   },
+  "securityLevel": "elevated",
   "consultationPermissions": {
     "canConsult": [
       "frontend-pages",

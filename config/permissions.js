@@ -1,11 +1,13 @@
 // Define available pages/routes and their required roles
 const pagePermissions = {
-    '/dashboard': ['admin', 'user', 'manager', 'readonly'],
+    '/dashboard': ['admin', 'user', 'manager', 'editor', 'readonly'],
     '/users': ['admin'],
-    '/items': ['admin', 'manager', 'user'],
-    '/reports': ['admin', 'manager', 'readonly'],
+    '/items': ['admin', 'manager', 'editor', 'user'],
+    '/reports': ['admin', 'manager', 'editor', 'readonly'],
     '/settings': ['admin'],
-    '/upload': ['admin', 'manager']
+    '/upload': ['admin', 'manager'],
+    '/upload-data-team': ['admin', 'manager', 'editor'],
+    '/compare-data-team': ['admin', 'editor']
 };
 
 // Helper function to check if a role has access to a page
@@ -63,7 +65,9 @@ const pageDescriptions = {
     '/items': 'Item and inventory management',
     '/reports': 'System reports and analytics',
     '/settings': 'System configuration and settings',
-    '/upload': 'File upload and data import'
+    '/upload': 'File upload and data import',
+    '/upload-data-team': 'Upload data team active items to temp table',
+    '/compare-data-team': 'Compare and override data team active items'
 };
 
 // Get description for a page

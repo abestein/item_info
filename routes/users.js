@@ -7,6 +7,21 @@ const { calculateRoleFromPermissions, getPageDescription } = require('../config/
 module.exports = (dbConfig) => {
     const router = express.Router();
 
+    // Helper function to map database fields to camelCase
+    const mapUserFields = (user) => ({
+        id: user.Id,
+        username: user.Username,
+        email: user.Email,
+        role: user.Role,
+        isActive: user.IsActive,
+        createdAt: user.CreatedAt,
+        updatedAt: user.UpdatedAt,
+        // Include any additional fields
+        roleChangesCount: user.RoleChangesCount,
+        lastRoleChangeAt: user.LastRoleChangeAt,
+        recentRoleChanges: user.recentRoleChanges
+    });
+
     // Get all users with pagination
     router.get('/', async (req, res) => {
         try {
@@ -51,7 +66,7 @@ module.exports = (dbConfig) => {
 
             res.json({
                 success: true,
-                users: result.recordset,
+                users: result.recordset.map(mapUserFields),
                 total: countResult.recordset[0].total,
                 page: parseInt(page),
                 pageSize: parseInt(pageSize),
@@ -125,10 +140,10 @@ module.exports = (dbConfig) => {
 
             res.json({
                 success: true,
-                user: {
+                user: mapUserFields({
                     ...userResult.recordset[0],
                     recentRoleChanges: roleHistoryResult.recordset
-                }
+                })
             });
         } catch (error) {
             console.error('Get user error:', error);
@@ -179,7 +194,7 @@ module.exports = (dbConfig) => {
             }
 
             // Validate role if provided
-            const validRoles = ['admin', 'user', 'manager', 'readonly'];
+            const validRoles = ['admin', 'user', 'manager', 'editor', 'readonly'];
             if (role && !validRoles.includes(role)) {
                 errors.push(`Invalid role specified. Valid roles are: ${validRoles.join(', ')}`);
             }
@@ -329,7 +344,7 @@ module.exports = (dbConfig) => {
 
                 res.status(201).json({
                     success: true,
-                    user: createdUser
+                    user: mapUserFields(createdUser)
                 });
 
             } catch (transactionError) {
@@ -470,7 +485,7 @@ module.exports = (dbConfig) => {
             }
 
             // Role validation
-            const validRoles = ['admin', 'user', 'manager', 'readonly'];
+            const validRoles = ['admin', 'user', 'manager', 'editor', 'readonly'];
             if (role && !validRoles.includes(role)) {
                 errors.push(`Invalid role specified. Valid roles are: ${validRoles.join(', ')}`);
             }
@@ -580,7 +595,7 @@ module.exports = (dbConfig) => {
             const updatedUser = await pool.request()
                 .input('id', sql.Int, userId)
                 .query(`
-                    SELECT Id, Username, Email, Role, IsActive, 
+                    SELECT Id, Username, Email, Role, IsActive,
                            CreatedAt
                     FROM Users
                     WHERE Id = @id
@@ -588,7 +603,7 @@ module.exports = (dbConfig) => {
 
             res.json({
                 success: true,
-                user: updatedUser.recordset[0]
+                user: mapUserFields(updatedUser.recordset[0])
             });
         } catch (error) {
             console.error('Update user error:', error);

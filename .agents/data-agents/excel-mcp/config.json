@@ -1,0 +1,91 @@
+{
+  "name": "Excel MCP Agent",
+  "type": "data-agent",
+  "version": "1.0.0",
+  "expertise": [
+    "excel-file-processing",
+    "mcp-protocol",
+    "spreadsheet-analysis",
+    "data-extraction",
+    "file-validation",
+    "bulk-data-import",
+    "excel-formatting",
+    "workbook-management"
+  ],
+  "responsibilities": [
+    "Process Excel files through MCP protocol",
+    "Extract and validate spreadsheet data",
+    "Handle workbook and worksheet operations",
+    "Perform bulk data imports from Excel",
+    "Validate Excel file formats and structure",
+    "Generate Excel reports and exports",
+    "Manage Excel file transformations",
+    "Handle Excel formulas and calculations"
+  ],
+  "filePatterns": {
+    "include": [
+      "**/*.xlsx",
+      "**/*.xls", 
+      "**/*.csv",
+      "uploads/**/*",
+      "helpers/**/*Upload*.js",
+      "helpers/**/*Excel*.js",
+      "utils/**/*excel*.js",
+      "utils/**/*spreadsheet*.js",
+      "config/excel.js",
+      ".agents/data-agents/excel-mcp/**/*"
+    ],
+    "exclude": [
+      "node_modules/**/*",
+      "client/**/*",
+      ".env",
+      ".git/**/*"
+    ]
+  },
+  "securityLevel": "moderate",
+  "consultationPermissions": {
+    "canConsult": [
+      "transactions",
+      "sql-mcp",
+      "gap-analyzer"
+    ],
+    "canBeConsultedBy": [
+      "transactions",
+      "api-bridge",
+      "backend-control",
+      "gap-analyzer",
+      "orchestrator"
+    ]
+  },
+  "dependencies": {
+    "protocol": "Model Context Protocol (MCP)",
+    "excelLibrary": "ExcelJS for file processing",
+    "fileSystem": "Node.js fs module for file operations",
+    "validation": "Custom Excel validation logic"
+  },
+  "mcpServer": {
+    "executable": "node",
+    "args": [".agents/data-agents/excel-mcp/index.js"],
+    "env": {
+      "NODE_ENV": "production",
+      "EXCEL_TEMP_DIR": "./uploads/temp",
+      "MAX_FILE_SIZE": "50MB"
+    }
+  },
+  "capabilities": [
+    "Read Excel workbooks and worksheets",
+    "Extract data from specific ranges",
+    "Validate Excel file structure",
+    "Convert Excel to JSON/CSV formats",
+    "Generate Excel reports from data",
+    "Handle multiple worksheet operations",
+    "Process Excel formulas and calculations",
+    "Manage Excel file metadata"
+  ],
+  "supportedFormats": [
+    ".xlsx (Excel 2007+)",
+    ".xls (Excel 97-2003)",
+    ".csv (Comma Separated Values)",
+    ".tsv (Tab Separated Values)"
+  ]
+}

@@ -52,8 +52,8 @@ interface DashboardData {
     excludedBreakdown: any[];
 }
 
-// Color palette for charts - more professional colors
-const COLORS = ['#1890ff', '#52c41a', '#faad14', '#f5222d', '#722ed1', '#13c2c2'];
+// Dynarex color palette for charts
+const COLORS = ['#043168', '#28a745', '#348fe2', '#ffc107', '#dc3545', '#00acac'];
 
 const DashboardPage: React.FC = () => {
     const { message: messageApi } = App.useApp();

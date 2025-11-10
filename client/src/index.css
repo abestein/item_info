@@ -3,11 +3,11 @@
 @import 'antd/dist/reset.css';
 
 /* Import modern font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
 
 /* Root styles */
 :root {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
     font-synthesis: none;
@@ -66,8 +66,50 @@ a {
     font-variant-numeric: tabular-nums;
 }
 
-.ant-table-thead > tr > th {
-    font-weight: 600 !important;
+.ant-table-thead > tr > th,
+.ant-table-thead th {
+    font-weight: var(--font-weight-semibold) !important;
+    background: #043168 !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Force white text in table headers - Enhanced */
+.ant-table-thead > tr > th *,
+.ant-table-thead th *,
+.ant-table-thead > tr > th span,
+.ant-table-thead th span {
+    color: #ffffff !important;
+}
+
+/* Table header icons (filter, sort) - Enhanced */
+.ant-table-thead > tr > th .anticon,
+.ant-table-thead th .anticon {
+    color: #ffffff !important;
+}
+
+.ant-table-column-sorter,
+.ant-table-column-sorter * {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.ant-table-column-sorter-up.active,
+.ant-table-column-sorter-down.active {
+    color: #ffffff !important;
+}
+
+.ant-table-filter-trigger,
+.ant-table-filter-trigger * {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.ant-table-filter-trigger.active {
+    color: #ffffff !important;
+}
+
+.ant-table-filter-trigger-container,
+.ant-table-filter-trigger-container * {
+    color: #ffffff !important;
 }
 
 .ant-table-cell {
@@ -82,16 +124,57 @@ a {
 /* Card hover effects */
 .ant-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: var(--border-radius) !important;
+    overflow: hidden;
 }
 
     .ant-card:hover {
         transform: translateY(-2px);
     }
 
+/* Card headers - Enhanced for better visibility */
+.ant-card-head {
+    background: #043168 !important;
+    border-bottom: 1px solid var(--color-border) !important;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+}
+
+.ant-card-head-title,
+.ant-card-head-title * {
+    color: #ffffff !important;
+    font-weight: var(--font-weight-semibold) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.ant-card-extra {
+    color: #ffffff !important;
+}
+
+/* Buttons in card extra should maintain their own styling */
+.ant-card-extra .ant-btn:not(.ant-btn-text):not(.ant-btn-link) {
+    color: initial !important;
+}
+
+/* Text buttons and links in card extra should be white */
+.ant-card-extra .ant-btn-text,
+.ant-card-extra .ant-btn-link {
+    color: #ffffff !important;
+}
+
+.ant-card-extra .ant-btn-text:hover,
+.ant-card-extra .ant-btn-link:hover {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Icons in card extra */
+.ant-card-extra .anticon:not(.ant-btn .anticon) {
+    color: #ffffff !important;
+}
+
 /* Button improvements */
 .ant-btn {
-    font-weight: 500;
-    transition: all 0.2s ease;
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-speed-fast) var(--transition-easing);
 }
 
     /* Better focus styles */
@@ -103,6 +186,9 @@ a {
 
 /* Page animations */
 .page-container {
+    padding: var(--spacing-lg);
+    padding-left: var(--spacing-xl) !important;
+    padding-right: var(--spacing-xl) !important;
     animation: fadeIn 0.3s ease-in-out;
 }
 
@@ -120,12 +206,12 @@ a {
 
 /* Filter dropdown improvements */
 .ant-table-filter-dropdown {
-    padding: 8px !important;
-    border-radius: 8px !important;
+    padding: var(--spacing-sm) !important;
+    border-radius: var(--border-radius) !important;
 }
 
     .ant-table-filter-dropdown .ant-btn-primary {
-        font-weight: 500;
+        font-weight: var(--font-weight-medium);
     }
 
     /* Date picker in filter */

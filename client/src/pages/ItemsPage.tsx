@@ -137,7 +137,7 @@ const ItemsPage: React.FC = () => {
     });
 
     return (
-        <div className="page-container" style={{ padding: 24 }}>
+        <div className="page-container">
             <Card
                 title="Item Details - Recent Entries"
                 extra={

@@ -10,7 +10,7 @@ const getApiUrl = () => {
     }
 
     // If accessing via network IP, use network API
-    return import.meta.env.VITE_API_URL_NETWORK || 'http://192.168.254.20:3000/api';
+    return import.meta.env.VITE_API_URL_NETWORK || 'http://192.168.254.142:3000/api';
 };
 
 export const API_CONFIG = {

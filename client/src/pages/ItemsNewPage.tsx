@@ -1,7 +1,7 @@
 // src/pages/ItemsNewPage.tsx
 import React, { useEffect, useState } from 'react';
-import { Card, Button, message, Spin, Space } from 'antd';
-import { UploadOutlined, ReloadOutlined, FilterOutlined } from '@ant-design/icons';
+import { Card, Button, Spin, Space, App } from 'antd';
+import { ReloadOutlined, FilterOutlined, SettingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
@@ -10,22 +10,30 @@ import { EnhancedTable, enhancedTableStyles, renderFunctions } from '../config/e
 import { API_CONFIG } from '../config/api.config';
 
 interface ItemRecord {
-    ID: number;
-    'Item #': string;
-    'Vendor Name': string;
-    'Brand Name': string;
-    'Description1': string;
-    'FOB Cost': number;
-    'Current Duty': number;
-    'Current Tariff': number;
-    'Last PO Date': string;
+    id: number;
+    brand_name: string;
+    item: string;
+    description1: string;
+    description2: string;
+    description3: string;
+    upc_inner_2: number;
+    upc_inner_1: number;
+    upc_sellable: number;
+    hcpc_code: string;
+    product_type: string;
+    sterile: string;
+    exp_date: string;
+    created_date: string;
     [key: string]: any;
 }
 
 const ItemsNewPage: React.FC = () => {
+    const { message } = App.useApp();
     const [data, setData] = useState<ItemRecord[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeFilters, setActiveFilters] = useState<Record<string, any>>({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(20);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,15 +43,15 @@ const ItemsNewPage: React.FC = () => {
     const fetchItems = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(`${API_CONFIG.BASE_URL}/items`);
+            const response = await axios.get(`${API_CONFIG.BASE_URL}/data-team-items`);
             if (response.data.success) {
-                console.log('Fetched items:', response.data.data.length);
+                console.log('Fetched data team items:', response.data.data.length);
                 setData(response.data.data);
             } else {
-                message.error('Failed to load items');
+                message.error('Failed to load data team items');
             }
         } catch (error) {
-            console.error('Error fetching items:', error);
+            console.error('Error fetching data team items:', error);
             message.error('Error connecting to server');
         } finally {
             setLoading(false);
@@ -54,84 +62,106 @@ const ItemsNewPage: React.FC = () => {
     const columns: ColumnsType<ItemRecord> = [
         {
             title: 'ID',
-            dataIndex: 'ID',
-            key: 'ID',
+            dataIndex: 'id',
+            key: 'id',
             width: 80,
             fixed: 'left',
-            sorter: (a, b) => a.ID - b.ID,
+            sorter: (a, b) => a.id - b.id,
         },
         {
             title: 'Item #',
-            dataIndex: 'Item #',
-            key: 'Item #',
+            dataIndex: 'item',
+            key: 'item',
             width: 120,
-            render: renderFunctions.text,
-            sorter: (a, b) => (a['Item #'] || '').localeCompare(b['Item #'] || ''),
-        },
-        {
-            title: 'Vendor',
-            dataIndex: 'Vendor Name',
-            key: 'Vendor Name',
-            width: 150,
-            ellipsis: true,
-            render: renderFunctions.text,
-            sorter: (a, b) => (a['Vendor Name'] || '').localeCompare(b['Vendor Name'] || ''),
+            render: (text: string, record: ItemRecord) => (
+                <a
+                    onClick={() => navigate(`/item-detail/${record.id}`)}
+                    style={{ color: '#043168', cursor: 'pointer' }}
+                >
+                    {text || 'N/A'}
+                </a>
+            ),
+            sorter: (a, b) => (a.item || '').localeCompare(b.item || ''),
         },
         {
             title: 'Brand',
-            dataIndex: 'Brand Name',
-            key: 'Brand Name',
-            width: 120,
+            dataIndex: 'brand_name',
+            key: 'brand_name',
+            width: 150,
+            ellipsis: true,
             render: renderFunctions.text,
-            sorter: (a, b) => (a['Brand Name'] || '').localeCompare(b['Brand Name'] || ''),
+            sorter: (a, b) => (a.brand_name || '').localeCompare(b.brand_name || ''),
         },
         {
             title: 'Description',
-            dataIndex: 'Description1',
-            key: 'Description1',
-            width: 300,
+            dataIndex: 'description1',
+            key: 'description1',
+            width: 250,
             ellipsis: true,
             render: renderFunctions.text,
         },
         {
-            title: 'FOB Cost',
-            dataIndex: 'FOB Cost',
-            key: 'FOB Cost',
+            title: 'Description 2',
+            dataIndex: 'description2',
+            key: 'description2',
+            width: 200,
+            ellipsis: true,
+            render: renderFunctions.text,
+        },
+        {
+            title: 'UPC Inner-2',
+            dataIndex: 'upc_inner_2',
+            key: 'upc_inner_2',
+            width: 130,
+            render: renderFunctions.text,
+            sorter: (a, b) => (a.upc_inner_2 || 0) - (b.upc_inner_2 || 0),
+        },
+        {
+            title: 'UPC Inner-1',
+            dataIndex: 'upc_inner_1',
+            key: 'upc_inner_1',
+            width: 130,
+            render: renderFunctions.text,
+            sorter: (a, b) => (a.upc_inner_1 || 0) - (b.upc_inner_1 || 0),
+        },
+        {
+            title: 'UPC Sellable',
+            dataIndex: 'upc_sellable',
+            key: 'upc_sellable',
+            width: 130,
+            render: renderFunctions.text,
+            sorter: (a, b) => (a.upc_sellable || 0) - (b.upc_sellable || 0),
+        },
+        {
+            title: 'HCPC Code',
+            dataIndex: 'hcpc_code',
+            key: 'hcpc_code',
             width: 120,
-            align: 'right',
-            className: 'numeric-column',
-            render: renderFunctions.currency,
-            sorter: (a, b) => (a['FOB Cost'] || 0) - (b['FOB Cost'] || 0),
+            render: renderFunctions.text,
         },
         {
-            title: 'Duty',
-            dataIndex: 'Current Duty',
-            key: 'Current Duty',
+            title: 'Product Type',
+            dataIndex: 'product_type',
+            key: 'product_type',
+            width: 120,
+            render: renderFunctions.text,
+        },
+        {
+            title: 'Sterile',
+            dataIndex: 'sterile',
+            key: 'sterile',
             width: 100,
-            align: 'right',
-            className: 'numeric-column',
-            render: renderFunctions.percentage,
-            sorter: (a, b) => (a['Current Duty'] || 0) - (b['Current Duty'] || 0),
+            render: renderFunctions.text,
         },
         {
-            title: 'Tariff',
-            dataIndex: 'Current Tariff',
-            key: 'Current Tariff',
-            width: 100,
-            align: 'right',
-            className: 'numeric-column',
-            render: renderFunctions.percentage,
-            sorter: (a, b) => (a['Current Tariff'] || 0) - (b['Current Tariff'] || 0),
-        },
-        {
-            title: 'Last PO',
-            dataIndex: 'Last PO Date',
-            key: 'Last PO Date',
+            title: 'Created Date',
+            dataIndex: 'created_date',
+            key: 'created_date',
             width: 120,
             render: renderFunctions.date,
             sorter: (a, b) => {
-                const dateA = a['Last PO Date'] ? new Date(a['Last PO Date']).getTime() : 0;
-                const dateB = b['Last PO Date'] ? new Date(b['Last PO Date']).getTime() : 0;
+                const dateA = a.created_date ? new Date(a.created_date).getTime() : 0;
+                const dateB = b.created_date ? new Date(b.created_date).getTime() : 0;
                 return dateA - dateB;
             },
         },
@@ -139,15 +169,18 @@ const ItemsNewPage: React.FC = () => {
 
     // Filter configuration
     const filterConfig = {
-        'ID': { type: 'number' as const },
-        'Item #': { type: 'text' as const },
-        'Vendor Name': { type: 'text' as const },
-        'Brand Name': { type: 'text' as const },
-        'Description1': { type: 'text' as const },
-        'FOB Cost': { type: 'number' as const },
-        'Current Duty': { type: 'number' as const },
-        'Current Tariff': { type: 'number' as const },
-        'Last PO Date': { type: 'date' as const },
+        'id': { type: 'number' as const },
+        'item': { type: 'text' as const },
+        'brand_name': { type: 'text' as const },
+        'description1': { type: 'text' as const },
+        'description2': { type: 'text' as const },
+        'upc_inner_2': { type: 'number' as const },
+        'upc_inner_1': { type: 'number' as const },
+        'upc_sellable': { type: 'number' as const },
+        'hcpc_code': { type: 'text' as const },
+        'product_type': { type: 'text' as const },
+        'sterile': { type: 'text' as const },
+        'created_date': { type: 'date' as const },
     };
 
     // Count active filters
@@ -156,11 +189,11 @@ const ItemsNewPage: React.FC = () => {
     ).length;
 
     return (
-        <div className="page-container" style={{ padding: 24 }}>
+        <div className="page-container">
             <Card
                 title={
                     <Space>
-                        <span>Enhanced Items Table</span>
+                        <span>Data Team Active Items</span>
                         {activeFilterCount > 0 && (
                             <span style={{
                                 color: '#1890ff',
@@ -175,11 +208,6 @@ const ItemsNewPage: React.FC = () => {
                 extra={
                     <Space>
                         <Button
-                            onClick={() => navigate('/items')}
-                        >
-                            View Original Table
-                        </Button>
-                        <Button
                             icon={<ReloadOutlined />}
                             onClick={fetchItems}
                             loading={loading}
@@ -188,10 +216,10 @@ const ItemsNewPage: React.FC = () => {
                         </Button>
                         <Button
                             type="primary"
-                            icon={<UploadOutlined />}
-                            onClick={() => navigate('/upload')}
+                            icon={<SettingOutlined />}
+                            onClick={() => navigate('/items-new-operations')}
                         >
-                            Upload New Data
+                            Manage Operations
                         </Button>
                     </Space>
                 }
@@ -211,12 +239,34 @@ const ItemsNewPage: React.FC = () => {
                 <Spin spinning={loading}>
                     {data.length > 0 ? (
                         <EnhancedTable
-                            {...enhancedTableStyles.default}
+                            bordered={true}
+                            size="middle"
                             columns={columns}
                             dataSource={data}
-                            rowKey="ID"
-                            scroll={{ x: 1300 }}
+                            rowKey="id"
+                            scroll={{ x: 1800 }}
                             filterConfig={filterConfig}
+                            pagination={{
+                                current: currentPage,
+                                pageSize: pageSize,
+                                showSizeChanger: true,
+                                showTotal: (total: number, range: [number, number]) => `${range[0]}-${range[1]} of ${total} items`,
+                                pageSizeOptions: ['10', '20', '50', '100'],
+                                showQuickJumper: true,
+                                onChange: (page: number, newPageSize: number) => {
+                                    console.log('Page changed:', page, 'PageSize:', newPageSize);
+                                    setCurrentPage(page);
+                                    if (newPageSize !== pageSize) {
+                                        setPageSize(newPageSize);
+                                        setCurrentPage(1); // Reset to first page when page size changes
+                                    }
+                                },
+                                onShowSizeChange: (current: number, size: number) => {
+                                    console.log('Size changed:', size);
+                                    setPageSize(size);
+                                    setCurrentPage(1);
+                                },
+                            }}
                             onFiltersChange={(filters) => {
                                 setActiveFilters(filters);
                                 // Debug logging
@@ -230,14 +280,6 @@ const ItemsNewPage: React.FC = () => {
                                 <p style={{ fontSize: 16, marginBottom: 20, color: '#8c8c8c' }}>
                                     No items found in the database.
                                 </p>
-                                <Button
-                                    type="primary"
-                                    size="large"
-                                    icon={<UploadOutlined />}
-                                    onClick={() => navigate('/upload')}
-                                >
-                                    Upload Excel File
-                                </Button>
                             </div>
                         )
                     )}

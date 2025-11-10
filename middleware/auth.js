@@ -34,6 +34,16 @@ const adminMiddleware = (req, res, next) => {
     next();
 };
 
+const editorMiddleware = (req, res, next) => {
+    if (req.user?.role !== 'admin' && req.user?.role !== 'editor') {
+        return res.status(403).json({
+            success: false,
+            error: 'Editor or Admin access required'
+        });
+    }
+    next();
+};
+
 const pageAccessMiddleware = (req, res, next) => {
     const page = req.path;
     if (!checkPageAccess(req.user, page)) {
@@ -45,4 +55,4 @@ const pageAccessMiddleware = (req, res, next) => {
     next();
 };
 
-module.exports = { authMiddleware, adminMiddleware, pageAccessMiddleware };
+module.exports = { authMiddleware, adminMiddleware, editorMiddleware, pageAccessMiddleware };

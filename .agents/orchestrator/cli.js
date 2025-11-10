@@ -101,19 +101,154 @@ program
 
 program
     .command('sql-mcp <query>')
-    .description('Execute SQL query through MCP')
+    .description('Execute SQL query through direct DB connection (MCP as fallback)')
     .action(async (query) => {
-        await initializeSystem();
-        
-        console.log(chalk.blue('Executing SQL query...'));
-        const result = await system.executeAgentTask('sql-mcp', query);
-        
-        if (result.success) {
-            console.log(chalk.green.bold('\n=== SQL MCP Response ==='));
-            console.log(result.response);
-        } else {
-            console.error(chalk.red.bold('\n=== Error ==='));
-            console.error(chalk.red(result.error || 'Unknown error'));
+        console.log(chalk.blue('Executing SQL query via direct connection...'));
+
+        try {
+            // Import required modules
+            const sql = (await import('mssql')).default;
+            const dotenv = (await import('dotenv')).default;
+            const path = (await import('path')).default;
+            const { fileURLToPath } = await import('url');
+            const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+            // Load .env from project root
+            dotenv.config({ path: path.join(__dirname, '../../.env') });
+
+            // Database configuration
+            const dbConfig = {
+                server: process.env.DB_SERVER,
+                database: process.env.DB_DATABASE,
+                user: process.env.DB_USER,
+                password: process.env.DB_PASSWORD?.replace(/"/g, ''),
+                port: parseInt(process.env.DB_PORT),
+                options: {
+                    encrypt: false,
+                    trustServerCertificate: true,
+                    enableArithAbort: true
+                }
+            };
+
+            // Connect to database
+            await sql.connect(dbConfig);
+
+            // Detect query type and execute appropriately
+            let result;
+
+            // Check if it's a stored procedure definition request
+            if (query.toLowerCase().includes('stored procedure') ||
+                query.toLowerCase().includes('sp_') ||
+                query.toLowerCase().includes('procedure definition')) {
+
+                // Extract procedure name
+                const spMatch = query.match(/sp_[\w]+/i);
+                if (spMatch) {
+                    const spName = spMatch[0];
+                    const spResult = await sql.query`
+                        SELECT OBJECT_DEFINITION(OBJECT_ID(${spName})) AS ProcedureDefinition
+                    `;
+
+                    console.log(chalk.green.bold('\n=== Stored Procedure Definition ==='));
+                    console.log(spResult.recordset[0]?.ProcedureDefinition || 'Procedure not found');
+                    await sql.close();
+                    return;
+                }
+            }
+
+            // Check if it's a list tables request
+            if (query.toLowerCase().includes('list tables') ||
+                query.toLowerCase().includes('show tables') ||
+                query.toLowerCase().includes('all tables')) {
+
+                result = await sql.query`
+                    SELECT TABLE_NAME, TABLE_SCHEMA
+                    FROM INFORMATION_SCHEMA.TABLES
+                    WHERE TABLE_TYPE = 'BASE TABLE'
+                    ORDER BY TABLE_SCHEMA, TABLE_NAME
+                `;
+
+                console.log(chalk.green.bold('\n=== Database Tables ==='));
+                console.table(result.recordset);
+                await sql.close();
+                return;
+            }
+
+            // Check if it's a table schema request
+            if (query.toLowerCase().includes('schema') ||
+                query.toLowerCase().includes('structure') ||
+                query.toLowerCase().includes('columns')) {
+
+                // Try different patterns to extract table name
+                let tableName;
+
+                // Pattern 1: "schema of TableName" or "TableName table"
+                let match = query.match(/(?:schema of|structure of|columns (?:of|in))\s+(\w+)/i);
+                if (match) tableName = match[1];
+
+                // Pattern 2: "TableName schema" or "TableName structure"
+                if (!match) {
+                    match = query.match(/(\w+)\s+(?:table|schema|structure|columns)/i);
+                    if (match) tableName = match[1];
+                }
+
+                // Pattern 3: Just look for a word that might be a table name
+                if (!match) {
+                    const words = query.split(/\s+/);
+                    // Look for capitalized words or words with underscores (common table name patterns)
+                    for (const word of words) {
+                        if (word.includes('_') || /^[A-Z]/.test(word)) {
+                            tableName = word;
+                            break;
+                        }
+                    }
+                }
+
+                if (tableName) {
+                    result = await sql.query`
+                        SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, IS_NULLABLE
+                        FROM INFORMATION_SCHEMA.COLUMNS
+                        WHERE TABLE_NAME = ${tableName}
+                        ORDER BY ORDINAL_POSITION
+                    `;
+
+                    console.log(chalk.green.bold(`\n=== ${tableName} Schema ===`));
+                    console.table(result.recordset);
+                    await sql.close();
+                    return;
+                }
+            }
+
+            // Otherwise, try to execute as raw SQL query
+            result = await sql.query(query);
+
+            console.log(chalk.green.bold('\n=== Query Results ==='));
+            if (result.recordset && result.recordset.length > 0) {
+                console.table(result.recordset);
+                console.log(chalk.dim(`\nRows: ${result.recordset.length}`));
+            } else {
+                console.log(chalk.yellow('No results returned'));
+                console.log(chalk.dim(`Rows affected: ${result.rowsAffected}`));
+            }
+
+            await sql.close();
+
+        } catch (error) {
+            console.error(chalk.red.bold('\n=== Direct DB Error ==='));
+            console.error(chalk.red(error.message));
+            console.log(chalk.yellow('\nFalling back to MCP agent system...'));
+
+            // Fallback to the original MCP agent approach
+            await initializeSystem();
+            const result = await system.executeAgentTask('sql-mcp', query);
+
+            if (result.success) {
+                console.log(chalk.green.bold('\n=== SQL MCP Response ==='));
+                console.log(result.response);
+            } else {
+                console.error(chalk.red.bold('\n=== MCP Error ==='));
+                console.error(chalk.red(result.error || 'Unknown error'));
+            }
         }
     });
 

@@ -5,7 +5,8 @@ import type { UploadProps } from 'antd';
 import axios from 'axios';
 import { authService } from '../services/authService';
 
-const API_URL = import.meta.env.VITE_API_URL_LOCAL || 'http://localhost:3000/api';
+import { API_CONFIG } from '../config/api.config';
+const API_URL = API_CONFIG.BASE_URL;
 
 interface VendorUploadResult {
     success: boolean;
@@ -150,7 +151,7 @@ const VendorItemsUploadPage: React.FC = () => {
                     >
                         <Upload.Dragger {...uploadProps}>
                             <p className="ant-upload-drag-icon">
-                                <InboxOutlined style={{ fontSize: 48, color: '#1890ff' }} />
+                                <InboxOutlined style={{ fontSize: 48, color: '#043168' }} />
                             </p>
                             <p className="ant-upload-text">Click or drag file to this area to upload</p>
                             <p className="ant-upload-hint">

@@ -18,6 +18,7 @@ interface AuthResponse {
         username: string;
         email: string;
         role: string;
+        permissions?: string[];
     };
     error?: string;
 }

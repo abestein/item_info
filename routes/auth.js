@@ -12,10 +12,13 @@ const JWT_SECRET = process.env.JWT_SECRET;
 module.exports = (dbConfig) => {
     // Login route
     router.post('/login', async (req, res) => {
+        console.log('===== AUTH ROUTE HIT =====');
         try {
+            console.log('Login attempt received:', { username: req.body.username, hasPassword: !!req.body.password });
             const { username, password } = req.body;
 
             if (!username || !password) {
+                console.log('Missing username or password');
                 return res.status(400).json({
                     success: false,
                     error: 'Username and password are required'
@@ -27,21 +30,52 @@ module.exports = (dbConfig) => {
                 .input('username', sql.NVarChar, username)
                 .query('SELECT * FROM Users WHERE Username = @username OR Email = @username');
 
+            console.log('Database query result:', result.recordset.length, 'users found');
             const user = result.recordset[0];
 
             if (!user || !user.IsActive) {
+                console.log('User not found or inactive:', { found: !!user, active: user?.IsActive });
                 return res.status(401).json({
                     success: false,
                     error: 'Invalid credentials'
                 });
             }
 
+            console.log('Found user:', { id: user.Id, username: user.Username, role: user.Role });
             const isValidPassword = await bcrypt.compare(password, user.PasswordHash);
+            console.log('Password valid:', isValidPassword);
+
             if (!isValidPassword) {
                 return res.status(401).json({
                     success: false,
                     error: 'Invalid credentials'
                 });
+            }
+
+            // Get user permissions
+            const permissionsResult = await pool.request()
+                .input('userId', sql.Int, user.Id)
+                .query('SELECT Permissions, UseRolePermissions FROM UserPermissions WHERE UserId = @userId');
+
+            let userPermissions = null;
+            if (permissionsResult.recordset.length > 0) {
+                const permRecord = permissionsResult.recordset[0];
+                if (!permRecord.UseRolePermissions && permRecord.Permissions) {
+                    try {
+                        userPermissions = JSON.parse(permRecord.Permissions);
+                    } catch (e) {
+                        console.error('Error parsing permissions:', e);
+                    }
+                }
+            }
+
+            // If no custom permissions, get role-based permissions from database
+            if (userPermissions === null) {
+                const rolePermissionsResult = await pool.request()
+                    .input('role', sql.NVarChar, user.Role)
+                    .query('SELECT PagePath FROM RolePermissions WHERE RoleName = @role');
+
+                userPermissions = rolePermissionsResult.recordset.map(r => r.PagePath);
             }
 
             // Generate JWT token
@@ -50,7 +84,8 @@ module.exports = (dbConfig) => {
                     id: user.Id,
                     username: user.Username,
                     email: user.Email,
-                    role: user.Role
+                    role: user.Role,
+                    permissions: userPermissions
                 },
                 JWT_SECRET,
                 { expiresIn: '24h' }
@@ -63,7 +98,8 @@ module.exports = (dbConfig) => {
                     id: user.Id,
                     username: user.Username,
                     email: user.Email,
-                    role: user.Role
+                    role: user.Role,
+                    permissions: userPermissions
                 }
             });
         } catch (error) {

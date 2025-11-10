@@ -14,7 +14,7 @@ const ReportsPage: React.FC = () => {
     const reportTypes = [
         {
             title: 'Inventory Summary',
-            icon: <BarChartOutlined style={{ fontSize: 48, color: '#1890ff' }} />,
+            icon: <BarChartOutlined style={{ fontSize: 48, color: '#043168' }} />,
             description: 'Overview of current inventory levels and values',
             available: false,
         },
@@ -109,7 +109,7 @@ const ReportsPage: React.FC = () => {
                 style={{
                     borderRadius: 8,
                     backgroundColor: '#f0f8ff',
-                    borderLeft: '4px solid #1890ff'
+                    borderLeft: '4px solid #043168'
                 }}
             >
                 <Empty

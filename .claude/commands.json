@@ -1,0 +1,74 @@
+{
+  "commands": {
+    "/A-AO": {
+      "description": "Workflow Orchestrator Agent - Plan and execute complex multi-step workflows",
+      "command": "AO.bat \"$1\"",
+      "category": "Agents"
+    },
+    "/A-SM": {
+      "description": "SQL MCP Agent - Database queries and operations",
+      "command": "SM.bat \"$1\"",
+      "category": "Agents"
+    },
+    "/A-TX": {
+      "description": "Transactions Agent - Data processing and CRUD operations",
+      "command": "TX.bat \"$1\"",
+      "category": "Agents"
+    },
+    "/A-FP": {
+      "description": "Frontend Pages Agent - Create and modify React pages",
+      "command": "agent.bat frontend-pages \"$1\"",
+      "category": "Agents"
+    },
+    "/A-TV": {
+      "description": "Table Views Agent - Data tables and grids",
+      "command": "agent.bat table-views \"$1\"",
+      "category": "Agents"
+    },
+    "/A-VZ": {
+      "description": "Visualizations Agent - Charts and dashboards",
+      "command": "agent.bat visualizations \"$1\"",
+      "category": "Agents"
+    },
+    "/A-NAV": {
+      "description": "Navigation Agent - Menus and navigation components",
+      "command": "agent.bat navigation \"$1\"",
+      "category": "Agents"
+    },
+    "/A-EX": {
+      "description": "Excel MCP Agent - Excel file processing and analysis",
+      "command": "agent.bat excel-mcp \"$1\"",
+      "category": "Agents"
+    },
+    "/A-AUTH": {
+      "description": "Authentication Agent - Login, permissions, and security",
+      "command": "agent.bat auth \"$1\"",
+      "category": "Agents"
+    },
+    "/A-API": {
+      "description": "API Bridge Agent - REST endpoints and data flow",
+      "command": "agent.bat api-bridge \"$1\"",
+      "category": "Agents"
+    },
+    "/A-BC": {
+      "description": "Backend Control Agent - Admin panels and system config",
+      "command": "agent.bat backend-control \"$1\"",
+      "category": "Agents"
+    },
+    "/A-GAP": {
+      "description": "Gap Analyzer Agent - Find missing features and analyze architecture",
+      "command": "agent.bat gap-analyzer \"$1\"",
+      "category": "Agents"
+    },
+    "/A-ROUTE": {
+      "description": "Router Agent - Intelligent request routing to best agent",
+      "command": "agent.bat router \"$1\"",
+      "category": "Agents"
+    },
+    "/A-LIST": {
+      "description": "List all available agents and their capabilities",
+      "command": "agent.bat list",
+      "category": "Agents"
+    }
+  }
+}

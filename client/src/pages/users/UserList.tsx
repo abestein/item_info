@@ -136,7 +136,7 @@ const UserList: React.FC = () => {
   ];
 
   return (
-    <div className="page-container" style={{ padding: 24 }}>
+    <div className="page-container">
       <Card
         title="User Directory"
         extra={
@@ -150,7 +150,7 @@ const UserList: React.FC = () => {
         }
       >
         {/* Filters */}
-        <Row gutter={16} style={{ marginBottom: 16 }}>
+        <Row gutter={16} style={{ marginBottom: 'var(--spacing-md)' }}>
           <Col xs={24} sm={12} md={8}>
             <Search
               placeholder="Search users by username or email..."

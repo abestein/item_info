@@ -41,7 +41,28 @@
             </a>
         </li>
         <% } %>
-        
+
+        <!-- Data Team Management Section -->
+        <% if (typeof user !== 'undefined' && (user.role === 'admin' || user.role === 'editor' || user.role === 'manager')) { %>
+        <li class="menu-section">
+            <h3>Data Team</h3>
+        </li>
+        <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'upload-data-team' ? 'active' : '' %>">
+            <a href="/upload-data-team">
+                <i class="fas fa-upload"></i>
+                <span>Upload Items</span>
+            </a>
+        </li>
+        <% if (typeof user !== 'undefined' && (user.role === 'admin' || user.role === 'editor')) { %>
+        <li class="menu-item <%= typeof activePage !== 'undefined' && activePage === 'compare-data-team' ? 'active' : '' %>">
+            <a href="/compare-data-team">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Compare & Override</span>
+            </a>
+        </li>
+        <% } %>
+        <% } %>
+
         <li class="menu-section">
             <h3>System</h3>
         </li>
