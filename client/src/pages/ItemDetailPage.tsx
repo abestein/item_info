@@ -30,6 +30,7 @@ interface ItemDetail {
     hcpc_code: string;
     product_type: string;
     fei_number: string;
+    duns_number: string;
     dln: string;
     device_class: string;
     product_code: string;
@@ -40,18 +41,28 @@ interface ItemDetail {
     sterile_method: string;
     shelf_life: string;
     prop_65: string;
+    prop_65_warning: string;
     rx_required: string;
+    dehp_free: string;
+    latex: string;
+    use_field: string;
     temp_required: string;
+    temp_range: string;
+    humidity_limitation: string;
     gtin_inner_2: string;
     gtin_inner_1: string;
     gtin_sellable: string;
     gtin_ship_1: string;
     gtin_ship_2: string;
+    product_identification: string;
+    term_code: string;
     ndc_inner_2: string;
     ndc_inner_1: string;
     ndc_sellable: string;
-    ndc_ship_1: string;
-    ndc_ship_2: string;
+    ndc_shipper_1: string;
+    ndc_shipper_2: string;
+    hc_class: string;
+    license_number: string;
     created_date: string;
     [key: string]: any;
 }

@@ -72,7 +72,10 @@
       "Bash(git push:*)",
       "Bash(git rm:*)",
       "Bash(chmod:*)",
-      "Bash(./git-hooks-manager.sh:*)"
+      "Bash(./git-hooks-manager.sh:*)",
+      "SlashCommand(/a-sm:*)",
+      "Bash(call SM.bat \"Get the complete schema for the items table including all column names, data types, and any constraints. Show me all available fields.\")",
+      "Bash(SM.bat \"Get the complete schema for the items table including all column names, data types, and any constraints. Show me all available fields.\")"
     ],
     "deny": [],
     "ask": []
