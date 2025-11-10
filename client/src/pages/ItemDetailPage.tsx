@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Spin, Descriptions, Space, App, Tag } from 'antd';
-import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons';
+import {
+    ArrowLeftOutlined,
+    EditOutlined,
+    FileTextOutlined,
+    BarcodeOutlined,
+    SafetyOutlined,
+    ExperimentOutlined,
+    EnvironmentOutlined,
+    MedicineBoxOutlined,
+    InfoCircleOutlined
+} from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_CONFIG } from '../config/api.config';
+import './ItemDetailPage.css';
 
 interface ItemDetail {
     id: number;
@@ -99,16 +110,44 @@ const ItemDetailPage: React.FC = () => {
 
     const formatValue = (value: any) => {
         if (value === null || value === undefined || value === '') {
-            return <Tag color="#6c757d">N/A</Tag>;
+            return <Tag className="value-badge na">N/A</Tag>;
         }
         return value;
     };
 
+    const formatYesNo = (value: any) => {
+        if (value === null || value === undefined || value === '') {
+            return <Tag className="value-badge na">N/A</Tag>;
+        }
+        const strValue = String(value).toLowerCase();
+        if (strValue === 'yes' || strValue === 'y' || strValue === 'true' || strValue === '1') {
+            return <Tag className="value-badge yes">Yes</Tag>;
+        }
+        if (strValue === 'no' || strValue === 'n' || strValue === 'false' || strValue === '0') {
+            return <Tag className="value-badge no">No</Tag>;
+        }
+        return <span>{value}</span>;
+    };
+
+    const formatCode = (value: any) => {
+        if (value === null || value === undefined || value === '') {
+            return <Tag className="value-badge na">N/A</Tag>;
+        }
+        return <span className="code-value">{value}</span>;
+    };
+
+    const formatUPC = (value: any) => {
+        if (value === null || value === undefined || value === '') {
+            return <Tag className="value-badge na">N/A</Tag>;
+        }
+        return <span className="upc-value">{value}</span>;
+    };
+
     const formatDate = (dateString: string) => {
-        if (!dateString) return <Tag color="#6c757d">N/A</Tag>;
+        if (!dateString) return <Tag className="value-badge na">N/A</Tag>;
         try {
             const date = new Date(dateString);
-            return date.toLocaleDateString();
+            return <span className="date-value">{date.toLocaleDateString()}</span>;
         } catch {
             return dateString;
         }
@@ -116,49 +155,74 @@ const ItemDetailPage: React.FC = () => {
 
     if (loading) {
         return (
-            <div style={{ padding: 'var(--spacing-lg)', textAlign: 'center' }}>
-                <Spin size="large" />
+            <div className="item-detail-page">
+                <div className="item-detail-loading">
+                    <Spin size="large" tip="Loading item details..." />
+                </div>
             </div>
         );
     }
 
     if (!item) {
         return (
-            <div style={{ padding: 'var(--spacing-lg)' }}>
-                <Card>
-                    <div style={{ textAlign: 'center', padding: 40 }}>
-                        <p style={{ fontSize: 16, color: '#8c8c8c' }}>Item not found</p>
-                        <Button type="primary" onClick={() => navigate('/items-new')}>
-                            Back to Items
-                        </Button>
-                    </div>
-                </Card>
+            <div className="item-detail-page">
+                <div className="item-detail-empty">
+                    <InfoCircleOutlined className="item-detail-empty-icon" />
+                    <p className="item-detail-empty-text">Item not found</p>
+                    <Button
+                        type="primary"
+                        size="large"
+                        className="action-button action-button-primary"
+                        onClick={() => navigate('/items-new')}
+                    >
+                        Back to Items
+                    </Button>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="page-container">
-            <Card
-                title={
-                    <Space>
-                        <span>Item Details</span>
-                        <Tag color="#043168">{item.item}</Tag>
+        <div className="item-detail-page">
+            <Card className="item-detail-card">
+                <div className="item-detail-header">
+                    <div style={{ marginBottom: 12 }}>
+                        <h1 className="item-detail-title">
+                            <FileTextOutlined style={{ marginRight: 12 }} />
+                            Item Details
+                        </h1>
+                        <div className="item-detail-subtitle">
+                            Complete product information and specifications
+                        </div>
+                    </div>
+                    <Space size="large" style={{ marginTop: 16 }}>
+                        <div>
+                            <div style={{ fontSize: 12, opacity: 0.8, marginBottom: 4 }}>Item Code</div>
+                            <span className="item-detail-tag">{item.item}</span>
+                        </div>
+                        <div>
+                            <div style={{ fontSize: 12, opacity: 0.8, marginBottom: 4 }}>Brand</div>
+                            <span className="item-detail-tag">{item.brand_name || 'N/A'}</span>
+                        </div>
                     </Space>
-                }
-                extra={
-                    <Space>
+                    <div className="item-detail-actions" style={{ marginTop: 20 }}>
                         <Button
                             icon={<ArrowLeftOutlined />}
                             onClick={() => navigate('/items-new')}
                         >
                             Back to List
                         </Button>
-                    </Space>
-                }
-            >
-                {/* Basic Information */}
-                <Descriptions title="Basic Information" bordered column={2} style={{ marginBottom: 24 }}>
+                        <Button
+                            icon={<EditOutlined />}
+                        >
+                            Edit Item
+                        </Button>
+                    </div>
+                </div>
+
+                <div className="item-detail-content">
+                    {/* Basic Information */}
+                    <Descriptions title="Basic Information" bordered column={2} style={{ marginBottom: 24 }}>
                     <Descriptions.Item label="ID">{item.id}</Descriptions.Item>
                     <Descriptions.Item label="Item Code">{formatValue(item.item)}</Descriptions.Item>
                     <Descriptions.Item label="Brand Name">{formatValue(item.brand_name)}</Descriptions.Item>
@@ -182,12 +246,12 @@ const ItemDetailPage: React.FC = () => {
                 </Descriptions>
 
                 {/* UPC Codes */}
-                <Descriptions title="UPC Codes" bordered column={2} style={{ marginBottom: 24 }}>
-                    <Descriptions.Item label="UPC Inner-2">{formatValue(item.upc_inner_2)}</Descriptions.Item>
-                    <Descriptions.Item label="UPC Inner-1">{formatValue(item.upc_inner_1)}</Descriptions.Item>
-                    <Descriptions.Item label="UPC Sellable">{formatValue(item.upc_sellable)}</Descriptions.Item>
-                    <Descriptions.Item label="UPC Ship-1">{formatValue(item.upc_ship_1)}</Descriptions.Item>
-                    <Descriptions.Item label="UPC Ship-2">{formatValue(item.upc_ship_2)}</Descriptions.Item>
+                <Descriptions title={<><BarcodeOutlined className="section-icon" /> UPC Codes</>} bordered column={2} style={{ marginBottom: 24 }}>
+                    <Descriptions.Item label="UPC Inner-2">{formatUPC(item.upc_inner_2)}</Descriptions.Item>
+                    <Descriptions.Item label="UPC Inner-1">{formatUPC(item.upc_inner_1)}</Descriptions.Item>
+                    <Descriptions.Item label="UPC Sellable">{formatUPC(item.upc_sellable)}</Descriptions.Item>
+                    <Descriptions.Item label="UPC Ship-1">{formatUPC(item.upc_ship_1)}</Descriptions.Item>
+                    <Descriptions.Item label="UPC Ship-2">{formatUPC(item.upc_ship_2)}</Descriptions.Item>
                 </Descriptions>
 
                 {/* Artwork Rev */}
@@ -200,45 +264,61 @@ const ItemDetailPage: React.FC = () => {
                 </Descriptions>
 
                 {/* Regulatory Information */}
-                <Descriptions title="Regulatory & Product Information" bordered column={2} style={{ marginBottom: 24 }}>
-                    <Descriptions.Item label="HCPC Code">{formatValue(item.hcpc_code)}</Descriptions.Item>
+                <Descriptions title={<><ExperimentOutlined className="section-icon" /> Regulatory & Product Information</>} bordered column={2} style={{ marginBottom: 24 }}>
+                    <Descriptions.Item label="HCPC Code">{formatCode(item.hcpc_code)}</Descriptions.Item>
                     <Descriptions.Item label="Product Type">{formatValue(item.product_type)}</Descriptions.Item>
-                    <Descriptions.Item label="FEI Number">{formatValue(item.fei_number)}</Descriptions.Item>
-                    <Descriptions.Item label="DLN">{formatValue(item.dln)}</Descriptions.Item>
+                    <Descriptions.Item label="FEI Number">{formatCode(item.fei_number)}</Descriptions.Item>
+                    <Descriptions.Item label="DUNS Number">{formatCode(item.duns_number)}</Descriptions.Item>
+                    <Descriptions.Item label="DLN">{formatCode(item.dln)}</Descriptions.Item>
                     <Descriptions.Item label="Device Class">{formatValue(item.device_class)}</Descriptions.Item>
-                    <Descriptions.Item label="Product Code">{formatValue(item.product_code)}</Descriptions.Item>
-                    <Descriptions.Item label="FDA 510(k)">{formatValue(item.fda_510_k)}</Descriptions.Item>
+                    <Descriptions.Item label="Product Code">{formatCode(item.product_code)}</Descriptions.Item>
+                    <Descriptions.Item label="FDA 510(k)">{formatCode(item.fda_510_k)}</Descriptions.Item>
                     <Descriptions.Item label="Expiration Date">{formatDate(item.exp_date)}</Descriptions.Item>
-                    <Descriptions.Item label="Serial Number">{formatValue(item.sn_number)}</Descriptions.Item>
+                    <Descriptions.Item label="Serial Number">{formatCode(item.sn_number)}</Descriptions.Item>
+                    <Descriptions.Item label="Product Identification">{formatValue(item.product_identification)}</Descriptions.Item>
+                    <Descriptions.Item label="Term Code">{formatCode(item.term_code)}</Descriptions.Item>
+                    <Descriptions.Item label="HC Class">{formatValue(item.hc_class)}</Descriptions.Item>
+                    <Descriptions.Item label="License Number">{formatCode(item.license_number)}</Descriptions.Item>
                 </Descriptions>
 
                 {/* Sterility & Storage */}
-                <Descriptions title="Sterility & Storage Requirements" bordered column={2} style={{ marginBottom: 24 }}>
-                    <Descriptions.Item label="Sterile">{formatValue(item.sterile)}</Descriptions.Item>
+                <Descriptions title={<><EnvironmentOutlined className="section-icon" /> Sterility & Storage Requirements</>} bordered column={2} style={{ marginBottom: 24 }}>
+                    <Descriptions.Item label="Sterile">{formatYesNo(item.sterile)}</Descriptions.Item>
                     <Descriptions.Item label="Sterile Method">{formatValue(item.sterile_method)}</Descriptions.Item>
                     <Descriptions.Item label="Shelf Life">{formatValue(item.shelf_life)}</Descriptions.Item>
-                    <Descriptions.Item label="Prop 65">{formatValue(item.prop_65)}</Descriptions.Item>
-                    <Descriptions.Item label="RX Required">{formatValue(item.rx_required)}</Descriptions.Item>
-                    <Descriptions.Item label="Temp Required">{formatValue(item.temp_required)}</Descriptions.Item>
+                    <Descriptions.Item label="Use">{formatValue(item.use_field)}</Descriptions.Item>
+                    <Descriptions.Item label="Temp Required">{formatYesNo(item.temp_required)}</Descriptions.Item>
+                    <Descriptions.Item label="Temp Range">{formatValue(item.temp_range)}</Descriptions.Item>
+                    <Descriptions.Item label="Humidity Limitation">{formatValue(item.humidity_limitation)}</Descriptions.Item>
+                </Descriptions>
+
+                {/* Safety & Compliance */}
+                <Descriptions title={<><SafetyOutlined className="section-icon" /> Safety & Compliance</>} bordered column={2} style={{ marginBottom: 24 }}>
+                    <Descriptions.Item label="Prop 65">{formatYesNo(item.prop_65)}</Descriptions.Item>
+                    <Descriptions.Item label="Prop 65 Warning">{formatValue(item.prop_65_warning)}</Descriptions.Item>
+                    <Descriptions.Item label="RX Required">{formatYesNo(item.rx_required)}</Descriptions.Item>
+                    <Descriptions.Item label="DEHP Free">{formatYesNo(item.dehp_free)}</Descriptions.Item>
+                    <Descriptions.Item label="Latex">{formatYesNo(item.latex)}</Descriptions.Item>
                 </Descriptions>
 
                 {/* GTIN Codes */}
-                <Descriptions title="GTIN Codes" bordered column={2} style={{ marginBottom: 24 }}>
-                    <Descriptions.Item label="GTIN Inner-2">{formatValue(item.gtin_inner_2)}</Descriptions.Item>
-                    <Descriptions.Item label="GTIN Inner-1">{formatValue(item.gtin_inner_1)}</Descriptions.Item>
-                    <Descriptions.Item label="GTIN Sellable">{formatValue(item.gtin_sellable)}</Descriptions.Item>
-                    <Descriptions.Item label="GTIN Ship-1">{formatValue(item.gtin_ship_1)}</Descriptions.Item>
-                    <Descriptions.Item label="GTIN Ship-2">{formatValue(item.gtin_ship_2)}</Descriptions.Item>
+                <Descriptions title={<><BarcodeOutlined className="section-icon" /> GTIN Codes</>} bordered column={2} style={{ marginBottom: 24 }}>
+                    <Descriptions.Item label="GTIN Inner-2">{formatUPC(item.gtin_inner_2)}</Descriptions.Item>
+                    <Descriptions.Item label="GTIN Inner-1">{formatUPC(item.gtin_inner_1)}</Descriptions.Item>
+                    <Descriptions.Item label="GTIN Sellable">{formatUPC(item.gtin_sellable)}</Descriptions.Item>
+                    <Descriptions.Item label="GTIN Ship-1">{formatUPC(item.gtin_ship_1)}</Descriptions.Item>
+                    <Descriptions.Item label="GTIN Ship-2">{formatUPC(item.gtin_ship_2)}</Descriptions.Item>
                 </Descriptions>
 
                 {/* NDC Numbers */}
-                <Descriptions title="NDC Numbers" bordered column={2} style={{ marginBottom: 24 }}>
-                    <Descriptions.Item label="NDC Inner-2">{formatValue(item.ndc_inner_2)}</Descriptions.Item>
-                    <Descriptions.Item label="NDC Inner-1">{formatValue(item.ndc_inner_1)}</Descriptions.Item>
-                    <Descriptions.Item label="NDC Sellable">{formatValue(item.ndc_sellable)}</Descriptions.Item>
-                    <Descriptions.Item label="NDC Ship-1">{formatValue(item.ndc_ship_1)}</Descriptions.Item>
-                    <Descriptions.Item label="NDC Ship-2">{formatValue(item.ndc_ship_2)}</Descriptions.Item>
+                <Descriptions title={<><MedicineBoxOutlined className="section-icon" /> NDC Numbers</>} bordered column={2} style={{ marginBottom: 24 }}>
+                    <Descriptions.Item label="NDC Inner-2">{formatCode(item.ndc_inner_2)}</Descriptions.Item>
+                    <Descriptions.Item label="NDC Inner-1">{formatCode(item.ndc_inner_1)}</Descriptions.Item>
+                    <Descriptions.Item label="NDC Sellable">{formatCode(item.ndc_sellable)}</Descriptions.Item>
+                    <Descriptions.Item label="NDC Shipper +1">{formatCode(item.ndc_shipper_1)}</Descriptions.Item>
+                    <Descriptions.Item label="NDC Shipper +2">{formatCode(item.ndc_shipper_2)}</Descriptions.Item>
                 </Descriptions>
+                </div>
             </Card>
         </div>
     );
