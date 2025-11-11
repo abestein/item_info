@@ -16,7 +16,9 @@ import {
     FileTextOutlined,
     KeyOutlined,
     InfoCircleOutlined,
-    BarcodeOutlined
+    BarcodeOutlined,
+    ExpandOutlined,
+    WarningOutlined
 } from '@ant-design/icons';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
@@ -29,6 +31,8 @@ import VendorItemsUploadPage from './pages/VendorItemsUploadPage';
 import VendorItemsTestUploadPage from './pages/VendorItemsTestUploadPage';
 import DataTeamUploadPage from './pages/DataTeamUploadPage';
 import UPCListPage from './pages/UPCListPage';
+import ProductMeasurementsPage from './pages/ProductMeasurementsPage';
+import MeasurementMismatchesPage from './pages/MeasurementMismatchesPage';
 import UserManagement from './pages/users/UserManagement';
 import UserList from './pages/users/UserList';
 import RoleManagement from './pages/users/RoleManagement';
@@ -134,6 +138,18 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
                     path: '/upc-list',
                     icon: <BarcodeOutlined />,
                     label: <Link to="/upc-list">UPC List</Link>,
+                },
+                {
+                    key: '/product-measurements',
+                    path: '/product-measurements',
+                    icon: <ExpandOutlined />,
+                    label: <Link to="/product-measurements">Product Measurements</Link>,
+                },
+                {
+                    key: '/measurement-mismatches',
+                    path: '/measurement-mismatches',
+                    icon: <WarningOutlined />,
+                    label: <Link to="/measurement-mismatches">Measurement Mismatches</Link>,
                 },
             ],
         },
@@ -395,6 +411,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ isDarkMode, setIsDarkMode }) => {
                                     <Route path="/vendor-items-test-upload" element={<VendorItemsTestUploadPage />} />
                                     <Route path="/data-team-upload" element={<DataTeamUploadPage />} />
                                     <Route path="/upc-list" element={<UPCListPage />} />
+                                    <Route path="/product-measurements" element={<ProductMeasurementsPage />} />
+                                    <Route path="/measurement-mismatches" element={<MeasurementMismatchesPage />} />
                                     <Route path="/users" element={
                                         <ProtectedRoute requireAdmin={true}>
                                             <UserManagement />

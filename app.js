@@ -267,6 +267,52 @@ app.get('/api/data-team-item/:id/mismatches', authMiddleware, async (req, res) =
     }
 });
 
+// Get all product measurements with UPC data (protected) - for table view
+app.get('/api/product-measurements', authMiddleware, async (req, res) => {
+    try {
+        await sql.connect(dbConfig);
+
+        const result = await sql.query`
+            SELECT * FROM product_measurements_with_upc_data
+            ORDER BY item_code, measurement_level
+        `;
+
+        res.json({
+            success: true,
+            data: result.recordset
+        });
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({
+            success: false,
+            error: 'Error fetching product measurements'
+        });
+    }
+});
+
+// Get all product measurement mismatches (protected) - for table view
+app.get('/api/measurement-mismatches', authMiddleware, async (req, res) => {
+    try {
+        await sql.connect(dbConfig);
+
+        const result = await sql.query`
+            SELECT * FROM product_measurement_mismatches
+            ORDER BY item_code, measurement_level
+        `;
+
+        res.json({
+            success: true,
+            data: result.recordset
+        });
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({
+            success: false,
+            error: 'Error fetching measurement mismatches'
+        });
+    }
+});
+
 // SSE endpoint for upload progress (protected)
 app.get('/api/upload-progress', authMiddleware, (req, res) => {
     res.writeHead(200, {
