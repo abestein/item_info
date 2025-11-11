@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Spin, Descriptions, Space, App, Tag } from 'antd';
+import { Card, Button, Spin, Descriptions, Space, App, Tag, Table, Alert } from 'antd';
 import {
     ArrowLeftOutlined,
     EditOutlined,
@@ -9,7 +9,9 @@ import {
     ExperimentOutlined,
     EnvironmentOutlined,
     MedicineBoxOutlined,
-    InfoCircleOutlined
+    InfoCircleOutlined,
+    ExpandOutlined,
+    WarningOutlined
 } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -84,10 +86,16 @@ const ItemDetailPage: React.FC = () => {
     const navigate = useNavigate();
     const [item, setItem] = useState<ItemDetail | null>(null);
     const [loading, setLoading] = useState(true);
+    const [measurements, setMeasurements] = useState<any[]>([]);
+    const [mismatches, setMismatches] = useState<any[]>([]);
+    const [measurementsLoading, setMeasurementsLoading] = useState(false);
+    const [mismatchesLoading, setMismatchesLoading] = useState(false);
 
     useEffect(() => {
         if (itemId) {
             fetchItemDetail(itemId);
+            fetchMeasurements(itemId);
+            fetchMismatches(itemId);
         }
     }, [itemId]);
 
@@ -105,6 +113,36 @@ const ItemDetailPage: React.FC = () => {
             message.error(error.response?.data?.error || 'Error loading item details');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchMeasurements = async (id: string) => {
+        setMeasurementsLoading(true);
+        try {
+            const response = await axios.get(`${API_CONFIG.BASE_URL}/data-team-item/${id}/measurements`);
+            if (response.data.success) {
+                setMeasurements(response.data.data);
+            }
+        } catch (error: any) {
+            console.error('Error fetching measurements:', error);
+            // Don't show error message if no measurements found - it's optional data
+        } finally {
+            setMeasurementsLoading(false);
+        }
+    };
+
+    const fetchMismatches = async (id: string) => {
+        setMismatchesLoading(true);
+        try {
+            const response = await axios.get(`${API_CONFIG.BASE_URL}/data-team-item/${id}/mismatches`);
+            if (response.data.success) {
+                setMismatches(response.data.data);
+            }
+        } catch (error: any) {
+            console.error('Error fetching mismatches:', error);
+            // Don't show error message if no mismatches found - it's optional data
+        } finally {
+            setMismatchesLoading(false);
         }
     };
 
@@ -318,6 +356,99 @@ const ItemDetailPage: React.FC = () => {
                     <Descriptions.Item label="NDC Shipper +1">{formatCode(item.ndc_shipper_1)}</Descriptions.Item>
                     <Descriptions.Item label="NDC Shipper +2">{formatCode(item.ndc_shipper_2)}</Descriptions.Item>
                 </Descriptions>
+
+                {/* Product Measurements with UPC Data */}
+                <div style={{ marginTop: 32 }}>
+                    <div className="section-header">
+                        <ExpandOutlined className="section-icon" />
+                        <h3 className="section-title">Product Measurements with UPC Data</h3>
+                    </div>
+                    {measurementsLoading ? (
+                        <div style={{ textAlign: 'center', padding: 40 }}>
+                            <Spin />
+                        </div>
+                    ) : measurements.length > 0 ? (
+                        <Table
+                            dataSource={measurements}
+                            rowKey={(record, index) => `measurement-${index}`}
+                            pagination={false}
+                            scroll={{ x: 1200 }}
+                            bordered
+                            size="small"
+                            style={{ marginBottom: 24 }}
+                        >
+                            <Table.Column title="UPC" dataIndex="upc" key="upc" render={formatUPC} />
+                            <Table.Column title="Level" dataIndex="measurement_level" key="measurement_level" />
+                            <Table.Column title="Weight (lbs)" dataIndex="weight" key="weight" render={(val) => val?.toFixed(2) || 'N/A'} />
+                            <Table.Column title="Height (in)" dataIndex="height" key="height" render={(val) => val?.toFixed(2) || 'N/A'} />
+                            <Table.Column title="Length (in)" dataIndex="length" key="length" render={(val) => val?.toFixed(2) || 'N/A'} />
+                            <Table.Column title="Width (in)" dataIndex="width" key="width" render={(val) => val?.toFixed(2) || 'N/A'} />
+                            <Table.Column title="Volume (cu in)" dataIndex="calculated_volume" key="calculated_volume" render={(val) => val?.toFixed(2) || 'N/A'} />
+                            <Table.Column title="Confirmed" dataIndex="confirmed" key="confirmed" render={formatYesNo} />
+                            <Table.Column title="UPC List Level" dataIndex="upc_list_level_name" key="upc_list_level_name" render={formatValue} />
+                            <Table.Column title="Is Sellable" dataIndex="IsSellable" key="IsSellable" render={formatYesNo} />
+                        </Table>
+                    ) : (
+                        <Alert
+                            message="No Measurement Data"
+                            description="No product measurements with UPC data available for this item."
+                            type="info"
+                            showIcon
+                            style={{ marginBottom: 24 }}
+                        />
+                    )}
+                </div>
+
+                {/* Product Measurement Mismatches */}
+                <div style={{ marginTop: 32 }}>
+                    <div className="section-header">
+                        <WarningOutlined className="section-icon" style={{ color: '#faad14' }} />
+                        <h3 className="section-title" style={{ color: '#faad14' }}>Product Measurement Mismatches</h3>
+                    </div>
+                    {mismatchesLoading ? (
+                        <div style={{ textAlign: 'center', padding: 40 }}>
+                            <Spin />
+                        </div>
+                    ) : mismatches.length > 0 ? (
+                        <>
+                            <Alert
+                                message={`Found ${mismatches.length} Mismatch${mismatches.length > 1 ? 'es' : ''}`}
+                                description="These records show discrepancies between measurement data and UPC list data."
+                                type="warning"
+                                showIcon
+                                style={{ marginBottom: 16 }}
+                            />
+                            <Table
+                                dataSource={mismatches}
+                                rowKey={(record, index) => `mismatch-${index}`}
+                                pagination={false}
+                                scroll={{ x: 1200 }}
+                                bordered
+                                size="small"
+                                style={{ marginBottom: 24 }}
+                            >
+                                <Table.Column title="UPC" dataIndex="upc" key="upc" render={formatUPC} />
+                                <Table.Column title="Measurement Level" dataIndex="measurement_level" key="measurement_level" />
+                                <Table.Column title="UPC List Level" dataIndex="upc_list_level_number" key="upc_list_level_number" />
+                                <Table.Column title="Mismatch Type" dataIndex="mismatch_type" key="mismatch_type" render={(val) => <Tag color="orange">{val}</Tag>} />
+                                <Table.Column title="Weight (lbs)" dataIndex="weight" key="weight" render={(val) => val?.toFixed(2) || 'N/A'} />
+                                <Table.Column title="Height (in)" dataIndex="height" key="height" render={(val) => val?.toFixed(2) || 'N/A'} />
+                                <Table.Column title="Length (in)" dataIndex="length" key="length" render={(val) => val?.toFixed(2) || 'N/A'} />
+                                <Table.Column title="Width (in)" dataIndex="width" key="width" render={(val) => val?.toFixed(2) || 'N/A'} />
+                                <Table.Column title="Volume (cu in)" dataIndex="calculated_volume" key="calculated_volume" render={(val) => val?.toFixed(2) || 'N/A'} />
+                                <Table.Column title="Confirmed" dataIndex="confirmed" key="confirmed" render={formatYesNo} />
+                            </Table>
+                        </>
+                    ) : (
+                        <Alert
+                            message="No Mismatches Found"
+                            description="All measurement data matches the UPC list data for this item."
+                            type="success"
+                            showIcon
+                            style={{ marginBottom: 24 }}
+                        />
+                    )}
+                </div>
                 </div>
             </Card>
         </div>

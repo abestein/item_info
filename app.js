@@ -191,6 +191,82 @@ app.get('/api/data-team-item/:id', authMiddleware, async (req, res) => {
     }
 });
 
+// Get product measurements with UPC data for an item (protected)
+app.get('/api/data-team-item/:id/measurements', authMiddleware, async (req, res) => {
+    try {
+        const { id } = req.params;
+        await sql.connect(dbConfig);
+
+        // First get the item code from the data_team_active_items table
+        const itemResult = await sql.query`SELECT item FROM data_team_active_items WHERE id = ${id}`;
+
+        if (itemResult.recordset.length === 0) {
+            return res.status(404).json({
+                success: false,
+                error: 'Item not found'
+            });
+        }
+
+        const itemCode = itemResult.recordset[0].item;
+
+        // Get measurements data from the view
+        const measurementsResult = await sql.query`
+            SELECT * FROM product_measurements_with_upc_data
+            WHERE item_code = ${itemCode}
+            ORDER BY measurement_level
+        `;
+
+        res.json({
+            success: true,
+            data: measurementsResult.recordset
+        });
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({
+            success: false,
+            error: 'Error fetching product measurements'
+        });
+    }
+});
+
+// Get product measurement mismatches for an item (protected)
+app.get('/api/data-team-item/:id/mismatches', authMiddleware, async (req, res) => {
+    try {
+        const { id } = req.params;
+        await sql.connect(dbConfig);
+
+        // First get the item code from the data_team_active_items table
+        const itemResult = await sql.query`SELECT item FROM data_team_active_items WHERE id = ${id}`;
+
+        if (itemResult.recordset.length === 0) {
+            return res.status(404).json({
+                success: false,
+                error: 'Item not found'
+            });
+        }
+
+        const itemCode = itemResult.recordset[0].item;
+
+        // Get mismatches data from the view
+        const mismatchesResult = await sql.query`
+            SELECT * FROM product_measurement_mismatches
+            WHERE measurement_item_code = ${itemCode}
+            ORDER BY measurement_level
+        `;
+
+        res.json({
+            success: true,
+            data: mismatchesResult.recordset
+        });
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({
+            success: false,
+            error: 'Error fetching product measurement mismatches'
+        });
+    }
+});
+
 // SSE endpoint for upload progress (protected)
 app.get('/api/upload-progress', authMiddleware, (req, res) => {
     res.writeHead(200, {
