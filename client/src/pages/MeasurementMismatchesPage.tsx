@@ -235,7 +235,7 @@ const MeasurementMismatchesPage: React.FC = () => {
                         dataSource={filteredData}
                         rowKey={(record, index) => `${record.item_code}-${record.upc}-${index}`}
                         loading={loading}
-                        onFilterChange={(filters) => {
+                        onFiltersChange={(filters) => {
                             console.log('Filters changed:', filters);
                             setActiveFilters(filters);
                         }}

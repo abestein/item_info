@@ -76,7 +76,9 @@
       "SlashCommand(/a-sm:*)",
       "Bash(call SM.bat \"Get the complete schema for the items table including all column names, data types, and any constraints. Show me all available fields.\")",
       "Bash(SM.bat \"Get the complete schema for the items table including all column names, data types, and any constraints. Show me all available fields.\")",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(call SM.bat:*)",
+      "Bash(SM.bat \"SELECT u.username, u.role, STRING_AGG(pp.page_path, '', '') as permissions FROM users u LEFT JOIN user_permissions up ON u.id = up.user_id LEFT JOIN page_permissions pp ON up.page_id = pp.id WHERE u.username = ''admin'' GROUP BY u.username, u.role\")"
     ],
     "deny": [],
     "ask": []
