@@ -46,7 +46,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requireAdmin 
     }, [requireAdmin, requirePath, location.pathname]);
 
     const checkPathPermission = (user: any, path: string): boolean => {
-        if (!user || !user.permissions) return false;
+        if (!user) return false;
+
+        // Admin users have access to all pages
+        if (user.role === 'admin') return true;
+
+        // For non-admin users, check permissions
+        if (!user.permissions) return false;
 
         // Map frontend routes to permission paths
         const permissionMap: Record<string, string> = {
