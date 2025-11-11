@@ -274,7 +274,6 @@ app.get('/api/product-measurements', authMiddleware, async (req, res) => {
 
         const result = await sql.query`
             SELECT * FROM product_measurements_with_upc_data
-            ORDER BY item_code, measurement_level
         `;
 
         res.json({
@@ -297,7 +296,6 @@ app.get('/api/measurement-mismatches', authMiddleware, async (req, res) => {
 
         const result = await sql.query`
             SELECT * FROM product_measurement_mismatches
-            ORDER BY item_code, measurement_level
         `;
 
         res.json({
